@@ -16,9 +16,9 @@ hero:
 
 features:
   - title: 腾讯QQ
-    details: “1330509996“
+    details: [#](1330509996)
   - title: Telegram
-    details: “@xinvxueyuan“
+    details: [https://t.me/xinvxueyuan](@xinvxueyuan)
   - title: 其他SNS
     details: 等待添加，明天再来看看吧~
 ---
