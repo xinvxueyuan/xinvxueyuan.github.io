@@ -22,7 +22,7 @@ features:
     details: "1330509996"
   - title: Telegram
     details: "@xinvxueyuan"
-  - title: 其他SNS
+  - title: Other SNS
     details: 等待添加，明天再来看看吧~
 ---
 
