@@ -16,10 +16,10 @@ hero:
 
 features:
   - title: QQ
-    details: 1330509996
+    details: link:1330509996
   - title: TG
     details: link:@xinvxueyuan
-  - title: 等待添加
-    details: 还没建完，明天再来看看吧~
+  - title: SNS社区
+    details: 等待添加，明天再来看看吧~
 ---
 
