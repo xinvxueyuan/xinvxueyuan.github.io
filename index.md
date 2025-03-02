@@ -18,7 +18,7 @@ hero:
       link: /linkme
 
 features:
-  - title: 腾讯QQ
+  - title: TencentQQ
     details: "1330509996"
   - title: Telegram
     details: "@xinvxueyuan"
