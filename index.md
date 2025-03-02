@@ -18,7 +18,7 @@ features:
   - title: QQ
     details: 1330509996
   - title: TG
-    details: @xinvxueyuan
+    details: link:@xinvxueyuan
   - title: 等待添加
     details: 还没建完，明天再来看看吧~
 ---
