@@ -13,12 +13,15 @@ hero:
     - theme: alt
       text: API 示例
       link: /api-examples
+    - theme: alt
+      text: 联系我
+      link: /linkme
 
 features:
   - title: 腾讯QQ
-    details: [#](1330509996)
+    details: "1330509996"
   - title: Telegram
-    details: [https://t.me/xinvxueyuan](@xinvxueyuan)
+    details: "@xinvxueyuan"
   - title: 其他SNS
     details: 等待添加，明天再来看看吧~
 ---
