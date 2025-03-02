@@ -15,11 +15,11 @@ hero:
       link: /api-examples
 
 features:
-  - title: QQ
+  - title: 腾讯QQ
     details: link:1330509996
-  - title: TG
+  - title: Telegram
     details: link:@xinvxueyuan
-  - title: SNS社区
+  - title: 其他SNS
     details: 等待添加，明天再来看看吧~
 ---
 
