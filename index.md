@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "个人work博客"
   text: "记录自己在这个世界所存在的痕迹"
-  tagline: My great project tagline
+  tagline: 程序猿都是二次猿吗？
   actions:
     - theme: brand
       text: Markdown Examples
@@ -15,11 +15,11 @@ hero:
       link: /api-examples
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: QQ
+    details: 1330509996
+  - title: TG
+    details: @xinvxueyuan
+  - title: 等待添加
+    details: 还没建完，明天再来看看吧~
 ---
 
