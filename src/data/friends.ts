@@ -25,7 +25,7 @@ export const friendsData: FriendItem[] = [
 		title: "xinStar Docs",
 		imgurl: "http://q.qlogo.cn/headimg_dl?dst_uin=3231515355&spec=640&img_type=jpg",
 		desc: "xinStar User Manual",
-		siteurl: "https://docs.xinStar.mysqil.com",
+		siteurl: "https://www.xinvstar.xyz",
 		tags: ["Docs"],
 	},
 	{
