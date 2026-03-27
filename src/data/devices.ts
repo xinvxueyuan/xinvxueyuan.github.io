@@ -16,22 +16,22 @@ export type DeviceCategory = Record<string, Device[]> & {
 export const devicesData: DeviceCategory = {
 	OnePlus: [
 		{
-			name: "OnePlus 13T",
-			image: "/images/device/oneplus13t.webp",
-			specs: "Gray / 16G + 1TB",
+			name: "IQOO Neo 10 Pro +",
+			image: "/images/device/iqoo-neo-10-pro-plus.webp",
+			specs: "Gray / 32G + 512G",
 			description:
-				"Flagship performance, Hasselblad imaging, 80W SuperVOOC.",
-			link: "https://www.oneplus.com/cn/13t",
+				"超配双芯，性能强劲，适合游戏和多任务处理。",
+			link: "https://www.vivo.com.cn/vivo/iqooneo10proplus/",
 		},
 	],
 	Router: [
 		{
-			name: "GL-MT3000",
-			image: "/images/device/mt3000.webp",
-			specs: "1000Mbps / 2.5G",
+			name: "ZTE U25S",
+			image: "/images/device/zte-u25s.webp",
+			specs: "3050mAh, WiFi 6",
 			description:
-				"Portable WiFi 6 router suitable for business trips and home use.",
-			link: "https://www.gl-inet.cn/products/gl-mt3000/",
+				"适合出差和家庭使用的便携式wifi6路由器。",
+			link: "https://www.ztemall.com/cn/goodsdetail/1537",
 		},
 	],
 };
