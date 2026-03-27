@@ -12,7 +12,7 @@ draft: false
 ## GitHub 仓库卡片
 您可以添加链接到 GitHub 仓库的动态卡片，页面加载时，仓库信息会从 GitHub API 中提取。
 
-::github{repo="matsuzaka-yuki/xinStar"}
+::github{repo="xinvxueyuan/xinvxueyuan.github.io"}
 
 使用代码 `::github{repo="xinvxueyuan/xinvxueyuan.github.io"}` 创建 GitHub 仓库卡片。
 
