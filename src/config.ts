@@ -466,7 +466,7 @@ export const profileConfig: ProfileConfig = {
 		},
 		{
 			name: "email",
-			icon: "fa-solid:envelope",
+			icon: "fa7-solid:envelope",
 			url: "mailto:tim-me@xinvstar.xyz"
 		},
 		{
