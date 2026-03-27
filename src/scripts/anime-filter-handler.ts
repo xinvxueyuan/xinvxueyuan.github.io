@@ -18,7 +18,7 @@ export function initFilterHandler() {
 		window.animeFilterEventListeners = [];
 
 		filterTags.forEach((tag) => {
-			const clickHandler = function () {
+			const clickHandler = function (this: Element) {
 				if (this.classList.contains("anime-active")) {
 					return;
 				}
@@ -153,9 +153,9 @@ export function initFilterHandler() {
 								);
 							},
 							600 +
-								(itemsToShow.length > 0
-									? Math.min(itemsToShow.length, 20) * 30
-									: 0),
+							(itemsToShow.length > 0
+								? Math.min(itemsToShow.length, 20) * 30
+								: 0),
 						);
 					});
 				};

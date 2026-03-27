@@ -1,6 +1,12 @@
 export { };
 
+declare module "@fontsource-variable/jetbrains-mono";
+
 declare global {
+	interface WindowEventMap {
+		layoutChange: CustomEvent<{ layout: string }>;
+	}
+
 	interface HTMLElementTagNameMap {
 		"table-of-contents": HTMLElement & {
 			init?: () => void;
