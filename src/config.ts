@@ -456,20 +456,20 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 
 export const commentConfig: CommentConfig = {
 	enable: true, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
-	system: "twikoo", // 评论系统选择: "twikoo" | "giscus"
+	system: "giscus", // 评论系统选择: "twikoo" | "giscus"
 	twikoo: {
 		envId: "https://twikoo.vercel.app",
 		lang: SITE_LANG,
 	},
 	giscus: {
-		repo: "your-github-username/your-repo-name",
-		repoId: "your-repo-id",
+		repo: "xinvxueyuan/xinvxueyuan.github.io",
+		repoId: "R_kgDORybnFw",
 		category: "Announcements",
-		categoryId: "your-category-id",
+		categoryId: "DIC_kwDORybnF84C5aoR",
 		mapping: "pathname",
-		strict: "0",
+		strict: "1",
 		reactionsEnabled: "1",
-		emitMetadata: "0",
+		emitMetadata: "1",
 		inputPosition: "top",
 		theme: "preferred_color_scheme",
 		lang: SITE_LANG,
@@ -494,7 +494,7 @@ export const announcementConfig: AnnouncementConfig = {
 };
 
 export const musicPlayerConfig: MusicPlayerConfig = {
-	enable: false, // 启用音乐播放器功能
+	enable: true, // 启用音乐播放器功能
 	showFloatingPlayer: true, // 显示悬浮播放器 UI
 	floatingEntryMode: "fab", // 悬浮入口模式："default" 为独立悬浮播放器，"fab" 为集成到通用 FAB 组
 	mode: "local", // 音乐播放器模式，可选 "local" 或 "meting"
