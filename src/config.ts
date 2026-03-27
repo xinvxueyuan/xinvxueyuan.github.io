@@ -468,6 +468,16 @@ export const profileConfig: ProfileConfig = {
 			name: "email",
 			icon: "fa-solid:envelope",
 			url: "mailto:tim-me@xinvstar.xyz"
+		},
+		{
+			name: "QQ",
+			icon: "fa7-brands:qq",
+			url: "https://qm.qq.com/cgi-bin/qm/qr?k=somekey"
+		},
+		{
+			name: "Discord",
+			icon: "fa7-brands:discord",
+			url: "https://discord.gg/fApAtyW5"
 		}
 	],
 };
