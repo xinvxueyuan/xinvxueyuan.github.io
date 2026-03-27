@@ -17,7 +17,7 @@ draft: false
 使用代码 `::github{repo="xinvxueyuan/xinvxueyuan.github.io"}` 创建 GitHub 仓库卡片。
 
 ```markdown
-::github{repo="matsuzaka-yuki/xinStar"}
+::github{repo="xinvxueyuan/xinvxueyuan.github.io"}
 ```
 
 ## 提示框
