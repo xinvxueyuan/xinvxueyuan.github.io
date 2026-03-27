@@ -6,11 +6,11 @@ category: Examples
 draft: true
 ---
 
-# This Article is a Draft
+# 本文章处于草稿状态
 
-This article is currently in a draft state and is not published. Therefore, it will not be visible to the general audience. The content is still a work in progress and may require further editing and review.
+本文章目前处于草稿状态，尚未发布。因此，它对普通读者不可见。内容仍在进行中，可能需要进一步的编辑和审查。
 
-When the article is ready for publication, you can update the "draft" field to "false" in the Frontmatter:
+当文章准备好发布时，您可以在前置数据中将 "draft" 字段更新为 "false"：
 
 ```markdown
 ---
