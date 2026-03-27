@@ -400,15 +400,75 @@ export const profileConfig: ProfileConfig = {
 			url: "https://github.com/xinvxueyuan",
 		},
 		{
-			name: "Codeberg",
-			icon: "simple-icons:codeberg",
-			url: "https://codeberg.org",
+			name: "Telegram",
+			icon: "fa7-brands:telegram",
+			url: "https://t.me/doecho",
 		},
 		{
-			name: "Discord",
-			icon: "fa7-brands:discord",
-			url: "https://discord.gg/fApAtyW5",
+			name: "X",
+			icon: "fa7-brands:x-twitter",
+			url: "https://twitter.com/xinvxueyuan",
 		},
+		{
+			name: "Facebook",
+			icon: "fa7-brands:facebook",
+			url: "https://www.facebook.com/xinvxueyuan"
+		},
+		{
+			name: "Instagram",
+			icon: "fa7-brands:instagram",
+			url: "https://www.instagram.com/xinvxueyuan"
+		},
+		{
+			name: "steam",
+			icon: "fa7-brands:steam",
+			url: "https://steamcommunity.com/id/xinvxueyuan/"
+		},
+		{
+			name: "twitch",
+			icon: "fa7-brands:twitch",
+			url: "https://www.twitch.tv/xinvxueyuan"
+		},
+		{
+			name: "YouTube",
+			icon: "fa7-brands:youtube",
+			url: "https://www.youtube.com/@xinvxueyuan"
+		},
+		{
+			name: "LinkedIn",
+			icon: "fa7-brands:linkedin",
+			url: "https://www.linkedin.com/in/xinvxueyuan/"
+		},
+		{
+			name: "pinterest",
+			icon: "fa7-brands:pinterest",
+			url: "https://www.pinterest.com/xinvxueyuan/"
+		},
+		{
+			name: "Reddit",
+			icon: "fa7-brands:reddit",
+			url: "https://www.reddit.com/user/xinvxueyuan/"
+		},
+		{
+			name: "Mastodon",
+			icon: "fa7-brands:mastodon",
+			url: "https://mastodon.social/@xinvxueyuan"
+		},
+		{
+			name: "GitLab",
+			icon: "fa7-brands:gitlab",
+			url: "https://gitlab.com/xinvxueyuan"
+		},
+		{
+			name: "Messenger",
+			icon: "fa7-brands:facebook-messenger",
+			url: "https://m.me/xinvxueyuan"
+		},
+		{
+			name: "email",
+			icon: "fa-solid:envelope",
+			url: "mailto:tim-me@xinvstar.xyz"
+		}
 	],
 };
 
