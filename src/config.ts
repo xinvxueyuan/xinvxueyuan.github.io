@@ -473,6 +473,16 @@ export const profileConfig: ProfileConfig = {
 			name: "Discord",
 			icon: "fa7-brands:discord",
 			url: "https://discord.gg/fApAtyW5"
+		},
+		{
+			name: "QQ",
+			icon: "fa7-brands:qq",
+			url: "https://qm.qq.com/q/Z01gCEQj2o"
+		},
+		{
+			name: "ORCID",
+			icon: "fa7-brands:orcid",
+			url: "https://orcid.org/0009-0002-5277-6823"
 		}
 	],
 };
