@@ -1,5 +1,6 @@
 import Key from "../../../../i18n/i18nKey";
 import { i18n } from "../../../../i18n/translation";
+import { fetchMetingApi } from "../../../../utils/meting-api";
 import { LOCAL_PLAYLIST } from "../constants";
 import type { RepeatMode, Song } from "../types";
 
@@ -129,19 +130,11 @@ export async function fetchMetingPlaylist(
 	}
 
 	onLoadStart();
-	const apiUrl = meting_api
-		.replace(":server", meting_server)
-		.replace(":type", meting_type)
-		.replace(":id", meting_id)
-		.replace(":auth", "")
-		.replace(":r", Date.now().toString());
 
 	try {
-		const res = await fetch(apiUrl);
-		if (!res.ok) {
-			throw new Error("meting api error");
-		}
-		const list: MetingSong[] = await res.json();
+		const list: MetingSong[] = await fetchMetingApi({
+			api: meting_api, server: meting_server, type: meting_type, id: meting_id,
+		});
 		state.playlist = list.map(convertMetingSong);
 		onLoadEnd();
 	} catch (e) {

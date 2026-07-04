@@ -5,11 +5,12 @@ import Pio from "@components/features/pio/Pio.svelte"; // 使用 Svelte 版本�
 import { PageProgressBar } from "@components/control/PageProgressBar";
 import { pioConfig, profileConfig, siteConfig } from "@/config";
 
-const BANNER_HEIGHT = 35;
-const BANNER_HEIGHT_EXTEND = 30;
-const BANNER_HEIGHT_HOME = BANNER_HEIGHT + BANNER_HEIGHT_EXTEND;
-
-import { PAGE_WIDTH } from "../constants/constants";
+import {
+	BANNER_HEIGHT,
+	BANNER_HEIGHT_EXTEND,
+	BANNER_HEIGHT_HOME,
+	PAGE_WIDTH,
+} from "../constants/constants";
 import { pathsEqual, url } from "../utils/url-utils";
 import "../styles/main.css";
 import "../styles/mobile-navbar.css";

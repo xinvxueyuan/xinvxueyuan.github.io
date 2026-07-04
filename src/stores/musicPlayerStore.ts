@@ -1,5 +1,6 @@
 import Key from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
+import { fetchMetingApi } from "../utils/meting-api";
 
 import {
 	DEFAULT_SONG,
@@ -272,26 +273,13 @@ class MusicPlayerStore {
 		type: string,
 		id: string,
 	): Promise<void> {
-		if (!api || !id) {
-			return;
-		}
+		if (!api || !id) return;
 
 		this.state.isLoading = true;
 		this.broadcastState();
 
-		const apiUrl = api
-			.replace(":server", server)
-			.replace(":type", type)
-			.replace(":id", id)
-			.replace(":auth", "")
-			.replace(":r", Date.now().toString());
-
 		try {
-			const res = await fetch(apiUrl);
-			if (!res.ok) {
-				throw new Error("meting api error");
-			}
-			const list: any[] = await res.json();
+			const list: any[] = await fetchMetingApi({ api, server, type, id });
 			this.state.playlist = list.map((song) =>
 				this.convertMetingSong(song),
 			);
