@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from "../../config";
+import { fetchImageUrls } from "../../utils/image-api";
 import type { FullscreenWallpaperConfig } from "../../types/config";
 
 interface Props {
@@ -13,17 +14,11 @@ const { config, className } = Astro.props;
 const getImageSources = async () => {
 	const srcConfig = config.src;
 
-	// API 图片逻辑
-	if (siteConfig.banner.imageApi?.enable && siteConfig.banner.imageApi?.url) {
-		try {
-			const response = await fetch(siteConfig.banner.imageApi.url);
-			const text = await response.text();
-			const apiImages = text.split("\n").filter((line) => line.trim());
-			if (apiImages.length > 0) {
-				return { desktop: apiImages, mobile: apiImages };
-			}
-		} catch (error) {
-			console.warn("Failed to fetch images from API:", error);
+	// API 图片逻辑（含 alcy-api 备选）
+	if (siteConfig.banner.imageApi?.enable) {
+		const apiImages = await fetchImageUrls(siteConfig.banner.imageApi);
+		if (apiImages.length > 0) {
+			return { desktop: apiImages, mobile: apiImages };
 		}
 	}
 

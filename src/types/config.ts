@@ -159,6 +159,8 @@ export interface SiteConfig {
 		imageApi?: {
 			enable: boolean; // 是否启用图片API
 			url: string; // API地址，返回每行一个图片链接的文本
+			fallbackUrl?: string; // 备选API地址（alcy-api JSON端点）
+			fallbackCategory?: string; // 备选API分类（默认 "pc"）
 		};
 		homeText?: {
 			enable: boolean; // 是否在首页显示自定义文字

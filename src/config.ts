@@ -155,10 +155,12 @@ export const siteConfig: SiteConfig = {
 			mobileDisable: false, // 移动端禁用
 		},
 
-		// PicFlow API支持(智能图片API)
+		// PicFlow API支持(智能图片API) + alcy-api 备选
 		imageApi: {
 			enable: false, // 启用图片API
 			url: "http://domain.com/api_v2.php?format=text&count=4", // API地址，返回每行一个图片链接的文本
+			fallbackUrl: "https://your-alcy-api.domain", // alcy-api 备选地址
+			fallbackCategory: "pc", // 备选图片分类
 		},
 		// 这里需要使用PicFlow API的Text返回类型,所以我们需要format=text参数
 		// 项目地址:https://github.com/matsuzaka-yuki/PicFlow-API

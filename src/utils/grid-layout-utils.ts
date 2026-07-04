@@ -3,6 +3,7 @@
  * 提供 MainGridLayout 使用的服务端布局计算逻辑
  */
 import type { SiteConfig } from "../types/config";
+import { fetchImageUrls } from "./image-api";
 import type { widgetManager } from "./widget-manager";
 
 /**
@@ -202,18 +203,12 @@ export async function getBannerImages(
 ): Promise<BannerImages> {
 	let bannerSrc = siteConfig.banner.src;
 
-	// 如果启用了图片API，获取API图片
-	if (siteConfig.banner.imageApi?.enable && siteConfig.banner.imageApi?.url) {
-		try {
-			const response = await fetch(siteConfig.banner.imageApi.url);
-			const text = await response.text();
-			const apiImages = text.split("\n").filter((line) => line.trim());
+	// 如果启用了图片API，获取API图片（含 alcy-api 备选）
+	if (siteConfig.banner.imageApi?.enable) {
+		const apiImages = await fetchImageUrls(siteConfig.banner.imageApi);
 
-			if (apiImages.length > 0) {
-				bannerSrc = apiImages;
-			}
-		} catch (error) {
-			console.warn("Failed to fetch images from API:", error);
+		if (apiImages.length > 0) {
+			bannerSrc = apiImages;
 		}
 	}
 
