@@ -1,3 +1,4 @@
+import astroLlmsTxt from "@4hse/astro-llms-txt";
 import sitemap from "@astrojs/sitemap";
 import svelte, { vitePreprocess } from "@astrojs/svelte";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
@@ -117,6 +118,46 @@ export default defineConfig({
 			preprocess: vitePreprocess(),
 		}),
 		sitemap(),
+	astroLlmsTxt({
+		title: "xinvStar（新v学员の技术小站）",
+		description:
+			"Personal tech blog by xinvStar (新v学员), covering frontend, backend, DevOps, AI, and systems programming. Written primarily in Chinese. Built with Astro v6 + Svelte 5.",
+		details:
+			"Blog source: https://github.com/xinvxueyuan/xinvxueyuan.github.io\nAuthor GitHub: https://github.com/xinvxueyuan\nLicense: CC BY-NC-SA 4.0",
+		docSet: [
+			{
+				title: "Blog Posts (Full)",
+				description: "Complete content of all blog posts",
+				url: "/llms-full.txt",
+				include: ["posts/202?-*/**"],
+				ignoreSelectors: [
+					"nav",
+					"footer",
+					".toc",
+					".category-bar",
+					"script",
+					"style",
+					"[data-pagefind-ignore]",
+				],
+			},
+			{
+				title: "Blog Posts (Structure)",
+				description: "Structure-only view of blog posts",
+				url: "/llms-small.txt",
+				include: ["posts/202?-*/**"],
+				onlyStructure: true,
+				ignoreSelectors: [
+					"nav",
+					"footer",
+					".toc",
+					".category-bar",
+					"script",
+					"style",
+				],
+			},
+		],
+		pageSeparator: "\n\n---\n\n",
+	}),
 	],
 	markdown: {
 		remarkPlugins: [
