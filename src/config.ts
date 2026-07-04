@@ -155,16 +155,18 @@ export const siteConfig: SiteConfig = {
 			mobileDisable: false, // 移动端禁用
 		},
 
-		// PicFlow API支持(智能图片API) + alcy-api 备选
+		// PicFlow API支持(智能图片API) + t.alcy.cc 内置代理备选
 		imageApi: {
 			enable: false, // 启用图片API
-			url: "http://domain.com/api_v2.php?format=text&count=4", // API地址，返回每行一个图片链接的文本
-			fallbackUrl: "https://your-alcy-api.domain", // alcy-api 备选地址
-			fallbackCategory: "pc", // 备选图片分类
+			url: "https://t.alcy.cc/json?pc=4", // 主源：t.alcy.cc 直接获取（支持 text/JSON 自动识别）
+			fallbackUrl: "", // 备选API（留空则跳过，直接使用内置代理）
+			fallbackCategory: "pc",
+			builtinProxy: true, // 内置 t.alcy.cc 代理作为最终备选
+			builtinCategory: "moe", // 内置代理使用不同分类，与主源区分
+			builtinCount: 4,
 		},
-		// 这里需要使用PicFlow API的Text返回类型,所以我们需要format=text参数
-		// 项目地址:https://github.com/matsuzaka-yuki/PicFlow-API
-		// 请自行搭建API
+		// PicFlow API: https://github.com/matsuzaka-yuki/PicFlow-API
+		// 也可使用 t.alcy.cc 内置代理作为备选
 
 		homeText: {
 			enable: true, // 在主页显示自定义文本
