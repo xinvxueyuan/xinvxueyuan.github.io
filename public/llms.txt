@@ -1,0 +1,59 @@
+# xinvStar（新v学员の技术小站）
+
+> Personal tech blog by xinvStar (新v学员), covering frontend, backend, DevOps, AI, and systems programming. Written primarily in Chinese. Built with Astro v6 + Svelte 5, deployed at xinvstar.xyz.
+
+Blog source: https://github.com/xinvxueyuan/xinvxueyuan.github.io
+Author GitHub: https://github.com/xinvxueyuan
+License: CC BY-NC-SA 4.0
+
+## Frontend
+
+- [深入理解 JavaScript 事件循环：从宏任务到微任务](https://xinvstar.xyz/posts/2025-09-21-深入理解-JavaScript-事件循环：从宏任务到微任务/): JavaScript event loop, macrotasks vs microtasks
+- [TypeScript 高级类型体操：你真的会用泛型吗？](https://xinvstar.xyz/posts/2025-10-12-TypeScript-高级类型体操：你真的会用泛型吗？/): Advanced TypeScript generics and type patterns
+- [CSS Grid 完全指南：告别 Flexbox 局限](https://xinvstar.xyz/posts/2025-11-23-CSS-Grid-完全指南：告别-Flexbox-局限/): Comprehensive CSS Grid guide
+- [Tailwind CSS 实战技巧：构建现代化 UI 的 20 个模式](https://xinvstar.xyz/posts/2025-11-30-Tailwind-CSS-实战技巧：构建现代化-UI-的-20-个模式/): 20 UI patterns with Tailwind CSS
+- [Svelte 5 Runes 深入解析：新一代响应式原语](https://xinvstar.xyz/posts/2025-12-28-Svelte-5-Runes-深入解析：新一代响应式原语/): Svelte 5 Runes reactive primitives deep dive
+- [Webpack 到 Vite：前端构建工具演进之路](https://xinvstar.xyz/posts/2026-01-04-Webpack-到-Vite-前端构建工具演进之路/): Frontend build tool evolution from Webpack to Vite
+- [深入 React Server Components：新一代 React 架构](https://xinvstar.xyz/posts/2026-02-01-React-Server-Components-新一代架构/): React Server Components architectural deep dive
+- [现代 CSS 动画完全指南：从 Transition 到 Web Animations API](https://xinvstar.xyz/posts/2026-02-15-现代CSS动画完全指南/): Modern CSS animation techniques
+- [JavaScript 模块化演进史：IIFE 到 ES Modules](https://xinvstar.xyz/posts/2026-02-22-JavaScript模块化演进史/): JavaScript module system evolution
+- [Web 性能优化全景指南：从 Core Web Vitals 到实战](https://xinvstar.xyz/posts/2026-03-08-Web性能优化全景指南/): Web performance optimization and Core Web Vitals
+- [Next.js 14 App Router 完全指南](https://xinvstar.xyz/posts/2026-03-29-Next.js-14-App-Router完全指南/): Complete guide to Next.js 14 App Router
+- [构建一个完整的 React 状态管理方案：从 Context 到 Zustand](https://xinvstar.xyz/posts/2025-11-02-构建一个完整的-React-状态管理方案：从-Context-到-Zustand/): React state management from Context to Zustand
+
+## Backend & Systems
+
+- [Rust 所有权系统详解：从入门到实践](https://xinvstar.xyz/posts/2025-09-28-Rust-所有权系统详解：从入门到实践/): Rust ownership system from zero to practice
+- [Python 异步编程完全指南：async/await 深入剖析](https://xinvstar.xyz/posts/2025-10-27-Python-异步编程完全指南：async-await-深入剖析/): Python async/await deep dive
+- [Go 语言并发编程：goroutine 和 channel 深度解析](https://xinvstar.xyz/posts/2025-11-16-Go-语言并发编程：goroutine-和-channel-深度解析/): Go concurrency — goroutines and channels
+- [深入 Node.js Stream 流：处理大数据的利器](https://xinvstar.xyz/posts/2025-12-14-深入-Node.js--Stream-流：处理大数据的利器/): Node.js Streams for big data processing
+- [设计模式实战：在 Node.js 中应用经典模式](https://xinvstar.xyz/posts/2026-02-08-设计模式实战-Node.js/): Classic design patterns in Node.js
+- [GraphQL vs REST：现代 API 设计的选择](https://xinvstar.xyz/posts/2026-01-25-GraphQL-vs-REST-现代API设计的选择/): GraphQL vs REST API design comparison
+
+## Databases & Storage
+
+- [PostgreSQL 性能优化实战：索引、查询与配置调优](https://xinvstar.xyz/posts/2025-12-21-PostgreSQL-性能优化实战：索引、查询与配置调优/): PostgreSQL performance optimization
+- [Redis 深度实战：缓存、队列与分布式锁](https://xinvstar.xyz/posts/2026-01-11-Redis-深度实战：缓存、队列与分布式锁/): Redis caching, queues, and distributed locks
+- [MongoDB 最佳实践：Schema 设计、索引与聚合管道](https://xinvstar.xyz/posts/2026-03-15-MongoDB最佳实践-Schema设计/): MongoDB schema design, indexing, and aggregation
+
+## DevOps & Infrastructure
+
+- [Docker 容器化最佳实践：从开发到生产](https://xinvstar.xyz/posts/2025-10-05-Docker-容器化最佳实践：从开发到生产/): Docker containerization best practices
+- [Linux 服务器安全加固指南：15 个必做配置](https://xinvstar.xyz/posts/2025-10-20-Linux-服务器安全加固指南：15-个必做配置/): Linux server security hardening
+- [Nginx 反向代理与负载均衡实战](https://xinvstar.xyz/posts/2025-11-09-Nginx-反向代理与负载均衡实战/): Nginx reverse proxy and load balancing
+- [Git 工作流最佳实践：从 Feature Branch 到 GitFlow](https://xinvstar.xyz/posts/2025-12-07-Git-工作流最佳实践：从-Feature-Branch-到-GitFlow/): Git workflow best practices
+- [Kubernetes 入门到实战：部署你的第一个微服务](https://xinvstar.xyz/posts/2026-01-18-Kubernetes-入门到实战-部署你的第一个微服务/): Kubernetes from zero to deploying microservices
+- [CI/CD 实战：GitHub Actions 自动化工作流](https://xinvstar.xyz/posts/2026-03-22-CICD实战-GitHub-Actions/): CI/CD with GitHub Actions
+
+## AI & LLM
+
+- [LLM 应用开发实战：用 LangChain 构建 AI 助手](https://xinvstar.xyz/posts/2026-03-01-LLM应用开发实战-LangChain/): Building AI assistants with LangChain
+- [深度源码解析：Claude Code 隐藏的反向代理检测与隐写标记机制](https://xinvstar.xyz/posts/2026-07-04-Claude-Code-隐写标记-源码解析/): Reverse engineering Claude Code's steganographic watermarking
+
+## Optional
+
+- [Markdown 教程](https://xinvstar.xyz/posts/markdown-tutorial/): Blog Markdown features demo
+- [Markdown 扩展功能](https://xinvstar.xyz/posts/markdown-extended/): Extended Markdown features in xinStar
+- [Markdown Mermaid 图表](https://xinvstar.xyz/posts/markdown-mermaid/): Mermaid diagram examples
+- [在帖子中包含视频](https://xinvstar.xyz/posts/video/): Embedded video demo
+- [加密文章](https://xinvstar.xyz/posts/encrypted-post/): Password-protected post demo
