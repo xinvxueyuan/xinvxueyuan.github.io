@@ -113,7 +113,16 @@ const tabletStickyComponents = widgetManager.getComponentsByPosition(
 						let hasComponents = false;
 						let showConfig = false;
 
-						if (width < breakpoints.mobile) {
+						// Priority 1: browser UA declaration
+						const uaLower = navigator.userAgent.toLowerCase();
+						const isMobileByUA = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(uaLower);
+						const isTabletByUA = /ipad|android(?!.*mobile)|tablet/i.test(uaLower);
+
+						if (isTabletByUA) {
+							deviceType = "tablet";
+						} else if (isMobileByUA) {
+							deviceType = "mobile";
+						} else if (width < breakpoints.mobile) {
 							deviceType = "mobile";
 							hasComponents = hasMobileComponents;
 							showConfig = mobileShowSidebar;
@@ -143,7 +152,16 @@ const tabletStickyComponents = widgetManager.getComponentsByPosition(
 			let hasComponents = false;
 			let showConfig = false;
 
-			if (width < breakpoints.mobile) {
+			// Priority 1: browser UA declaration
+			const uaLower = navigator.userAgent.toLowerCase();
+			const isMobileByUA = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(uaLower);
+			const isTabletByUA = /ipad|android(?!.*mobile)|tablet/i.test(uaLower);
+
+			if (isTabletByUA) {
+				deviceType = "tablet";
+			} else if (isMobileByUA) {
+				deviceType = "mobile";
+			} else if (width < breakpoints.mobile) {
 				deviceType = "mobile";
 				hasComponents = hasMobileComponents;
 				showConfig = mobileShowSidebar;

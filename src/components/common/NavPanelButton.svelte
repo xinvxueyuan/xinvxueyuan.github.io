@@ -7,7 +7,6 @@
 		btnId?: string;
 		ariaLabel?: string;
 		class?: string;
-		onclose?: (panel: HTMLElement) => void;
 	}
 
 	let {
@@ -16,21 +15,18 @@
 		btnId = "",
 		ariaLabel = "",
 		class: className = "",
-		onclose = undefined,
 	}: Props = $props();
 
+	let isOpen = $state(false);
+
 	function handleToggleBtnClick() {
-		const panel = document.getElementById(panelId);
-		if (!panel) return;
-		panel.classList.toggle("float-panel-closed");
+		isOpen = !isOpen;
 	}
 
 	function handlePanelClick(e: MouseEvent) {
-		if (!onclose) return;
 		const target = (e.target as HTMLElement).closest("[data-close-panel]");
 		if (!target) return;
-		const panel = document.getElementById(panelId);
-		if (panel) onclose(panel);
+		isOpen = false;
 	}
 </script>
 
@@ -47,7 +43,7 @@
 
 	<div
 		id={panelId}
-		class="absolute transition float-panel-closed top-11 -right-2 pt-5"
+		class="absolute transition {isOpen ? '' : 'float-panel-closed'} top-11 -right-2 pt-5"
 	>
 		<div class="card-base float-panel p-2" onclick={handlePanelClick}>
 			<slot />

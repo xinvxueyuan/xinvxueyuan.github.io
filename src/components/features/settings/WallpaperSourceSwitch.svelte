@@ -38,10 +38,6 @@
 			new CustomEvent("wallpaper-refetch", { detail: { source: sourceId } }),
 		);
 	}
-
-	function closePanel(panel: HTMLElement) {
-		panel.classList.add("float-panel-closed");
-	}
 </script>
 
 <NavPanelButton
@@ -49,7 +45,6 @@
 	panelId="wallpaper-source-panel"
 	btnId="wallpaper-source-switch"
 	ariaLabel="Wallpaper Source"
-	onclose={closePanel}
 >
 	<!-- Panel title -->
 	<div class="px-3 py-2 text-sm font-bold text-neutral-500 dark:text-neutral-400 border-b border-neutral-200 dark:border-neutral-700 mb-1">

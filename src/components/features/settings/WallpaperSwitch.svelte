@@ -53,10 +53,6 @@
 		mode = newMode;
 		setWallpaperMode(newMode);
 	}
-
-	function closePanel(panel: HTMLElement) {
-		panel.classList.add("float-panel-closed");
-	}
 </script>
 
 <NavPanelButton
@@ -64,7 +60,6 @@
 	panelId="wallpaper-mode-panel"
 	btnId="wallpaper-mode-switch"
 	ariaLabel="Wallpaper Mode"
-	onclose={closePanel}
 >
 	{#each wallpaperOptions as option}
 		<button

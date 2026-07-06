@@ -69,6 +69,7 @@ export function buildComponentProps(
 
 /**
  * 获取设备类型
+ * 优先级：浏览器标识声明 > 设备屏幕尺寸
  * @param width 窗口宽度
  * @param breakpoints 断点配置
  * @returns 设备类型
@@ -77,6 +78,16 @@ export function getDeviceType(
 	width: number,
 	breakpoints: { mobile: number; tablet: number },
 ): "mobile" | "tablet" | "desktop" {
+	// Priority 1: browser UA declaration
+	const ua = navigator.userAgent;
+	const uaLower = ua.toLowerCase();
+	const isMobileByUA = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(uaLower);
+	const isTabletByUA = /ipad|android(?!.*mobile)|tablet/i.test(uaLower);
+
+	if (isTabletByUA) return "tablet";
+	if (isMobileByUA) return "mobile";
+
+	// Priority 2: screen size fallback
 	if (width < breakpoints.mobile) {
 		return "mobile";
 	}
