@@ -166,3 +166,31 @@ export function setWallpaperMode(mode: WALLPAPER_MODE): void {
 		new CustomEvent("wallpaper-mode-change", { detail: { mode } }),
 	);
 }
+
+// ---- Wallpaper source switching ----
+
+/**
+ * Get the user's preferred wallpaper API source from localStorage.
+ * Falls back to the first available source in config, or 't-alcy-cc'.
+ */
+export function getStoredWallpaperSource(): string {
+	const saved = localStorage.getItem("wallpaperSource");
+	if (saved) return saved;
+
+	const sources = siteConfig.wallpaperMode?.availableSources;
+	if (sources && sources.length > 0) {
+		return sources[0].id;
+	}
+	return "t-alcy-cc";
+}
+
+/**
+ * Set the user's preferred wallpaper API source.
+ * Persists to localStorage and dispatches a custom event.
+ */
+export function setWallpaperSource(sourceId: string): void {
+	localStorage.setItem("wallpaperSource", sourceId);
+	window.dispatchEvent(
+		new CustomEvent("wallpaper-source-change", { detail: { source: sourceId } }),
+	);
+}

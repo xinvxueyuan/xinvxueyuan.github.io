@@ -278,6 +278,7 @@ enum I18nKey {
 	wallpaperBanner = "wallpaperBanner",
 	wallpaperFullscreen = "wallpaperFullscreen",
 	wallpaperNone = "wallpaperNone",
+	wallpaperSource = "wallpaperSource",
 
 	// 站点统计
 	siteStats = "siteStats",

@@ -6,6 +6,22 @@ import type {
 	WALLPAPER_NONE,
 } from "../constants/constants";
 
+/** A single wallpaper API source definition */
+export interface WallpaperSource {
+	/** Unique identifier (e.g. 't-alcy-cc', 'bing', 'custom') */
+	id: string;
+	/** Display label in Chinese */
+	label: string;
+	/** Display label in English */
+	labelEn?: string;
+	/** Iconify icon name for the source */
+	icon: string;
+	/** Source type */
+	type: "t-alcy-cc" | "bing" | "default";
+	/** Type-specific params */
+	params?: Record<string, string | number | boolean>;
+}
+
 export interface SiteConfig {
 	title: string;
 	subtitle: string;
@@ -136,6 +152,8 @@ export interface SiteConfig {
 	wallpaperMode: {
 		defaultMode: "banner" | "fullscreen" | "none"; // 默认壁纸模式：banner=顶部横幅，fullscreen=全屏壁纸，none=无壁纸
 		showModeSwitchOnMobile?: "off" | "mobile" | "desktop" | "both"; // 整体布局方案切换按钮显示设置：off=隐藏，mobile=仅移动端，desktop=仅桌面端，both=全部显示
+		/** Available wallpaper API sources for the user to choose from */
+		availableSources?: WallpaperSource[];
 	};
 
 	banner: {

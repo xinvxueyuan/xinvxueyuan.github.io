@@ -1,5 +1,16 @@
 ---
 import { expressiveCodeConfig, siteConfig } from "@/config";
+
+// Build a JSON-serializable version of wallpaper sources for client
+const wallpaperSources = (siteConfig.wallpaperMode?.availableSources || []).map(
+	(s) => ({
+		id: s.id,
+		label: s.label,
+		labelEn: s.labelEn,
+		icon: s.icon,
+		type: s.type,
+	}),
+);
 ---
 
 <!-- 全局配置载体 -->
@@ -18,6 +29,7 @@ import { expressiveCodeConfig, siteConfig } from "@/config";
 		tocEnable: siteConfig.toc.enable,
 		tocDepth: siteConfig.toc.depth,
 		tocUseJapaneseBadge: siteConfig.toc.useJapaneseBadge,
+		availableSources: wallpaperSources,
 	}}
 >
 	// 将 TOC 配置传递到前端
@@ -28,6 +40,11 @@ import { expressiveCodeConfig, siteConfig } from "@/config";
 		useJapaneseBadge: tocUseJapaneseBadge,
 	};
 
+	// 传递壁纸来源列表到前端
+	window.siteConfig.wallpaperMode = window.siteConfig.wallpaperMode || {};
+	window.siteConfig.wallpaperMode.availableSources = availableSources;
+
 	// 添加调试信息
 	console.log("TOC Config:", window.siteConfig.toc);
+	console.log("Wallpaper Sources:", availableSources.length, "available");
 </script>

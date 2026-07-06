@@ -119,6 +119,32 @@ export const siteConfig: SiteConfig = {
 		// "desktop" = 仅在桌面端显示
 		// "both" = 在所有设备上显示
 		showModeSwitchOnMobile: "desktop",
+		// 可用壁纸 API 来源列表，访客可在 UI 中自由切换
+		availableSources: [
+			{
+				id: "default",
+				label: "默认壁纸",
+				labelEn: "Default",
+				icon: "material-symbols:wallpaper",
+				type: "default",
+			},
+			{
+				id: "t-alcy-cc",
+				label: "随机图",
+				labelEn: "Random",
+				icon: "material-symbols:photo-library",
+				type: "t-alcy-cc",
+				params: { category: "pc", count: 4 },
+			},
+			{
+				id: "bing",
+				label: "每日一图",
+				labelEn: "Bing Daily",
+				icon: "material-symbols:image",
+				type: "bing",
+				params: { region: "zh-CN", count: 1, resolution: "hd" },
+			},
+		],
 	},
 
 	banner: {

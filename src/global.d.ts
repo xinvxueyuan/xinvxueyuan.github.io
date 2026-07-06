@@ -44,6 +44,12 @@ declare global {
 		toc?: SiteConfigTOC;
 		wallpaperMode?: {
 			defaultMode?: "banner" | "fullscreen" | "none";
+			availableSources?: Array<{
+				id: string;
+				label: string;
+				type: string;
+				icon: string;
+			}>;
 		};
 	}
 

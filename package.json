@@ -6,7 +6,7 @@
 		"sync-content": "node scripts/sync-content.js",
 		"init-content": "node scripts/init-content-repo.js",
 		"predev": "node scripts/sync-content.js || true",
-		"prebuild": "node scripts/sync-content.js || true",
+		"prebuild": "node scripts/sync-content.js || true && node scripts/fetch-wallpapers.js",
 		"dev": "astro dev",
 		"start": "astro dev",
 		"check": "astro check",
