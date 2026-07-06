@@ -47,6 +47,12 @@ importers:
       '@swup/astro':
         specifier: ^1.8.0
         version: 1.8.0
+      '@swup/preload-plugin':
+        specifier: ^3.2.11
+        version: 3.2.11(swup@4.9.2)
+      '@swup/progress-plugin':
+        specifier: ^3.2.0
+        version: 3.2.0(swup@4.9.2)
       '@tailwindcss/typography':
         specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.2)

@@ -233,3 +233,58 @@ html.is-animating .transition-swup-fade {
     will-change: auto !important;
   }
 }
+
+/* ========================================
+   SPA+ 增强样式
+   ======================================== */
+
+/* Swup Progress Bar — 导航进度条 */
+.swup-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(
+    90deg,
+    oklch(0.6 0.2 var(--hue, 210)),
+    oklch(0.75 0.18 calc(var(--hue, 210) + 30)),
+    oklch(0.5 0.22 calc(var(--hue, 210) + 60))
+  );
+  background-size: 200% 100%;
+  animation: progress-bar-shimmer 1.5s ease-in-out infinite;
+  z-index: 99999;
+  transition: width 0.3s ease-out, opacity 0.3s ease-out;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px oklch(0.6 0.18 var(--hue, 210) / 0.5);
+  will-change: width;
+}
+
+@keyframes progress-bar-shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* 暗色模式下的进度条 */
+.dark .swup-progress-bar {
+  box-shadow: 0 0 12px oklch(0.7 0.18 var(--hue, 210) / 0.6);
+}
+
+/* 即时导航 — 已缓存页面跳过动画，瞬时呈现 */
+html.swup-cached .transition-main {
+  transition-duration: 0.01ms !important;
+  animation-duration: 0.01ms !important;
+  opacity: 1;
+  transform: none;
+}
+
+/* 页面加载完成后的内容渐入 — 防止 FOUC */
+html.is-changing .transition-main {
+  transition:
+    opacity var(--transition-duration) var(--transition-easing),
+    transform var(--transition-duration) var(--transition-easing);
+}

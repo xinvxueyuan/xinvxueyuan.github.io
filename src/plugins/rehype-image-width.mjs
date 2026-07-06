@@ -7,10 +7,15 @@ export function rehypeImageWidth() {
 		visit(tree, "element", (node, index, parent) => {
 			if (
 				node.tagName === "img" &&
-				node.properties &&
-				node.properties.alt
+				node.properties
 			) {
+				// 全异步：给所有文章内图片添加懒加载 + 异步解码
+				node.properties.loading = node.properties.loading || "lazy";
+				node.properties.decoding = node.properties.decoding || "async";
+
 				const alt = node.properties.alt;
+				if (!alt) return;
+
 				const match = alt.match(regex);
 
 				if (match) {
