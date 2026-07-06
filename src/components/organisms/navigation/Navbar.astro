@@ -113,15 +113,10 @@ const iconWebpSrc = hasIconPngFallback ? iconSrc.replace(/\.png$/i, ".webp") : i
             ]}>
                 <WallpaperSwitch client:only="svelte"></WallpaperSwitch>
             </div>
-            {/* 壁纸来源切换按钮：仅当配置了多个来源时显示 */}
+            {/* 壁纸来源切换按钮：仅桌面端显示，移动端隐藏 */}
             {siteConfig.wallpaperMode?.availableSources &&
                 siteConfig.wallpaperMode.availableSources.length > 1 && (
-                <div class:list={[
-                    modeSwitchDisplay === "off" ? "hidden" :
-                    modeSwitchDisplay === "mobile" ? "block md:hidden" :
-                    modeSwitchDisplay === "desktop" ? "hidden md:block" :
-                    modeSwitchDisplay === "both" ? "block" : "hidden md:block"
-                ]}>
+                <div class="hidden md:block">
                     <WallpaperSourceSwitch client:only="svelte"></WallpaperSourceSwitch>
                 </div>
             )}

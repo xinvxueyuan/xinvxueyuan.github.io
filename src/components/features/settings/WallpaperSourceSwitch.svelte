@@ -14,13 +14,13 @@
 		type: string;
 	}
 
-	let sources: SourceOption[] = [];
+	let sources = $state<SourceOption[]>([]);
 	let currentSourceId = $state("t-alcy-cc");
 
 	onMount(() => {
 		// Read available sources from window.siteConfig
 		const winSources = (window as any).siteConfig?.wallpaperMode?.availableSources;
-		if (winSources && winSources.length > 0) {
+		if (sources.length === 0 && winSources && winSources.length > 0) {
 			sources = winSources;
 		}
 		currentSourceId = getStoredWallpaperSource();
@@ -38,6 +38,9 @@
 		window.dispatchEvent(
 			new CustomEvent("wallpaper-refetch", { detail: { source: sourceId } }),
 		);
+		// Close the panel
+		const panel = document.getElementById("wallpaper-source-panel");
+		if (panel) panel.classList.add("float-panel-closed");
 	}
 
 	async function togglePanel() {
