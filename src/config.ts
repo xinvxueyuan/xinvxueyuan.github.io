@@ -396,6 +396,12 @@ export const navBarConfig: NavBarConfig = {
 					url: "/timeline/",
 					icon: "material-symbols:timeline",
 				},
+				{
+					name: "异次元之旅",
+					url: "https://travel.moe/go.html",
+					icon: "material-symbols:explore",
+					external: true,
+				},
 			],
 		},
 	],
