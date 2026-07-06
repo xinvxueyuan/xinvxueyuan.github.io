@@ -219,6 +219,7 @@ export const ja: Translation = {
 	[Key.wallpaperBanner]: "バナーモード",
 	[Key.wallpaperFullscreen]: "フルスクリーンモード",
 	[Key.wallpaperNone]: "壁紙を非表示",
+	[Key.wallpaperSource]: "壁紙ソース",
 
 	// スキルページ
 	[Key.skills]: "スキル",
