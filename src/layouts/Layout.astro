@@ -188,6 +188,51 @@ if (siteConfig.font) {
 			}}
 		></style>
 
+				<!-- Google Fonts 预连接 + 动态加载（非阻塞） -->
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+				<script is:inline>
+					(function() {
+						var tier = 'high';
+						try {
+							// 客户端设备能力检测
+							var nav = navigator;
+							var conn = nav.connection;
+							var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+							var saveData = conn && conn.saveData === true;
+							var lowMemory = nav.deviceMemory && nav.deviceMemory < 2;
+							var slowNetwork = conn && conn.effectiveType && ['slow-2g','2g','3g'].indexOf(conn.effectiveType) !== -1;
+							var lowCpu = nav.hardwareConcurrency && nav.hardwareConcurrency < 4;
+
+							if (reducedMotion || saveData || lowMemory) {
+								tier = 'low';
+							} else if (lowCpu || slowNetwork) {
+								tier = 'medium';
+							}
+
+							// 在 html 上标记设备等级，供 CSS 使用
+							document.documentElement.classList.add('device-tier-' + tier);
+						} catch(e) {}
+
+						var link = document.createElement('link');
+						link.rel = 'stylesheet';
+						if (tier === 'low') {
+							// 低端设备：只加载最简 ASCII 字体（Inter 400/600）
+							link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap';
+						} else if (tier === 'medium') {
+							// 中端设备：加载 Inter + Noto Sans SC 精简字重
+							link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+SC:wght@400;700&display=swap';
+						} else {
+							// 高端设备：完全加载
+							link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap';
+						}
+						link.media = 'print';
+						link.onload = function() { this.media = 'all'; };
+						link.onerror = function() { console.warn('Font loading failed'); };
+						document.head.appendChild(link);
+					})();
+				</script>
+
 		<!-- Pio 看板娘样式 - 非渲染阻塞加载 -->
 		{
 			pioConfig.enable && (

@@ -27,7 +27,9 @@
 }
 
 /* 导入 Google Fonts：Inter（英文）+ Noto Sans SC（中文） */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+/* 注意：字体加载移至 Layout.astro 中的 <link preconnect> + 动态加载 */
+/* 使用 font-display: swap 避免阻塞渲染 */
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap'); */
 
 /* 确保平滑滚动，并稳定滚动条宽度以避免布局左右抖动 */
 html {

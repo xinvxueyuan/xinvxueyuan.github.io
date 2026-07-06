@@ -88,16 +88,37 @@ const renderGroups = [
 	data-fullscreen-wallpaper
 >
 	<script is:inline>
-	// 立即执行脚本：防止闪烁
+	// 立即执行脚本：检测设备等级 + 防止闪烁
 	(function() {
+		const parent = document.currentScript.parentElement;
+		const html = document.documentElement;
+		const isLowTier = html.classList.contains('device-tier-low');
+		const isMediumTier = html.classList.contains('device-tier-medium');
+
+		// 低端设备：纯色背景，不加载任何图片/JSON
+		if (isLowTier) {
+			window.__deviceTier = 'low';
+			parent.style.display = 'none';
+			return;
+		}
+
 		const mode = localStorage.getItem('wallpaperMode') || 'banner';
 		if (mode !== 'fullscreen') {
-			document.currentScript.parentElement.style.display = 'none';
+			parent.style.display = 'none';
+			return;
+		}
+
+		// 中端设备：标记并禁用模糊效果
+		if (isMediumTier) {
+			const container = document.getElementById('wallpaper-single-container');
+			if (container) {container.style.filter = 'none';}
+			window.__deviceTier = 'medium';
 		}
 	})();
 	</script>
 
-	<div id="wallpaper-single-container" class="w-full h-full relative">
+	<!-- blur 移到父容器上避免轮播切换时因滤镜重算导致闪屏 -->
+	<div id="wallpaper-single-container" class="w-full h-full relative" style={`transform: translateZ(0); ${blurAmount > 0 ? `filter: blur(${blurAmount}px);` : ''} backface-visibility: hidden;`}>
 	{isCarouselEnabled ? (
 		renderGroups.map(group => group.hasImages && (
 			<div class={`${group.containerClass} w-full h-full relative`} style="transform: translateZ(0);">
@@ -107,7 +128,7 @@ const renderGroups = [
 						alt={`${group.key} wallpaper ${index + 1}`}
 						class={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${positionClass}`}
 						data-carousel-item={index}
-						style={`transform: translateZ(0); backface-visibility: hidden; will-change: opacity; ${blurAmount > 0 ? `filter: blur(${blurAmount}px);` : ''}; opacity: ${index === 0 ? 1 : 0};`}
+						style={`transform: translateZ(0); backface-visibility: hidden; will-change: opacity; opacity: ${index === 0 ? 1 : 0};`}
 						decoding="async"
 						loading={index === 0 ? "eager" : "lazy"}
 						fetchpriority={index === 0 ? "high" : undefined}
@@ -147,7 +168,7 @@ const renderGroups = [
 							src="${desktopSrc}"
 							alt="desktop wallpaper"
 							class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${positionClass}"
-							style="transform: translateZ(0); backface-visibility: hidden; will-change: opacity; ${blurAmount > 0 ? `filter: blur(${blurAmount}px);` : ''} opacity: 1;"
+							style="transform: translateZ(0); backface-visibility: hidden; will-change: opacity; opacity: 1;"
 							decoding="async"
 							loading="eager"
 							fetchpriority="high"
@@ -165,7 +186,7 @@ const renderGroups = [
 							src="${mobileSrc}"
 							alt="mobile wallpaper"
 							class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${positionClass}"
-							style="transform: translateZ(0); backface-visibility: hidden; will-change: opacity; ${blurAmount > 0 ? `filter: blur(${blurAmount}px);` : ''} opacity: 1;"
+							style="transform: translateZ(0); backface-visibility: hidden; will-change: opacity; opacity: 1;"
 							decoding="async"
 							loading="eager"
 							fetchpriority="high"
@@ -179,9 +200,40 @@ const renderGroups = [
 	</div>
 </div>
 
+<!-- 设备等级降级清理脚本 -->
+<script is:inline>
+(function() {
+	const tier = window.__deviceTier;
+	if (!tier) return;
+
+	// 低端设备：清除所有图片内容，设置纯色背景
+	if (tier === 'low') {
+		const parent = document.querySelector('[data-fullscreen-wallpaper]');
+		if (parent) {
+			parent.innerHTML = '';
+			parent.style.background = 'var(--page-bg)';
+			parent.style.display = 'block';
+		}
+		return;
+	}
+
+	// 中端设备：每组只保留第一张图片（禁用轮播）
+	if (tier === 'medium') {
+		// 处理 SSR 渲染的 carousel 图片
+		document.querySelectorAll('[data-carousel-item]').forEach((img, idx) => {
+			if (idx > 0) img.remove();
+		});
+		// 非轮播模式由随机脚本只生成一张图，无需额外处理
+	}
+})();
+</script>
+
 {isCarouselEnabled && (
 	<script is:inline define:vars={{ carouselInterval }}>
 		function initFullscreenWallpaperCarousel() {
+			// 中端/低端设备跳过轮播（低端已在 cleanup 中清空，中端只有单张图）
+			if (window.__deviceTier === 'medium' || window.__deviceTier === 'low') return;
+
 			const container = document.querySelector('[data-fullscreen-wallpaper]');
 			if (!container) {return;}
 
@@ -269,6 +321,9 @@ const renderGroups = [
 				stop();
 				document.removeEventListener('visibilitychange', handleVisibilityChange);
 			};
+
+			// 暴露给外部脚本（如 wallpaper source 切换）以便重新初始化轮播
+			window.__initWallpaperCarousel = initFullscreenWallpaperCarousel;
 		}
 
 		if (document.readyState === 'loading') {
@@ -283,6 +338,10 @@ const renderGroups = [
 <script is:inline define:vars={{ positionClass, blurAmount, zIndex, opacity }}>
 (function() {
 	'use strict';
+
+	// 低端/中端设备：跳过壁纸来源动态切换，不请求 JSON
+	const tier = window.__deviceTier;
+	if (tier === 'low' || tier === 'medium') return;
 
 	/**
 	 * Read wallpaper data from the pre-built static JSON.
@@ -314,6 +373,8 @@ const renderGroups = [
 
 	/**
 	 * Replace all wallpaper images with new URLs.
+	 * 支持多图轮播：当 urls.length > 1 时创建 carousel-item 并启动轮播
+	 * blur 由父容器 #wallpaper-single-container 统一处理，img 不再单独设置 filter
 	 */
 	function replaceWallpaperImages(urls) {
 		if (!urls || urls.length === 0) return;
@@ -321,32 +382,41 @@ const renderGroups = [
 		const container = document.getElementById('wallpaper-single-container');
 		if (!container) return;
 
-		const makeImg = (src, label) => {
+		const makeCarouselImg = (src, index, label) => {
 			const img = document.createElement('img');
 			img.src = src;
-			img.alt = label + ' wallpaper';
-			img.className = 'absolute inset-0 w-full h-full object-cover ' + positionClass;
-			img.style.cssText = 'transform: translateZ(0); backface-visibility: hidden; will-change: opacity;'
-				+ (blurAmount > 0 ? ' filter: blur(' + blurAmount + 'px);' : '') + ' opacity: 1;';
+			img.alt = label + ' wallpaper ' + (index + 1);
+			img.className = 'absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ' + positionClass;
+			img.style.cssText = 'transform: translateZ(0); backface-visibility: hidden; will-change: opacity; opacity: ' + (index === 0 ? 1 : 0) + ';';
+			img.setAttribute('data-carousel-item', index.toString());
 			img.decoding = 'async';
-			img.loading = 'eager';
-			img.fetchPriority = 'high';
+			img.loading = index === 0 ? 'eager' : 'lazy';
+			img.fetchPriority = index === 0 ? 'high' : 'auto';
 			return img;
 		};
 
 		const desktopDiv = document.createElement('div');
 		desktopDiv.className = 'hidden lg:block w-full h-full relative';
 		desktopDiv.style.transform = 'translateZ(0)';
-		desktopDiv.appendChild(makeImg(urls[0 % urls.length], 'desktop'));
+		urls.forEach((url, i) => {
+			desktopDiv.appendChild(makeCarouselImg(url, i, 'desktop'));
+		});
 
 		const mobileDiv = document.createElement('div');
 		mobileDiv.className = 'block lg:hidden w-full h-full relative';
 		mobileDiv.style.transform = 'translateZ(0)';
-		mobileDiv.appendChild(makeImg(urls[Math.min(urls.length - 1, 1)], 'mobile'));
+		urls.forEach((url, i) => {
+			mobileDiv.appendChild(makeCarouselImg(url, i, 'mobile'));
+		});
 
 		container.innerHTML = '';
 		container.appendChild(desktopDiv);
 		container.appendChild(mobileDiv);
+
+		// 重新初始化轮播以拾取新创建的 carousel-item
+		if (typeof window.__initWallpaperCarousel === 'function') {
+			window.__initWallpaperCarousel();
+		}
 	}
 
 	// On load: check if user has a non-default source

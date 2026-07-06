@@ -1,4 +1,6 @@
-/* 动画增强样式 - 参考 yukina 主题优化 */
+/* ===========================================
+   动画增强样式 — 已根据设备能力降级
+   =========================================== */
 
 /* 页面切换状态类 */
 html.is-leaving .transition-leaving {
@@ -196,6 +198,105 @@ html.is-entering .transition-main {
 .pagination-animate.animate {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ===========================================
+   低端设备：完全禁用所有过渡和动画
+   =========================================== */
+@media (prefers-reduced-motion: reduce), (max-width: 360px) {
+  .enhanced-fade-in,
+  .card-animate,
+  .post-content-animate,
+  .navbar-animate,
+  .footer-animate,
+  .sidebar-animate,
+  .search-animate,
+  .tag-animate,
+  .pagination-animate,
+  .image-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .button-enhance:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .animate-leave {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+}
+
+/* ===========================================
+   中端设备：保留动画但缩短时长
+   =========================================== */
+@media (max-width: 768px) {
+  .enhanced-fade-in,
+  .card-animate,
+  .post-content-animate {
+    transition-duration: 200ms !important;
+  }
+
+  .sidebar-animate {
+    transform: translateX(-1rem);
+    transition-duration: 200ms;
+  }
+
+  .card-animate {
+    transform: translateY(1rem) scale(0.98);
+    transition-duration: 250ms;
+  }
+
+  .button-enhance:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .onload-animation,
+  .transition-slide-in {
+    animation-duration: 200ms !important;
+  }
+}
+
+/* ===========================================
+   设备等级 CSS class 注入的降级
+   （由 device-capability.ts 的 getDeviceTierCssClass() 注入）
+   =========================================== */
+html.device-tier-low .enhanced-fade-in,
+html.device-tier-low .card-animate,
+html.device-tier-low .post-content-animate,
+html.device-tier-low .navbar-animate,
+html.device-tier-low .footer-animate,
+html.device-tier-low .sidebar-animate,
+html.device-tier-low .search-animate,
+html.device-tier-low .tag-animate,
+html.device-tier-low .pagination-animate,
+html.device-tier-low .image-animate {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+html.device-tier-low .button-enhance:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+html.device-tier-medium .enhanced-fade-in,
+html.device-tier-medium .card-animate,
+html.device-tier-medium .post-content-animate {
+  transition-duration: 200ms !important;
+}
+
+html.device-tier-medium .card-animate {
+  transform: translateY(1rem) scale(0.98);
+  transition-duration: 250ms;
 }
 
 /* 减少动画的媒体查询 */

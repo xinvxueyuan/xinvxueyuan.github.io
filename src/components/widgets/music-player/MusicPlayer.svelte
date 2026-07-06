@@ -5,6 +5,7 @@
 	import { fly } from "svelte/transition";
 
 	import { musicPlayerConfig } from "@/config";
+	import { isLowTier } from "@/utils/device-capability";
 	import type { MusicPlayerState } from "@/stores/musicPlayerStore";
 	import { musicPlayerStore } from "@/stores/musicPlayerStore";
 
@@ -178,6 +179,9 @@
 	}
 
 	onMount(() => {
+		if (isLowTier()) {
+			return; // 低端设备跳过初始化，组件保持为惰性占位符
+		}
 		unsubscribe = musicPlayerStore.subscribe((nextState) => {
 			state = nextState;
 		});

@@ -17,7 +17,7 @@
 		"update-anime": "node scripts/update-anime.mjs",
 		"update-bangumi": "node scripts/update-bangumi.mjs",
 		"update-bilibili": "node scripts/update-bilibili.mjs",
-		"build": "node scripts/update-anime.mjs && astro build && pagefind --site dist && node scripts/compress-fonts.js",
+		"build": "node scripts/update-anime.mjs && astro build && pagefind --site dist && node scripts/compress-fonts.js && node -e \"try { require('fs').rmSync('dist/pio', {recursive:true, force:true}); console.log('✓ Removed unused pio assets from build'); } catch(e) {}\"",
 		"submit": "node scripts/indexnow-submit.js",
 		"preview": "astro preview",
 		"astro": "astro",
