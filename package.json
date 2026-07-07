@@ -46,8 +46,6 @@
 		"@fontsource-variable/jetbrains-mono": "^5.2.8",
 		"@iconify/svelte": "^5.2.2",
 		"@swup/astro": "^1.8.0",
-		"@swup/preload-plugin": "^3.2.11",
-		"@swup/progress-plugin": "^3.2.0",
 		"@tailwindcss/typography": "^0.5.20",
 		"@tailwindcss/vite": "^4.3.2",
 		"astro": "^6.4.8",
@@ -59,7 +57,7 @@
 		"hastscript": "^9.0.1",
 		"katex": "^0.17.0",
 		"markdown-it": "^14.3.0",
-		"node-html-parser": "^8.0.4",
+		"node-html-parser": "^9.0.0",
 		"oddmisc": "^1.2.8",
 		"pagefind": "^1.5.2",
 		"qrcode": "^1.5.4",
@@ -110,7 +108,7 @@
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-svelte": "^4.1.1",
 		"svelte-eslint-parser": "^1.8.0",
-		"typescript-eslint": "^8.62.1"
+		"typescript-eslint": "^8.63.0"
 	},
 	"packageManager": "pnpm@10.22.0",
 	"pnpm": {
