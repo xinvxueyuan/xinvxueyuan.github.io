@@ -1,0 +1,99 @@
+---
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { ClawCaptcha } from "playcaptcha";
+import "playcaptcha/clawcaptcha.css";
+
+const pageTitle = "PlayCaptcha — 抓个娃娃证明你是人";
+const pageDescription = "用抓娃娃机验证你是人类。Drive the claw, grab the right toy, prove you're human.";
+---
+
+<MainGridLayout
+  title={pageTitle}
+  description={pageDescription}
+  banner={false}
+>
+  <main
+    slot="main"
+    id="swup-container"
+    class="transition-swup-article"
+  >
+    <article class="captcha-page">
+      <header class="captcha-header">
+        <h1>🕹️ PlayCaptcha</h1>
+        <p class="text-muted">
+          用抓娃娃机证明你是人类 —— 把爪子开到目标玩具上方，按 Grab，搬回出口放下。
+          抓对了验证通过，抓错了玩具回池子里重新抓。
+        </p>
+      </header>
+
+      <div class="captcha-wrapper">
+        <ClawCaptcha
+          client:only="react"
+          onVerify={() => {
+            document.getElementById("captcha-result")!.classList.remove("hidden");
+          }}
+        />
+      </div>
+
+      <div id="captcha-result" class="captcha-result hidden">
+        <div class="result-card">
+          <span class="result-icon">🎉</span>
+          <p>验证通过！你是人类！</p>
+        </div>
+      </div>
+    </article>
+  </main>
+</MainGridLayout>
+
+<style>
+  .captcha-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .captcha-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .captcha-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .captcha-header .text-muted {
+    color: var(--text-muted, #888);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .captcha-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .captcha-result {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .captcha-result.hidden {
+    display: none;
+  }
+
+  .result-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    background: var(--card-bg, #1a1a2e);
+    border: 2px solid #4ade80;
+    font-size: 1.125rem;
+  }
+
+  .result-icon {
+    font-size: 2rem;
+  }
+</style>

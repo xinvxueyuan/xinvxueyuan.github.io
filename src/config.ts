@@ -397,6 +397,11 @@ export const navBarConfig: NavBarConfig = {
 					icon: "material-symbols:timeline",
 				},
 				{
+					name: "PlayCaptcha",
+					url: "/captcha/",
+					icon: "material-symbols:stadia-controller",
+				},
+				{
 					name: "异次元之旅",
 					url: "https://travel.moe/go.html",
 					icon: "material-symbols:explore",
