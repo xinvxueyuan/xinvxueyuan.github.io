@@ -5,7 +5,7 @@ description: 这是一篇用于测试页面加密功能的文章
 encrypted: true
 pinned: true
 password: "123456"
-passwordHint: "123456"
+captchaTarget: "duck"
 alias: "encrypted-example"
 tags: ["Test", "Encryption"]
 category: "Technology"

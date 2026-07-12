@@ -290,9 +290,10 @@ const jsonLd = {
 			{
 				isEncrypted ? (
 					<Encryptor
-						password={entry.data.password}
-						hint={entry.data.passwordHint}
-					>
+					password={entry.data.password}
+					hint={entry.data.passwordHint}
+					captchaTarget={entry.data.captchaTarget}
+				>
 						<Markdown class="mb-6 markdown-content onload-animation">
 							<Content />
 						</Markdown>

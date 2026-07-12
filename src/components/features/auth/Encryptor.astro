@@ -11,9 +11,10 @@ import PasswordProtection from "./PasswordProtection.astro";
 export interface Props {
 	password: string | number;
 	hint?: string;
+	captchaTarget?: string;
 }
 
-const { password, hint = "" } = Astro.props;
+const { password, hint = "", captchaTarget = "" } = Astro.props;
 
 const htmlContent = await Astro.slots.render("default");
 
@@ -24,4 +25,9 @@ const encryptedContent = CryptoJS.AES.encrypt(
 ).toString();
 ---
 
-<PasswordProtection encryptedContent={encryptedContent} hint={hint} />
+<PasswordProtection
+	encryptedContent={encryptedContent}
+	hint={hint}
+	captchaTarget={captchaTarget}
+	secretPassword={captchaTarget ? String(password) : ""}
+/>
