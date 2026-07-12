@@ -1,6 +1,5 @@
 import astroLlmsTxt from "@4hse/astro-llms-txt";
 import sitemap from "@astrojs/sitemap";
-import react from "@astrojs/react";
 import svelte, { vitePreprocess } from "@astrojs/svelte";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
@@ -121,7 +120,6 @@ export default defineConfig({
 		svelte({
 			preprocess: vitePreprocess(),
 		}),
-		react(),
 		sitemap(),
 	astroLlmsTxt({
 		title: "xinvStar（新v学员の技术小站）",
