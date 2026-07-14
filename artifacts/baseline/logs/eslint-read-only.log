@@ -1,0 +1,21 @@
+$ pnpm exec eslint ./src
+
+
+Oops! Something went wrong! :(
+
+ESLint: 10.7.0
+
+file:///home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/eslint.config.js?mtime=1784029892987:2
+import astroParser from "astro-eslint-parser";
+       ^^^^^^^^^^^
+SyntaxError: The requested module 'astro-eslint-parser' does not provide an export named 'default'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:327:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:431:5)
+    at async node:internal/modules/esm/loader:643:26
+    at async dynamicImportConfig (/home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/node_modules/.pnpm/eslint@10.7.0_jiti@2.7.0/node_modules/eslint/lib/config/config-loader.js:185:17)
+    at async loadConfigFile (/home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/node_modules/.pnpm/eslint@10.7.0_jiti@2.7.0/node_modules/eslint/lib/config/config-loader.js:275:9)
+    at async ConfigLoader.calculateConfigArray (/home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/node_modules/.pnpm/eslint@10.7.0_jiti@2.7.0/node_modules/eslint/lib/config/config-loader.js:588:23)
+    at async #calculateConfigArray (/home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/node_modules/.pnpm/eslint@10.7.0_jiti@2.7.0/node_modules/eslint/lib/config/config-loader.js:369:19)
+    at async entryFilter (/home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/node_modules/.pnpm/eslint@10.7.0_jiti@2.7.0/node_modules/eslint/lib/eslint/eslint-helpers.js:324:5)
+    at async NodeHfs.<anonymous> (file:///home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/node_modules/.pnpm/@humanfs+core@0.19.2/node_modules/@humanfs/core/src/hfs.js:574:24)
+    at async NodeHfs.walk (file:///home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/node_modules/.pnpm/@humanfs+core@0.19.2/node_modules/@humanfs/core/src/hfs.js:614:3)

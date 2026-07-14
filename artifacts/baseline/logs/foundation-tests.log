@@ -1,0 +1,16 @@
+$ node --test tests/migration-foundation/*.test.mts
+
+✔ build artifact inventory counts migration-critical outputs (356.643792ms)
+✔ Markdown analysis preserves frontmatter types and feature usage (31.786581ms)
+✔ content inventory reports drafts, duplicate slugs, and broken assets without editing content (268.248794ms)
+✔ evidence helpers produce stable, repository-bounded output (42.273856ms)
+✔ repository inventory classifies dependencies from real imports and records external services (181.873897ms)
+✔ baseline command summaries never hide expected failures (1.363558ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1148.042811

@@ -1,0 +1,177 @@
+{
+	"schemaVersion": 2,
+	"generatedAt": "2026-07-14T00:00:00.000Z",
+	"title": "Design System: xinvStar",
+	"extensions": {
+		"colorMeta": {
+			"star-amber": {
+				"role": "primary",
+				"displayName": "星芒琥珀",
+				"canonical": "oklch(0.79 0.14 79)",
+				"tonalRamp": [
+					"#302000",
+					"#563700",
+					"#754600",
+					"#A66A00",
+					"#D89824",
+					"#F2B84B",
+					"#FFD98F",
+					"#FFF2D5"
+				]
+			},
+			"orbit-violet": {
+				"role": "secondary",
+				"displayName": "轨道紫",
+				"canonical": "oklch(0.50 0.09 296)",
+				"tonalRamp": [
+					"#211A2E",
+					"#352A4A",
+					"#4D3D6A",
+					"#69558F",
+					"#8A76AD",
+					"#AD9CC8",
+					"#D4CBE3",
+					"#F3EFF8"
+				]
+			},
+			"daylight": {
+				"role": "neutral",
+				"displayName": "日光底色",
+				"canonical": "oklch(0.98 0.003 290)",
+				"tonalRamp": [
+					"#17141E",
+					"#24202B",
+					"#3B3543",
+					"#625C6B",
+					"#8A8393",
+					"#B7B1BF",
+					"#DED9E2",
+					"#F7F7F8"
+				]
+			},
+			"night": {
+				"role": "neutral",
+				"displayName": "夜航底色",
+				"canonical": "oklch(0.20 0.02 300)",
+				"tonalRamp": [
+					"#100E15",
+					"#17141E",
+					"#211C2B",
+					"#342D41",
+					"#62586F",
+					"#978BA4",
+					"#C4BBCD",
+					"#F7F3FF"
+				]
+			}
+		},
+		"typographyMeta": {
+			"display": {
+				"displayName": "圆润舞台标题",
+				"purpose": "首页舞台与少数专页标题。"
+			},
+			"body": {
+				"displayName": "长文正文",
+				"purpose": "中文技术文章与界面正文。"
+			},
+			"code": {
+				"displayName": "代码",
+				"purpose": "代码块、行内代码和确有技术含义的标签。"
+			}
+		},
+		"shadows": [
+			{
+				"name": "overlay",
+				"value": "0 8px 24px rgb(23 20 30 / 0.18)",
+				"purpose": "搜索、菜单和对话框。"
+			},
+			{
+				"name": "interactive-lift",
+				"value": "0 3px 8px rgb(23 20 30 / 0.12)",
+				"purpose": "可点击特色卡片的悬停反馈。"
+			}
+		],
+		"motion": [
+			{
+				"name": "ease-out",
+				"value": "cubic-bezier(0.22, 1, 0.36, 1)",
+				"purpose": "面板与状态切换。"
+			},
+			{
+				"name": "duration-fast",
+				"value": "160ms",
+				"purpose": "悬停、焦点和轻量反馈。"
+			},
+			{
+				"name": "duration-panel",
+				"value": "280ms",
+				"purpose": "菜单与对话框。"
+			}
+		],
+		"breakpoints": [
+			{ "name": "mobile", "value": "390px" },
+			{ "name": "tablet", "value": "768px" },
+			{ "name": "desktop", "value": "1200px" }
+		]
+	},
+	"components": [
+		{
+			"name": "Primary Button",
+			"kind": "button",
+			"refersTo": "button-primary",
+			"description": "单个视口内的主要行动。",
+			"html": "<button class=\"ds-btn-primary\">开始阅读</button>",
+			"css": ".ds-btn-primary{background:#24202B;color:#FFFFFF;border:0;border-radius:12px;padding:12px 18px;font:600 14px/1.2 system-ui;transition:background 160ms,transform 160ms}.ds-btn-primary:hover{background:#754600;transform:translateY(-2px)}.ds-btn-primary:focus-visible{outline:2px solid #F2B84B;outline-offset:3px}"
+		},
+		{
+			"name": "Search Field",
+			"kind": "input",
+			"description": "全站内容搜索输入。",
+			"html": "<label class=\"ds-field\">搜索文章<input class=\"ds-input\" type=\"search\" placeholder=\"输入标题、标签或正文\"></label>",
+			"css": ".ds-field{display:grid;gap:8px;color:#24202B;font:600 14px/1.3 system-ui}.ds-input{min-height:44px;border:1px solid #B7B1BF;border-radius:12px;background:#FFFFFF;color:#24202B;padding:10px 14px;font:400 16px/1.5 system-ui}.ds-input:focus-visible{outline:2px solid #754600;outline-offset:2px;border-color:transparent}"
+		},
+		{
+			"name": "Article Card",
+			"kind": "card",
+			"refersTo": "card",
+			"description": "文章列表的内容单元，依靠排版而非阴影建立层级。",
+			"html": "<article class=\"ds-article\"><time>2026-07-14</time><h3>把迁移写成一条可验证的航线</h3><p>从内容、路由和浏览器证据开始。</p></article>",
+			"css": ".ds-article{background:#FFFFFF;color:#24202B;border-radius:16px;padding:24px}.ds-article time{color:#625C6B;font:500 13px/1.4 ui-monospace}.ds-article h3{margin:8px 0;font:600 24px/1.35 system-ui;text-wrap:balance}.ds-article p{margin:0;color:#625C6B;font:400 16px/1.7 system-ui}.ds-article:focus-within{outline:2px solid #F2B84B;outline-offset:3px}"
+		}
+	],
+	"narrative": {
+		"northStar": "夜航问讯站",
+		"overview": "xinvStar 像一座位于夜色与晨光交界处的个人问讯站。文章是航线，项目、追番、相册与日记是沿途星点。系统保留原站的氛围与个性，但拒绝控件墙和装饰堆叠。",
+		"keyCharacteristics": [
+			"阅读优先、舞台集中、探索渐进",
+			"原创星轨与知识节点图像",
+			"亮暗主题同等完整",
+			"内容默认可见且动效可减少"
+		],
+		"rules": [
+			{
+				"name": "The One Star Rule",
+				"body": "单个视口只有一个琥珀色视觉焦点。",
+				"section": "colors"
+			},
+			{
+				"name": "The Reading Measure Rule",
+				"body": "正文永远不以填满宽屏为目标。",
+				"section": "typography"
+			},
+			{
+				"name": "The Flat-at-Rest Rule",
+				"body": "静止内容默认平坦。",
+				"section": "elevation"
+			}
+		],
+		"dos": [
+			"Do 让文章、标题、分页和主导航在无 JavaScript 时仍然可用。",
+			"Do 用原创星轨、知识节点、站长作品和真实内容建立识别。"
+		],
+		"donts": [
+			"Don't 做无人物痕迹、套壳即可复用的 SaaS 落地页。",
+			"Don't 使用未经确认授权的动漫、游戏角色作为主视觉。"
+		]
+	}
+}

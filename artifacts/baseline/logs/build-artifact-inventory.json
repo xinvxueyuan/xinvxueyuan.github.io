@@ -1,0 +1,69 @@
+{
+  "cssBytes": 449165,
+  "cssFiles": 20,
+  "features": {
+    "atom": true,
+    "llms": true,
+    "llmsFull": true,
+    "notFound": true,
+    "openGraphImages": 0,
+    "pagefind": true,
+    "redirects": false,
+    "robots": true,
+    "rss": true,
+    "sitemap": true
+  },
+  "fontBytes": 15745028,
+  "fontFiles": 66,
+  "generatedPages": 56,
+  "htmlBytes": 21634111,
+  "htmlFiles": 57,
+  "imageBytes": 36232140,
+  "imageFiles": 126,
+  "javascriptBytes": 1786086,
+  "javascriptFiles": 86,
+  "largestPages": [
+    {
+      "bytes": 528978,
+      "path": "skills/index.html"
+    },
+    {
+      "bytes": 483731,
+      "path": "posts/markdown-mermaid/index.html"
+    },
+    {
+      "bytes": 471962,
+      "path": "posts/markdown-tutorial/index.html"
+    },
+    {
+      "bytes": 467447,
+      "path": "posts/2025-11-16-go-语言并发编程goroutine-和-channel-深度解析/index.html"
+    },
+    {
+      "bytes": 455718,
+      "path": "posts/2025-10-12-typescript-高级类型体操你真的会用泛型吗/index.html"
+    },
+    {
+      "bytes": 437033,
+      "path": "posts/2025-10-27-python-异步编程完全指南async-await-深入剖析/index.html"
+    },
+    {
+      "bytes": 437025,
+      "path": "posts/2025-11-09-nginx-反向代理与负载均衡实战/index.html"
+    },
+    {
+      "bytes": 430332,
+      "path": "posts/2025-11-23-css-grid-完全指南告别-flexbox-局限/index.html"
+    },
+    {
+      "bytes": 427721,
+      "path": "posts/2025-11-02-构建一个完整的-react-状态管理方案从-context-到-zustand/index.html"
+    },
+    {
+      "bytes": 423774,
+      "path": "posts/2025-10-20-linux-服务器安全加固指南15-个必做配置/index.html"
+    }
+  ],
+  "totalBytes": 98750403,
+  "totalFiles": 421
+}

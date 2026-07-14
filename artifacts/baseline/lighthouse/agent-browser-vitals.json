@@ -1,0 +1,73 @@
+{
+	"collector": "agent-browser vitals",
+	"collectedAt": "2026-07-14T20:45:00+08:00",
+	"environment": "Headless Chrome 150, WSL2, live production origin, one desktop-like warm-browser sample per URL",
+	"lighthouseCi": {
+		"localNodeRunner": "timed out on the first page and was stopped after repeated no-output waits",
+		"psiRunner": "not run because @lhci/cli requires a PSI API key",
+		"interpretation": "These browser timings are directional diagnostics, not Lighthouse category scores or release thresholds."
+	},
+	"results": [
+		{
+			"url": "https://www.xinvstar.xyz/",
+			"ttfbMs": 252.4,
+			"fcpMs": 3592,
+			"lcpMs": 3592,
+			"lcpElement": "img",
+			"lcpUrl": "https://www.xinvstar.xyz/assets/desktop-banner/1.webp",
+			"cls": 0.16,
+			"inpMs": null
+		},
+		{
+			"url": "https://www.xinvstar.xyz/posts/markdown-tutorial/",
+			"ttfbMs": 538.4,
+			"fcpMs": 1436,
+			"lcpMs": 1436,
+			"lcpElement": "img",
+			"lcpUrl": "https://www.xinvstar.xyz/assets/desktop-banner/1.webp",
+			"cls": 0.24,
+			"inpMs": null
+		},
+		{
+			"url": "https://www.xinvstar.xyz/archive/",
+			"ttfbMs": 304.9,
+			"fcpMs": 1028,
+			"lcpMs": 1028,
+			"lcpElement": "img",
+			"lcpUrl": "https://www.xinvstar.xyz/assets/desktop-banner/1.webp",
+			"cls": 0.24,
+			"inpMs": null
+		}
+	],
+	"repeatSample": {
+		"startedAt": "2026-07-14T21:02:55+08:00",
+		"endedAt": "2026-07-14T21:03:15+08:00",
+		"exitCode": 0,
+		"results": [
+			{
+				"url": "https://www.xinvstar.xyz/",
+				"ttfbMs": 209.1,
+				"fcpMs": 1392,
+				"lcpMs": 1392,
+				"cls": 0.14,
+				"inpMs": null
+			},
+			{
+				"url": "https://www.xinvstar.xyz/posts/markdown-tutorial/",
+				"ttfbMs": 224.3,
+				"fcpMs": 600,
+				"lcpMs": 892,
+				"cls": 0.25,
+				"inpMs": null
+			},
+			{
+				"url": "https://www.xinvstar.xyz/archive/",
+				"ttfbMs": 158.5,
+				"fcpMs": 844,
+				"lcpMs": 844,
+				"cls": 0.0,
+				"inpMs": null
+			}
+		]
+	}
+}
