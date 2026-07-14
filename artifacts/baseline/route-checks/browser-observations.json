@@ -1,0 +1,39 @@
+{
+  "collectedAt": "2026-07-14T20:45:00+08:00",
+  "origin": "https://www.xinvstar.xyz",
+  "pagesChecked": [
+    "home",
+    "normal post",
+    "code post",
+    "Mermaid post",
+    "KaTeX post",
+    "archive",
+    "search panel",
+    "mobile navigation",
+    "albums",
+    "diary",
+    "anime",
+    "projects",
+    "404"
+  ],
+  "viewports": ["390x844", "768x1024", "1440x900"],
+  "facts": {
+    "homeBodyCharacters": 2394,
+    "homeHorizontalOverflow": false,
+    "homeMissingImageAlt": 0,
+    "codeBlocksOnTutorial": 49,
+    "copyButtonsOnTutorial": 49,
+    "mermaidSources": 6,
+    "renderedMermaidSvgs": 6,
+    "katexNodesOnMongoPost": 2,
+    "archivePostLinks": 37,
+    "notFoundHttpStatus": 404,
+    "browserPageErrorsObserved": 0,
+    "reducedMotionEmulation": true
+  },
+  "limitations": [
+    "Tag and category views are archive query URLs, not standalone path routes.",
+    "The no-JavaScript browser attempt timed out before navigation commit; server-rendered readability is evidenced by built HTML and raw response content instead.",
+    "Console output includes application diagnostics but no uncaught page errors in sampled flows."
+  ]
+}

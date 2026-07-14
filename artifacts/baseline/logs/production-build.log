@@ -1,0 +1,205 @@
+$ ENABLE_CONTENT_SYNC=false pnpm build
+
+
+> xinvxueyuan-blog@1.0 prebuild /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation
+> node scripts/sync-content.js || true && node scripts/fetch-wallpapers.js
+
+已加载 .env 配置文件
+
+开始同步内容...
+
+内容分离功能已关闭（ENABLE_CONTENT_SYNC=false）
+提示：将使用本地内容，不会从远程仓库同步
+      若要启用内容分离，请在 .env 中设置：
+      ENABLE_CONTENT_SYNC=true
+      CONTENT_REPO_URL=<your-repo-url>
+
+[wallpaper-fetcher] Fetching t-alcy-cc...
+  -> 8 images
+[wallpaper-fetcher] Fetching Bing...
+  -> 1 images
+
+[wallpaper-fetcher] Written to /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/public/data/wallpapers.json
+
+> xinvxueyuan-blog@1.0 build /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation
+> node scripts/update-anime.mjs && astro build && pagefind --site dist && node scripts/compress-fonts.js && node -e "try { require('fs').rmSync('dist/pio', {recursive:true, force:true}); console.log('✓ Removed unused pio assets from build'); } catch(e) {}"
+
+Detected anime mode: bangumi, running update-bangumi.mjs
+(node:105774) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Initializing Bangumi data update script...
+Read User ID: 970836
+Fetching type: 3...
+
+Fetching type: 1...
+   Fetched 1 records...
+[planned] Processing progress: 1/1 (537409)
+✓ Completed planned list processing
+Fetching type: 2...
+   Fetched 2 records...
+[completed] Processing progress: 1/2 (328609)[completed] Processing progress: 2/2 (428735)
+✓ Completed completed list processing
+Fetching type: 4...
+
+Fetching type: 5...
+   Fetched 1 records...
+[dropped] Processing progress: 1/1 (454684)
+✓ Completed dropped list processing
+
+Update complete! Data saved to: /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/src/data/bangumi-data.json
+Total collected: 4 anime series
+[astro] `markdown.remarkPlugins`, `markdown.rehypePlugins`, and `markdown.remarkRehype` are deprecated. Pass them to `unified({...})` from `@astrojs/markdown-remark` directly instead.
+20:26:23 [content] Syncing content
+20:26:23 [content] Synced content
+20:26:23 [types] Generated 1.03s
+20:26:23 [build] output: "static"
+20:26:23 [build] mode: "static"
+20:26:23 [build] directory: /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/dist/
+20:26:23 [build] Collecting build info...
+20:26:23 [build] ✓ Completed in 1.35s.
+20:26:23 [build] Building static entrypoints...
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "（" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "过" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "滤" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "）" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "、" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "（" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "关" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "联" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "查" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "询" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "，" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "类" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "似" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "）" used in math mode [unicodeTextInMathMode]
+LaTeX-incompatible input and strict mode is set to 'warn': Unicode text character "、" used in math mode [unicodeTextInMathMode]
+20:26:32 [WARN] [astro-expressive-code] Error while highlighting code block using language "dockerignore" in document "/home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/src/content/posts/2025-10-05-Docker-容器化最佳实践：从开发到生产.md". The language could not be found. Using "txt" instead. Ensure that all required languages are either part of the bundle or custom languages provided in the "langs" config option.
+20:26:40 [WARN] [vite] "cubicOut" is imported from external module "svelte/easing" but never used in "src/components/widgets/music-player/MusicPlayer.svelte".
+20:26:40 [WARN] [vite] "slide" and "fly" are imported from external module "svelte/transition" but never used in "src/components/widgets/music-player/organisms/Playlist.svelte" and "src/components/widgets/music-player/MusicPlayer.svelte".
+20:26:44 [vite] ✓ built in 20.61s
+20:26:48 [vite] ✓ built in 4.44s
+20:26:49 [build] Rearranging server assets...
+
+ generating static routes 
+相册 ExternalExample 已设置为隐藏，跳过显示
+相册 HiddenExample 缺少 cover 文件
+20:26:50   ├─ /404.html (+111ms) 
+20:26:50   ├─ /about/index.html (+59ms) 
+20:26:50   ├─ /albums/AcgExample/index.html (+59ms) 
+20:26:50   ├─ /albums/index.html相册 ExternalExample 已设置为隐藏，跳过显示
+相册 HiddenExample 缺少 cover 文件
+ (+46ms) 
+20:26:50   ├─ /anime/index.html (+64ms) 
+20:26:50   ├─ /api/allPostMeta.json (+6ms) 
+20:26:50   ├─ /api/calendar-data.json (+6ms) 
+20:26:50   ├─ /archive/index.html (+44ms) 
+20:26:50   ├─ /atom/index.html (+52ms) 
+20:26:51   ├─ /atom.xml (+326ms) 
+20:26:51   ├─ /devices/index.html (+54ms) 
+20:26:51   ├─ /diary/index.html (+37ms) 
+20:26:51   ├─ /friends/index.html (+43ms) 
+20:26:51   ├─ /posts/markdown-tutorial/index.html (+83ms) 
+20:26:51   ├─ /posts/encrypted-post/index.html (+77ms) 
+20:26:51   ├─ /posts/encrypted-example/index.html (+63ms) 
+20:26:51   ├─ /posts/2026-07-07-开源安全威胁态势报告/index.html (+54ms) 
+20:26:51   ├─ /posts/2026-07-05-claude-封禁邮件-追踪像素分析/index.html (+47ms) 
+20:26:51   ├─ /posts/2026-07-04-claude-code-隐写标记-源码解析/index.html (+75ms) 
+20:26:51   ├─ /posts/2026-03-29-nextjs-14-app-router完全指南/index.html (+42ms) 
+20:26:51   ├─ /posts/2026-03-22-cicd实战-github-actions/index.html (+49ms) 
+20:26:51   ├─ /posts/2026-03-15-mongodb最佳实践-schema设计/index.html (+57ms) 
+20:26:52   ├─ /posts/2026-03-08-web性能优化全景指南/index.html (+41ms) 
+20:26:52   ├─ /posts/2026-03-01-llm应用开发实战-langchain/index.html (+57ms) 
+20:26:52   ├─ /posts/2026-02-22-javascript模块化演进史/index.html (+64ms) 
+20:26:52   ├─ /posts/2026-02-15-现代css动画完全指南/index.html (+58ms) 
+20:26:52   ├─ /posts/2026-02-08-设计模式实战-nodejs/index.html (+91ms) 
+20:26:52   ├─ /posts/2026-02-01-react-server-components-新一代架构/index.html (+69ms) 
+20:26:52   ├─ /posts/2026-01-25-graphql-vs-rest-现代api设计的选择/index.html (+113ms) 
+20:26:52   ├─ /posts/2026-01-18-kubernetes-入门到实战-部署你的第一个微服务/index.html (+85ms) 
+20:26:52   ├─ /posts/2026-01-11-redis-深度实战缓存队列与分布式锁/index.html (+75ms) 
+20:26:52   ├─ /posts/2026-01-04-webpack-到-vite-前端构建工具演进之路/index.html (+75ms) 
+20:26:52   ├─ /posts/2025-12-28-svelte-5-runes-深入解析新一代响应式原语/index.html (+75ms) 
+20:26:52   ├─ /posts/2025-12-21-postgresql-性能优化实战索引查询与配置调优/index.html (+57ms) 
+20:26:52   ├─ /posts/2025-12-14-深入-nodejs--stream-流处理大数据的利器/index.html (+103ms) 
+20:26:52   ├─ /posts/2025-12-07-git-工作流最佳实践从-feature-branch-到-gitflow/index.html (+78ms) 
+20:26:53   ├─ /posts/2025-11-30-tailwind-css-实战技巧构建现代化-ui-的-20-个模式/index.html (+50ms) 
+20:26:53   ├─ /posts/2025-11-23-css-grid-完全指南告别-flexbox-局限/index.html (+49ms) 
+20:26:53   ├─ /posts/2025-11-16-go-语言并发编程goroutine-和-channel-深度解析/index.html (+50ms) 
+20:26:53   ├─ /posts/2025-11-09-nginx-反向代理与负载均衡实战/index.html (+55ms) 
+20:26:53   ├─ /posts/2025-11-02-构建一个完整的-react-状态管理方案从-context-到-zustand/index.html (+49ms) 
+20:26:53   ├─ /posts/2025-10-27-python-异步编程完全指南async-await-深入剖析/index.html (+51ms) 
+20:26:53   ├─ /posts/2025-10-20-linux-服务器安全加固指南15-个必做配置/index.html (+57ms) 
+20:26:53   ├─ /posts/2025-10-12-typescript-高级类型体操你真的会用泛型吗/index.html (+42ms) 
+20:26:53   ├─ /posts/2025-10-05-docker-容器化最佳实践从开发到生产/index.html (+46ms) 
+20:26:53   ├─ /posts/2025-09-28-rust-所有权系统详解从入门到实践/index.html (+35ms) 
+20:26:53   ├─ /posts/2025-09-21-深入理解-javascript-事件循环从宏任务到微任务/index.html (+50ms) 
+20:26:53   ├─ /posts/markdown-extended/index.html (+57ms) 
+20:26:53   ├─ /posts/guide/index.html (+38ms) 
+20:26:53   ├─ /posts/markdown-mermaid/index.html (+33ms) 
+20:26:53   ├─ /posts/video/index.html (+41ms) 
+20:26:53   ├─ /projects/index.html (+59ms) 
+20:26:53   ├─ /robots.txt (+5ms) 
+20:26:53   ├─ /rss/index.html (+41ms) 
+20:26:53   ├─ /rss.xml (+188ms) 
+20:26:54   ├─ /skills/index.html (+39ms) 
+20:26:54   ├─ /timeline/index.html (+46ms) 
+20:26:54   ├─ /index.html (+44ms) 
+20:26:54   ├─ /2/index.html (+37ms) 
+20:26:54   ├─ /3/index.html (+49ms) 
+20:26:54   ├─ /4/index.html (+37ms) 
+20:26:54   ├─ /5/index.html (+43ms) 
+20:26:54 ✓ Completed in 5.33s.
+
+ generating optimized images 
+20:26:54   ▶ /_astro/avatar.DPtXmRPu_Z10igDO.webp (before: 104kB, after: 1kB) (+74ms) (1/12)
+20:26:54   ▶ /_astro/avatar.DPtXmRPu_Z1owi0z.webp (before: 104kB, after: 5kB) (+42ms) (2/12)
+20:26:54   ▶ /_astro/avatar.DPtXmRPu_Kwj6V.webp (before: 104kB, after: 15kB) (+67ms) (3/12)
+20:26:54   ▶ /_astro/avatar.DPtXmRPu_Z1Ueh1n.webp (before: 104kB, after: 64kB) (+193ms) (4/12)
+20:26:54   ▶ /_astro/cover.DWJBjMbX_ZoIIkW.webp (before: 1289kB, after: 72kB) (+382ms) (5/12)
+20:26:55   ▶ /_astro/cover.DWJBjMbX_1PKA1v.webp (before: 1289kB, after: 144kB) (+322ms) (6/12)
+20:26:55   ▶ /_astro/cover.DWJBjMbX_ZEWLWe.webp (before: 1289kB, after: 250kB) (+526ms) (7/12)
+20:26:56   ▶ /_astro/cover.DWJBjMbX_14k2x.webp (before: 1289kB, after: 362kB) (+820ms) (8/12)
+20:26:58   ▶ /_astro/cover.DWJBjMbX_icpkN.webp (before: 1289kB, after: 1009kB) (+2.46s) (9/12)
+20:26:59   ▶ /_astro/cover.DWJBjMbX_1llSnF.webp (before: 1289kB, after: 11kB) (+455ms) (10/12)
+20:26:59   ▶ /_astro/cover.DWJBjMbX_Z1i9IrM.webp (before: 1289kB, after: 35kB) (+256ms) (11/12)
+20:26:59   ▶ /_astro/cover.DWJBjMbX_Z11ygsT.webp (before: 1289kB, after: 101kB) (+370ms) (12/12)
+20:26:59 ✓ Completed in 5.60s.
+
+20:26:59 [build] ✓ Completed in 36.31s.
+20:27:00 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+20:27:03 [build] Waiting for integration "astro-llms-txt", hook "astro:build:done"...
+✅ DocSet "Blog Posts (Full)" generated at /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/dist/llms-full.txt
+✅ DocSet "Blog Posts (Structure)" generated at /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation/dist/llms-small.txt
+✅ llms.txt generated
+20:27:18 [build] 57 page(s) built in 55.91s
+20:27:18 [build] Complete!
+
+Running Pagefind v1.5.2 (Extended)
+Running from: "/home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation"
+Source:       "dist"
+Output:       "dist/pagefind"
+
+[Walking source directory]
+Found 57 files matching **/*.{html}
+
+[Parsing files]
+Found a data-pagefind-body element on the site.
+↳ Ignoring pages without this tag.
+
+[Reading languages]
+Discovered 1 language: zh-cn
+
+[Building search indexes]
+Total: 
+  Indexed 1 language
+  Indexed 39 pages
+  Indexed 4480 words
+  Indexed 0 filters
+  Indexed 0 sorts
+Note: Pagefind doesn't support stemming for the language zh-cn. 
+Search will still work, but will not match across root words.
+Note: Pagefind doesn't support stemming for the language zh-cn. 
+Search will still work, but will not match across root words.
+
+Finished in 2.027 seconds
+⚠ No fonts to compress (enableCompress=false or localFonts is empty)
+✓ Removed unused pio assets from build

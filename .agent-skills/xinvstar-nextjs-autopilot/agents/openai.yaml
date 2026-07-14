@@ -1,0 +1,4 @@
+interface:
+  display_name: "xinvStar Next.js Autopilot"
+  short_description: "编排 xinvStar 博客迁移设计、实现、验证与 Preview 验收"
+  default_prompt: "Use $xinvstar-nextjs-autopilot to execute the approved xinvStar Next.js migration phase with evidence and Preview-only release gates."

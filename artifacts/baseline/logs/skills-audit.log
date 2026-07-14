@@ -1,0 +1,23 @@
+# Skills audit log — 2026-07-14
+
+Repository snapshots:
+- pbakaus/impeccable: f2049c2b76383b444bf30cd6184f7d49a6c580d1
+- anthropics/skills: 9d2f1ae187231d8199c64b5b762e1bdf2244733d
+- vercel-labs/agent-skills: f8a72b9603728bb92a217a879b7e62e43ad76c81
+- vercel-labs/web-interface-guidelines: 4e799d45c17aec1498c269287a83b9dba22b966b
+
+Read-only audit:
+- Enumerated Git trees before checking out or executing files.
+- Read Skill frontmatter, repository licenses, package metadata, hook configuration, update/network code and file modes.
+- Searched scripts for fetch/http, process execution, home-directory writes, deletion/rename and harness configuration.
+- Did not execute candidate Skill scripts.
+
+Install commands:
+- install-skill-from-github.py --repo anthropics/skills --path skills/frontend-design --ref 9d2f1ae... --dest .agent-skills/vendor
+- install-skill-from-github.py --repo vercel-labs/agent-skills --path skills/composition-patterns --ref f8a72b9... --dest .agent-skills/vendor --name vercel-composition-patterns
+- install-skill-from-github.py --repo vercel-labs/agent-skills --path skills/web-design-guidelines --ref f8a72b9... --dest .agent-skills/vendor --name web-design-guidelines-local
+
+Results:
+- Three project-local installs succeeded.
+- web-design-guidelines-local was rewritten to consume the pinned 4e799d45 local snapshot and never fetch mutable instructions.
+- impeccable remained in /tmp audit storage and was not installed or enabled.

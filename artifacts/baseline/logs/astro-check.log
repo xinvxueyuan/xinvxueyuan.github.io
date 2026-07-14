@@ -1,0 +1,21 @@
+$ pnpm check
+
+
+> xinvxueyuan-blog@1.0 check /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation
+> astro check
+
+[astro] `markdown.remarkPlugins`, `markdown.rehypePlugins`, and `markdown.remarkRehype` are deprecated. Pass them to `unified({...})` from `@astrojs/markdown-remark` directly instead.
+20:25:25 [content] Syncing content
+20:25:25 [content] Synced content
+20:25:25 [types] Generated 947ms
+20:25:26 [check] Getting diagnostics for Astro files in /home/xinvdev/xinvxueyuan-blog/.worktrees/nextjs-migration-foundation...
+[96msrc/components/features/projects/ProjectCard.astro[0m:[93m29[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'getCategoryText' is declared but its value is never read.
+
+[7m29[0m const getCategoryText = (category: string) => {
+[7m  [0m [93m      ~~~~~~~~~~~~~~~[0m
+
+Result (295 files): 
+- 0 errors
+- 0 warnings
+- 1 hint
+

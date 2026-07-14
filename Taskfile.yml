@@ -1,0 +1,29 @@
+version: "3"
+
+silent: false
+
+tasks:
+    default:
+        desc: List blog MVP commands
+        cmds:
+            - task --list
+
+    install:
+        desc: Install the repository-declared pnpm dependencies
+        cmds:
+            - pnpm install --frozen-lockfile
+
+    dev:
+        desc: Start the Next.js development server
+        cmds:
+            - pnpm dev
+
+    verify:
+        desc: Run every local MVP quality gate
+        cmds:
+            - pnpm verify
+
+    e2e:
+        desc: Run the browser acceptance suite
+        cmds:
+            - pnpm test:e2e

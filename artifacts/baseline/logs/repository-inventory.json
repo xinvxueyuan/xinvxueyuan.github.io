@@ -1,0 +1,1264 @@
+{
+  "dependencies": {
+    "@4hse/astro-llms-txt": {
+      "category": "seo-feeds",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^1.0.5"
+    },
+    "@astrojs/check": {
+      "category": "framework-core",
+      "declared": "dependency",
+      "disposition": "replace-after-migration",
+      "evidence": [],
+      "version": "^0.9.9"
+    },
+    "@astrojs/rss": {
+      "category": "framework-core",
+      "declared": "dependency",
+      "disposition": "replace-after-migration",
+      "evidence": [
+        "src/pages/rss.xml.ts"
+      ],
+      "version": "^4.0.19"
+    },
+    "@astrojs/sitemap": {
+      "category": "framework-core",
+      "declared": "dependency",
+      "disposition": "replace-after-migration",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^3.7.3"
+    },
+    "@astrojs/svelte": {
+      "category": "framework-core",
+      "declared": "dependency",
+      "disposition": "replace-after-migration",
+      "evidence": [
+        "astro.config.mjs",
+        "svelte.config.js"
+      ],
+      "version": "^8.1.2"
+    },
+    "@astrojs/ts-plugin": {
+      "category": "framework-core",
+      "declared": "devDependency",
+      "disposition": "replace-after-migration",
+      "evidence": [
+        "tsconfig.json"
+      ],
+      "version": "^1.10.10"
+    },
+    "@eslint/js": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^10.0.1"
+    },
+    "@expressive-code/core": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/plugins/expressive-code/custom-copy-button.ts",
+        "src/plugins/expressive-code/language-badge.ts"
+      ],
+      "version": "^0.41.7"
+    },
+    "@expressive-code/plugin-collapsible-sections": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^0.41.7"
+    },
+    "@expressive-code/plugin-line-numbers": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^0.41.7"
+    },
+    "@fancyapps/ui": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/scripts/handlers/fancybox-handler.ts"
+      ],
+      "version": "^6.1.14"
+    },
+    "@fontsource-variable/jetbrains-mono": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/misc/Markdown.astro",
+        "src/global.d.ts"
+      ],
+      "version": "^5.2.8"
+    },
+    "@iconify-json/fa7-brands": {
+      "category": "styles-components",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/atoms/Icon/LocalIcon.svelte"
+      ],
+      "version": "^1.2.3"
+    },
+    "@iconify-json/fa7-regular": {
+      "category": "styles-components",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/atoms/Icon/LocalIcon.svelte"
+      ],
+      "version": "^1.2.3"
+    },
+    "@iconify-json/fa7-solid": {
+      "category": "styles-components",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/atoms/Icon/LocalIcon.svelte"
+      ],
+      "version": "^1.2.5"
+    },
+    "@iconify-json/material-symbols": {
+      "category": "styles-components",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/atoms/Icon/LocalIcon.svelte"
+      ],
+      "version": "^1.2.82"
+    },
+    "@iconify-json/mdi": {
+      "category": "styles-components",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/atoms/Icon/LocalIcon.svelte"
+      ],
+      "version": "^1.2.3"
+    },
+    "@iconify-json/simple-icons": {
+      "category": "styles-components",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/atoms/Icon/LocalIcon.svelte"
+      ],
+      "version": "^1.2.89"
+    },
+    "@iconify/svelte": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/common/NavPanelButton.svelte",
+        "src/components/control/MusicFabButton.svelte",
+        "src/components/control/ThemeSwitch.svelte",
+        "src/components/features/settings/DisplaySettings.svelte",
+        "src/components/features/settings/WallpaperSourceSwitch.svelte",
+        "src/components/features/settings/WallpaperSwitch.svelte",
+        "src/components/features/toc/MobileTOC.svelte",
+        "src/components/misc/SharePoster.svelte",
+        "src/components/organisms/navigation/Search.svelte",
+        "src/components/widgets/calendar/Calendar.svelte",
+        "src/components/widgets/calendar/components/CalendarHeader.svelte",
+        "src/components/widgets/common/WidgetHeader.svelte",
+        "src/components/widgets/music-player/MusicPlayer.svelte",
+        "src/components/widgets/music-player/atoms/CoverImage.svelte",
+        "src/components/widgets/music-player/atoms/ModeButton.svelte",
+        "src/components/widgets/music-player/atoms/NextButton.svelte",
+        "src/components/widgets/music-player/atoms/PlayButton.svelte",
+        "src/components/widgets/music-player/atoms/PlaylistItem.svelte",
+        "src/components/widgets/music-player/atoms/PrevButton.svelte",
+        "src/components/widgets/music-player/atoms/VolumeButton.svelte",
+        "src/components/widgets/music-player/molecules/TrackDisplay.svelte",
+        "src/components/widgets/music-player/organisms/PlayerBar.svelte",
+        "src/components/widgets/music-player/organisms/Playlist.svelte",
+        "src/components/widgets/music-sidebar/components/SidebarControls.svelte",
+        "src/components/widgets/music-sidebar/components/SidebarTrackInfo.svelte",
+        "src/components/widgets/music-sidebar/components/TrackListItem.svelte"
+      ],
+      "version": "^5.2.2"
+    },
+    "@lhci/cli": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^0.15.1"
+    },
+    "@swup/astro": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "replace-after-migration",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^1.8.0"
+    },
+    "@tailwindcss/typography": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/styles/main.css",
+        "tailwind.config.cjs"
+      ],
+      "version": "^0.5.20"
+    },
+    "@tailwindcss/vite": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^4.3.2"
+    },
+    "@types/hast": {
+      "category": "unknown",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^3.0.4"
+    },
+    "@types/markdown-it": {
+      "category": "unknown",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^14.1.2"
+    },
+    "@types/mdast": {
+      "category": "unknown",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^4.0.4"
+    },
+    "@types/qrcode": {
+      "category": "unknown",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^1.5.6"
+    },
+    "@types/sanitize-html": {
+      "category": "unknown",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^2.16.1"
+    },
+    "astro": {
+      "category": "framework-core",
+      "declared": "dependency",
+      "disposition": "replace-after-migration",
+      "evidence": [
+        "_frontmatter.json",
+        "astro.config.mjs",
+        "eslint.config.js",
+        "src/components/control/FloatingControls.astro",
+        "src/components/control/Pagination.astro",
+        "src/components/features/posts/types.ts",
+        "src/components/features/toc/FloatingTOC.astro",
+        "src/components/features/toc/SidebarTOC.astro",
+        "src/components/layout/RightSideBar.astro",
+        "src/components/layout/SidebarColumn.astro",
+        "src/components/widgets/card-toc/CardTOC.astro",
+        "src/components/widgets/sidebar/SideBar.astro",
+        "src/components/widgets/toc/TOC.astro",
+        "src/content.config.ts",
+        "src/data/skills.ts",
+        "src/env.d.ts",
+        "src/layouts/MainGridLayout.astro",
+        "src/pages/[...page].astro",
+        "src/pages/atom.xml.ts",
+        "src/pages/og/[...slug].png.ts",
+        "src/pages/robots.txt.ts",
+        "src/pages/rss.xml.ts",
+        "src/utils/types/widget.ts",
+        "src/utils/widget-renderer.ts",
+        "vercel.json"
+      ],
+      "version": "^6.4.8"
+    },
+    "astro-eslint-parser": {
+      "category": "unknown",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^2.1.0"
+    },
+    "astro-expressive-code": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^0.41.7"
+    },
+    "astro-icon": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs",
+        "src/components/common/FloatingButton.astro",
+        "src/components/control/Pagination.astro",
+        "src/components/features/posts/CategoryBar.astro",
+        "src/components/features/posts/LastModified.astro",
+        "src/components/features/posts/PostCard.astro",
+        "src/components/features/posts/PostListItem.astro",
+        "src/components/features/posts/PostMeta.astro",
+        "src/components/features/posts/PostNavigation.astro",
+        "src/components/features/posts/ShareCard.astro",
+        "src/components/features/posts/atoms/Category.astro",
+        "src/components/features/posts/atoms/EncryptedBadge.astro",
+        "src/components/features/posts/atoms/PublishedDate.astro",
+        "src/components/features/posts/atoms/ReadingTime.astro",
+        "src/components/features/posts/atoms/WordCount.astro",
+        "src/components/features/toc/FloatingTOC.astro",
+        "src/components/layout/Banner.astro",
+        "src/components/misc/License.astro",
+        "src/components/misc/ListContainer.astro",
+        "src/components/organisms/navigation/DropdownMenu.astro",
+        "src/components/organisms/navigation/NavMenuPanel.astro",
+        "src/components/organisms/navigation/Navbar.astro",
+        "src/components/widgets/announcement/Announcement.astro",
+        "src/components/widgets/common/WidgetLayout.astro",
+        "src/components/widgets/feed/FeedInfo.astro",
+        "src/components/widgets/profile/Profile.astro",
+        "src/components/widgets/site-stats/SiteStats.astro",
+        "src/layouts/MainGridLayout.astro",
+        "src/pages/404.astro",
+        "src/pages/[...permalink].astro",
+        "src/pages/albums/[id]/index.astro"
+      ],
+      "version": "^1.1.5"
+    },
+    "axios": {
+      "category": "external-data-utilities",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "scripts/update-bilibili.mjs"
+      ],
+      "version": "^1.18.1"
+    },
+    "crypto-js": {
+      "category": "images-media",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/features/auth/Encryptor.astro",
+        "src/pages/[...permalink].astro",
+        "src/types/crypto-js.d.ts"
+      ],
+      "version": "^4.2.0"
+    },
+    "dayjs": {
+      "category": "external-data-utilities",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/features/posts/LastModified.astro"
+      ],
+      "version": "^1.11.21"
+    },
+    "eslint": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^10.6.0"
+    },
+    "eslint-plugin-astro": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^2.1.1"
+    },
+    "eslint-plugin-simple-import-sort": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^13.0.0"
+    },
+    "eslint-plugin-svelte": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^3.20.0"
+    },
+    "fontmin": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "scripts/compress-fonts.js"
+      ],
+      "version": "^2.0.3"
+    },
+    "glob": {
+      "category": "external-data-utilities",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "scripts/convert-images.js",
+        "scripts/performance-baseline.js",
+        "scripts/performance-check.js"
+      ],
+      "version": "^13.0.6"
+    },
+    "globals": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^17.7.0"
+    },
+    "hastscript": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/plugins/rehype-component-admonition.mjs",
+        "src/plugins/rehype-component-github-card.mjs",
+        "src/plugins/rehype-mermaid.mjs",
+        "src/plugins/remark-directive-rehype.js"
+      ],
+      "version": "^9.0.1"
+    },
+    "katex": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/scripts/handlers/scroll-handler.ts"
+      ],
+      "version": "^0.17.0"
+    },
+    "markdown-it": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/pages/atom.xml.ts",
+        "src/pages/rss.xml.ts"
+      ],
+      "version": "^14.3.0"
+    },
+    "node-html-parser": {
+      "category": "images-media",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/pages/atom.xml.ts",
+        "src/pages/rss.xml.ts"
+      ],
+      "version": "^9.0.0"
+    },
+    "oddmisc": {
+      "category": "external-data-utilities",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^1.2.8"
+    },
+    "pagefind": {
+      "category": "search",
+      "declared": "dependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^1.5.2"
+    },
+    "postcss-import": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "postcss.config.mjs"
+      ],
+      "version": "^16.1.1"
+    },
+    "postcss-nesting": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "postcss.config.mjs"
+      ],
+      "version": "^14.0.0"
+    },
+    "prettier": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^3.9.4"
+    },
+    "prettier-plugin-astro": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^0.14.1"
+    },
+    "prettier-plugin-svelte": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [],
+      "version": "^4.1.1"
+    },
+    "qrcode": {
+      "category": "images-media",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/misc/SharePoster.svelte"
+      ],
+      "version": "^1.5.4"
+    },
+    "reading-time": {
+      "category": "external-data-utilities",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/plugins/remark-content.mjs"
+      ],
+      "version": "^1.5.0"
+    },
+    "rehype-autolink-headings": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^7.1.0"
+    },
+    "rehype-components": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^0.3.0"
+    },
+    "rehype-external-links": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^3.0.0"
+    },
+    "rehype-katex": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^7.0.1"
+    },
+    "rehype-slug": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^6.0.0"
+    },
+    "remark-directive": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^4.0.0"
+    },
+    "remark-math": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^6.0.0"
+    },
+    "remark-sectionize": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "astro.config.mjs"
+      ],
+      "version": "^2.1.0"
+    },
+    "sanitize-html": {
+      "category": "external-data-utilities",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/pages/atom.xml.ts",
+        "src/pages/rss.xml.ts"
+      ],
+      "version": "^2.17.5"
+    },
+    "satori": {
+      "category": "images-media",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/pages/og/[...slug].png.ts"
+      ],
+      "version": "^0.26.0"
+    },
+    "sharp": {
+      "category": "images-media",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "scripts/convert-images.js",
+        "src/pages/og/[...slug].png.ts"
+      ],
+      "version": "^0.35.3"
+    },
+    "stylus": {
+      "category": "development-tools",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/common/FloatingButton.astro",
+        "src/components/features/settings/DisplaySettings.svelte"
+      ],
+      "version": "^0.64.0"
+    },
+    "svelte": {
+      "category": "framework-core",
+      "declared": "dependency",
+      "disposition": "replace-after-migration",
+      "evidence": [
+        "src/components/control/LayoutSwitch.svelte",
+        "src/components/control/MusicFabButton.svelte",
+        "src/components/control/ThemeSwitch.svelte",
+        "src/components/features/archive/ArchivePanel.svelte",
+        "src/components/features/auth/PasswordModal.svelte",
+        "src/components/features/pio/Pio.svelte",
+        "src/components/features/settings/DisplaySettings.svelte",
+        "src/components/features/settings/WallpaperSourceSwitch.svelte",
+        "src/components/features/settings/WallpaperSwitch.svelte",
+        "src/components/features/toc/MobileTOC.svelte",
+        "src/components/misc/SharePoster.svelte",
+        "src/components/organisms/navigation/Navbar.astro",
+        "src/components/organisms/navigation/Search.svelte",
+        "src/components/widgets/calendar/Calendar.svelte",
+        "src/components/widgets/calendar/components/YearPicker.svelte",
+        "src/components/widgets/music-player/FabMusicPanel.svelte",
+        "src/components/widgets/music-player/MusicPlayer.svelte",
+        "src/components/widgets/music-player/atoms/VolumeSlider.svelte",
+        "src/components/widgets/music-player/molecules/VolumeControl.svelte",
+        "src/components/widgets/music-player/organisms/PlayerBar.svelte",
+        "src/components/widgets/music-player/organisms/Playlist.svelte",
+        "src/components/widgets/music-sidebar/MusicSidebarWidget.astro",
+        "src/components/widgets/music-sidebar/SidebarMusicClient.svelte",
+        "src/pages/archive.astro"
+      ],
+      "version": "^5.56.4"
+    },
+    "svelte-eslint-parser": {
+      "category": "unknown",
+      "declared": "devDependency",
+      "disposition": "unknown",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^1.8.0"
+    },
+    "tailwindcss": {
+      "category": "styles-components",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/components/features/posts/PostPage.astro",
+        "src/components/organisms/navigation/DropdownMenu.astro",
+        "src/components/organisms/navigation/NavMenuPanel.astro",
+        "src/data/skills.ts",
+        "src/styles/encrypted-content.css",
+        "src/styles/expressive-code.css",
+        "src/styles/main.css",
+        "src/styles/markdown.css",
+        "src/styles/photoswipe.css",
+        "src/styles/scrollbar.css",
+        "src/styles/twikoo.css",
+        "tailwind.config.cjs"
+      ],
+      "version": "^4.3.2"
+    },
+    "typescript": {
+      "category": "development-tools",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/data/skills.ts"
+      ],
+      "version": "^6.0.3"
+    },
+    "typescript-eslint": {
+      "category": "development-tools",
+      "declared": "devDependency",
+      "disposition": "preserve",
+      "evidence": [
+        "eslint.config.js"
+      ],
+      "version": "^8.63.0"
+    },
+    "unist-util-visit": {
+      "category": "content-markdown",
+      "declared": "dependency",
+      "disposition": "preserve",
+      "evidence": [
+        "src/plugins/rehype-image-width.mjs",
+        "src/plugins/rehype-mermaid.mjs",
+        "src/plugins/rehype-wrap-table.mjs",
+        "src/plugins/remark-content.mjs",
+        "src/plugins/remark-directive-rehype.js",
+        "src/plugins/remark-fix-github-admonitions.js",
+        "src/plugins/remark-mermaid.js"
+      ],
+      "version": "^5.1.0"
+    }
+  },
+  "externalDependencies": [
+    {
+      "authentication": [
+        "CONTENT_DIR",
+        "ENABLE_CONTENT_SYNC"
+      ],
+      "callSites": [
+        "scripts/compress-fonts.js",
+        "scripts/update-bangumi.mjs"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-maintenance",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "api.bgm.tv"
+    },
+    {
+      "authentication": [
+        "BILI_SESSDATA"
+      ],
+      "callSites": [
+        "scripts/update-bilibili.mjs"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-maintenance",
+      "migrationDecision": "preserve-or-cache",
+      "offlineFallback": "tracked generated data",
+      "purpose": "Bilibili anime data",
+      "service": "api.bilibili.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/plugins/rehype-component-github-card.mjs"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-server-render",
+      "migrationDecision": "preserve-with-build-cache",
+      "offlineFallback": "render link without enriched card",
+      "purpose": "GitHub repository card metadata",
+      "service": "api.github.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/layouts/partials/HeadTags.astro"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "api.iconify.design"
+    },
+    {
+      "authentication": [
+        "INDEXNOW_HOST",
+        "INDEXNOW_KEY"
+      ],
+      "callSites": [
+        "scripts/indexnow-submit.js"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-maintenance",
+      "migrationDecision": "preserve-as-explicit-publish-step",
+      "offlineFallback": "skip submission",
+      "purpose": "IndexNow search notification",
+      "service": "api.indexnow.org"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/components/organisms/footer/Footer.astro"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "astro.build"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/data/friends.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "avatars.githubusercontent.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "scripts/update-bangumi.mjs"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-maintenance",
+      "migrationDecision": "preserve-or-cache",
+      "offlineFallback": "tracked generated data",
+      "purpose": "Bangumi metadata",
+      "service": "bgm.tv"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/plugins/mermaid-render-script.js"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-server-render",
+      "migrationDecision": "replace-with-bundled-asset-where-possible",
+      "offlineFallback": "local asset required",
+      "purpose": "client asset CDN",
+      "service": "cdn.jsdelivr.net"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/components/misc/IconifyLoader.astro",
+        "src/utils/icon-loader.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "prefer-build-time-icons",
+      "offlineFallback": "local icon set",
+      "purpose": "Iconify runtime icon API",
+      "service": "code.iconify.design"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/layouts/Layout.astro",
+        "src/pages/og/[...slug].png.ts",
+        "src/styles/main.css"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "replace-with-next-font-or-local",
+      "offlineFallback": "system font stack",
+      "purpose": "Google Fonts stylesheet",
+      "service": "fonts.googleapis.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/layouts/Layout.astro"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "fonts.gstatic.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/components/comment/Giscus.astro"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve",
+      "offlineFallback": "comments unavailable",
+      "purpose": "Giscus comments",
+      "service": "giscus.app"
+    },
+    {
+      "authentication": [
+        "NODE_ENV"
+      ],
+      "callSites": [
+        "astro.config.mjs",
+        "src/components/organisms/footer/Footer.astro",
+        "src/data/projects.ts",
+        "src/plugins/rehype-component-github-card.mjs"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "github.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/config.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "icp.gov.moe"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/components/misc/utils/poster-renderer.ts",
+        "src/config.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "original image URL",
+      "purpose": "remote image proxy",
+      "service": "images.weserv.nl"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/config.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "music metadata unavailable",
+      "purpose": "Meting music metadata",
+      "service": "meting.mysqil.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "public/images/albums/ExternalExample/info.json"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "picsum.photos"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "lighthouserc.json"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "pin-or-vendor",
+      "offlineFallback": "local snapshot",
+      "purpose": "remote configuration or asset",
+      "service": "raw.githubusercontent.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/data/friends.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "reactjs.org"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/pages/[...permalink].astro",
+        "src/pages/posts/[...slug].astro"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "schema.org"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "scripts/fetch-wallpapers.js",
+        "src/config.ts",
+        "src/utils/image-api.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve-with-fallback",
+      "offlineFallback": "tracked wallpaper list",
+      "purpose": "wallpaper API",
+      "service": "t.alcy.cc"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/data/friends.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "tailwindcss.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "public/data/wallpapers.json"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve-with-fallback",
+      "offlineFallback": "tracked wallpaper list",
+      "purpose": "wallpaper image host",
+      "service": "tc.alcy.cc"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/config.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve-with-fail-open",
+      "offlineFallback": "comments unavailable",
+      "purpose": "Twikoo comment service",
+      "service": "twikoo.vercel.app"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/plugins/mermaid-render-script.js"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-server-render",
+      "migrationDecision": "replace-with-bundled-asset",
+      "offlineFallback": "local asset required",
+      "purpose": "client asset CDN",
+      "service": "unpkg.com"
+    },
+    {
+      "authentication": [
+        "BILI_SESSDATA"
+      ],
+      "callSites": [
+        "scripts/update-bilibili.mjs",
+        "src/data/anime.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve-or-cache",
+      "offlineFallback": "tracked generated data",
+      "purpose": "Bilibili public pages/API",
+      "service": "www.bilibili.com"
+    },
+    {
+      "authentication": [
+        "CONTENT_DIR",
+        "ENABLE_CONTENT_SYNC"
+      ],
+      "callSites": [
+        "scripts/compress-fonts.js"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-maintenance",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "www.bilibili.uno"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "public/data/wallpapers.json",
+        "scripts/fetch-wallpapers.js",
+        "src/utils/bing-wallpaper.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve-with-fallback",
+      "offlineFallback": "tracked wallpaper list",
+      "purpose": "Bing wallpaper source",
+      "service": "www.bing.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/layouts/partials/AnalyticsScripts.astro"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review-analytics-consent",
+      "offlineFallback": "analytics disabled",
+      "purpose": "Microsoft Clarity analytics",
+      "service": "www.clarity.ms"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/layouts/Layout.astro",
+        "src/layouts/partials/AnalyticsScripts.astro"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review-analytics-consent",
+      "offlineFallback": "analytics disabled",
+      "purpose": "Google analytics/tag delivery",
+      "service": "www.googletagmanager.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/data/friends.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "www.typescriptlang.org"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/data/devices.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "www.vivo.com.cn"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/pages/atom.xml.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "build-time-or-server-render",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "www.w3.org"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/data/friends.ts",
+        "src/data/projects.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve",
+      "offlineFallback": "not applicable",
+      "purpose": "canonical production site",
+      "service": "www.xinvstar.xyz"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/data/devices.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "review",
+      "offlineFallback": "unknown",
+      "purpose": "unclassified external service",
+      "service": "www.ztemall.com"
+    },
+    {
+      "authentication": [],
+      "callSites": [
+        "src/config.ts"
+      ],
+      "failureMode": "unknown; inspect call site",
+      "lifecycle": "runtime-or-client",
+      "migrationDecision": "preserve",
+      "offlineFallback": "not applicable",
+      "purpose": "canonical production site",
+      "service": "xinvstar.xyz"
+    }
+  ],
+  "framework": {
+    "astro": "^6.4.8",
+    "output": "static",
+    "svelte": "^5.56.4",
+    "tailwind": "^4.3.2",
+    "typescript": "^6.0.3"
+  },
+  "structure": {
+    "astroComponents": 112,
+    "pages": 23,
+    "plugins": 12,
+    "scripts": 13,
+    "svelteComponents": 52,
+    "workflows": 4
+  }
+}

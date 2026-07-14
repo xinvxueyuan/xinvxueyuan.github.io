@@ -1,10 +1,13 @@
 # build output
 dist/
+.next/
+.worktrees/
 
 # generated types
-.astro/
+*.tsbuildinfo
+next-env.d.ts
 demo
-plans
+/plans/
 # dependencies
 node_modules/
 
@@ -42,7 +45,6 @@ yarn.lock
 cache/
 fuwari/
 src/data/myself.ts
-src/pages/myself.astro
 
 # Bangumi generated data
 src/data/bangumi-data.json

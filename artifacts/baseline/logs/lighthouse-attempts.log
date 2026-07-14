@@ -1,0 +1,34 @@
+Lighthouse and browser performance evidence
+Date: 2026-07-14 Asia/Shanghai
+
+[1] Local LHCI Node runner
+Start: 2026-07-14T21:01:49+08:00
+Command: timeout --signal=INT --kill-after=5s 30s pnpm exec lhci collect --no-lighthouserc --chromePath=/home/xinvdev/.agent-browser/browsers/chrome-150.0.7871.46/chrome --numberOfRuns=1 --url=http://127.0.0.1:4321/ --settings.preset=desktop
+Output:
+Running Lighthouse 1 time(s) on http://127.0.0.1:4321/
+Run #1...
+End: 2026-07-14T21:02:19+08:00
+Exit code: 124 (timeout terminated the hanging collection)
+
+[2] LHCI PSI runner
+Start: 2026-07-14T21:02:25+08:00
+Command: pnpm exec lhci collect --no-lighthouserc --method=psi --numberOfRuns=1 --url=https://www.xinvstar.xyz/ --psiStrategy=desktop
+Output:
+Running Lighthouse 1 time(s) on https://www.xinvstar.xyz/
+Run #1...failed!
+Error: PSI API key must be provided to use the PSI runner
+End: 2026-07-14T21:02:27+08:00
+Exit code: 1
+
+[3] Browser vitals repeat sample
+Start: 2026-07-14T21:02:55+08:00
+Commands:
+agent-browser --session perf-evidence vitals https://www.xinvstar.xyz/ --json
+agent-browser --session perf-evidence vitals https://www.xinvstar.xyz/posts/markdown-tutorial/ --json
+agent-browser --session perf-evidence vitals https://www.xinvstar.xyz/archive/ --json
+Output summaries (full metric record is in artifacts/baseline/lighthouse/agent-browser-vitals.json):
+home: TTFB 209.1 ms, FCP/LCP 1392 ms, CLS 0.14, INP unavailable
+markdown tutorial: TTFB 224.3 ms, FCP 600 ms, LCP 892 ms, CLS 0.25, INP unavailable
+archive: TTFB 158.5 ms, FCP/LCP 844 ms, CLS 0.0, INP unavailable
+End: 2026-07-14T21:03:15+08:00
+Exit code: 0
