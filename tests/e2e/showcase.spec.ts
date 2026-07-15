@@ -155,6 +155,13 @@ test("album loads PhotoSwipe only on first interaction and restores focus", asyn
 	expect(initialSources.some((source) => source.includes("pswp__"))).toBe(
 		false,
 	);
+	const detailStyles = await readResources(
+		page,
+		await getStylesheetResources(page),
+	);
+	expect(detailStyles.some((source) => source.includes(".pswp__"))).toBe(
+		true,
+	);
 
 	const firstPhoto = page.locator("[data-album-gallery] a").first();
 	await firstPhoto.click();
@@ -185,6 +192,14 @@ test("non-detail pages never request PhotoSwipe", async ({ page }) => {
 			await getJavaScriptChunks(page),
 		);
 		expect(sources.some((source) => source.includes("pswp__"))).toBe(false);
+		const styles = await readResources(
+			page,
+			await getStylesheetResources(page),
+		);
+		expect(
+			styles.some((source) => source.includes(".pswp__")),
+			`${route} must not load PhotoSwipe CSS`,
+		).toBe(false);
 	}
 });
 
@@ -234,6 +249,19 @@ async function getJavaScriptChunks(page: import("@playwright/test").Page) {
 							url.includes("/_next/static/chunks/") &&
 							/\.js(?:\?|$)/u.test(url),
 					),
+			),
+		),
+	);
+}
+
+async function getStylesheetResources(page: import("@playwright/test").Page) {
+	return page.evaluate(() =>
+		Array.from(
+			new Set(
+				performance
+					.getEntriesByType("resource")
+					.map((entry) => entry.name)
+					.filter((url) => /\.css(?:\?|$)/u.test(url)),
 			),
 		),
 	);

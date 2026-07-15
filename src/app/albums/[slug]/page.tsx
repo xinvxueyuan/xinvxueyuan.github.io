@@ -50,19 +50,19 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
 				<p>{album.description}</p>
 			</header>
 			<div data-album-gallery id={galleryId}>
-				{album.photos.map(({ id, image }) => (
+				{album.photos.map((photo) => (
 					<a
-						data-pswp-height={image.height}
-						data-pswp-width={image.width}
-						href={image.src}
-						key={id}
+						data-pswp-height={photo.height}
+						data-pswp-width={photo.width}
+						href={photo.src}
+						key={photo.src}
 					>
 						<Image
-							alt={image.alt}
-							height={image.height}
+							alt={photo.alt}
+							height={photo.height}
 							sizes="(max-width: 48rem) 50vw, 24rem"
-							src={image.src}
-							width={image.width}
+							src={photo.src}
+							width={photo.width}
 						/>
 					</a>
 				))}

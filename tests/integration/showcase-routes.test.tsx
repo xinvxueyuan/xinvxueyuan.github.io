@@ -136,7 +136,7 @@ describe("personal showcase routes", () => {
 		const entries = [
 			{
 				id: "first-entry",
-				content: "第一条公开日记。",
+				body: "第一条公开日记。",
 				publishedAt: "2026-07-14",
 				mood: "平静",
 				location: "书桌前",
@@ -152,7 +152,7 @@ describe("personal showcase routes", () => {
 			},
 			{
 				id: "second-entry",
-				content: "第二条公开日记。",
+				body: "第二条公开日记。",
 				publishedAt: "2026-07-15",
 				tags: [],
 				images: [],

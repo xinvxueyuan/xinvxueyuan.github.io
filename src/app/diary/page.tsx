@@ -24,7 +24,7 @@ export function DiaryEntries({ entries }: { entries: readonly DiaryEntry[] }) {
 								{entry.publishedAt}
 							</time>
 						</p>
-						<p>{entry.content}</p>
+						<p>{entry.body}</p>
 						{entry.mood || entry.location ? (
 							<dl>
 								{entry.mood ? (

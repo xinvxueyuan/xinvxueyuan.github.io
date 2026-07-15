@@ -37,15 +37,12 @@ export default function TimelinePage() {
 							<article>
 								<h2>{entry.title}</h2>
 								<p>
-									<time dateTime={entry.startDate}>
-										{entry.startDate}
+									<time dateTime={entry.date}>
+										{entry.date}
 									</time>
-									{entry.endDate
-										? ` — ${entry.endDate}`
-										: null}
 								</p>
 								<p>{entry.description}</p>
-								{entry.links.map((link) => (
+								{entry.links?.map((link) => (
 									<ExternalLink key={link.href} link={link} />
 								))}
 							</article>

@@ -1,6 +1,6 @@
 import type { Device } from "../lib/showcase/types";
 
-export const devices: readonly Device[] = [
+const devicesData = [
 	{
 		id: "iqoo-neo-10-pro-plus",
 		name: "iQOO Neo 10 Pro+",
@@ -13,12 +13,10 @@ export const devices: readonly Device[] = [
 			width: 750,
 			height: 750,
 		},
-		links: [
-			{
-				label: "产品页面",
-				href: "https://www.vivo.com.cn/vivo/iqooneo10proplus/",
-			},
-		],
+		url: {
+			label: "产品页面",
+			href: "https://www.vivo.com.cn/vivo/iqooneo10proplus/",
+		},
 	},
 	{
 		id: "zte-u25s",
@@ -32,11 +30,11 @@ export const devices: readonly Device[] = [
 			width: 800,
 			height: 800,
 		},
-		links: [
-			{
-				label: "产品页面",
-				href: "https://www.ztemall.com/cn/goodsdetail/1537",
-			},
-		],
+		url: {
+			label: "产品页面",
+			href: "https://www.ztemall.com/cn/goodsdetail/1537",
+		},
 	},
-];
+] as const satisfies readonly Device[];
+
+export const devices: readonly Device[] = devicesData;

@@ -12,13 +12,13 @@ export const metadata: Metadata = {
 };
 
 const skillGroups: readonly {
-	category: Skill["category"];
+	group: Skill["group"];
 	label: string;
 }[] = [
-	{ category: "frontend", label: "前端与界面" },
-	{ category: "backend", label: "后端与自动化" },
-	{ category: "database", label: "数据存储" },
-	{ category: "tooling", label: "工程工具" },
+	{ group: "frontend", label: "前端与界面" },
+	{ group: "backend", label: "后端与自动化" },
+	{ group: "database", label: "数据存储" },
+	{ group: "tooling", label: "工程工具" },
 ];
 
 export default function SkillsPage() {
@@ -34,21 +34,23 @@ export default function SkillsPage() {
 			/>
 			{skillGroups.map((group) => {
 				const items = skills.filter(
-					(skill) => skill.category === group.category,
+					(skill) => skill.group === group.group,
 				);
 				if (items.length === 0) return null;
 
 				return (
 					<section
-						aria-labelledby={`skills-${group.category}`}
-						key={group.category}
+						aria-labelledby={`skills-${group.group}`}
+						key={group.group}
 					>
-						<h2 id={`skills-${group.category}`}>{group.label}</h2>
+						<h2 id={`skills-${group.group}`}>{group.label}</h2>
 						<ul>
 							{items.map((skill) => (
 								<li key={skill.id}>
 									<strong>{skill.name}</strong>
-									<span> — {skill.evidence.join("、")}</span>
+									{skill.summary ? (
+										<span> — {skill.summary}</span>
+									) : null}
 								</li>
 							))}
 						</ul>

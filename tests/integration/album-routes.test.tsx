@@ -21,6 +21,7 @@ describe("album routes", () => {
 			absoluteUrl("/albums/"),
 		);
 		expect(html).toContain('href="/albums/acg-example"');
+		expect(html).not.toContain('rel="prefetch"');
 		expect(html).toContain(albums[0]?.cover.alt);
 	});
 

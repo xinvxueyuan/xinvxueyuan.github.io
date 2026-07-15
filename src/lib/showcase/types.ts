@@ -25,8 +25,9 @@ export type Project = {
 	description: string;
 	status: ProjectStatus;
 	technologies: readonly string[];
-	image?: ShowcaseImage;
+	cover?: ShowcaseImage;
 	links: readonly ExternalLink[];
+	featured: boolean;
 };
 
 export type TimelineKind = "project" | "work" | "education" | "achievement";
@@ -36,24 +37,23 @@ export type TimelineEntry = {
 	title: string;
 	description: string;
 	kind: TimelineKind;
-	startDate: string;
-	endDate?: string;
-	links: readonly ExternalLink[];
+	date: string;
+	links?: readonly ExternalLink[];
 };
 
 export type Skill = {
 	id: string;
 	name: string;
-	category: "frontend" | "backend" | "database" | "tooling";
-	evidence: readonly string[];
+	group: "frontend" | "backend" | "database" | "tooling";
+	summary?: string;
 };
 
 export type Friend = {
 	id: string;
 	name: string;
 	description: string;
-	link: ExternalLink;
-	image?: ShowcaseImage;
+	url: ExternalLink;
+	avatar?: ShowcaseImage;
 	tags: readonly string[];
 };
 
@@ -64,12 +64,12 @@ export type Device = {
 	specs: string;
 	description: string;
 	image: ShowcaseImage;
-	links: readonly ExternalLink[];
+	url?: ExternalLink;
 };
 
 export type DiaryEntry = {
 	id: string;
-	content: string;
+	body: string;
 	publishedAt: string;
 	mood?: string;
 	location?: string;
@@ -77,16 +77,18 @@ export type DiaryEntry = {
 	tags: readonly string[];
 };
 
-export type AlbumPhoto = {
-	id: string;
-	image: ShowcaseImage;
+export type AlbumPhoto = ShowcaseImage & {
+	title?: string;
+	description?: string;
+	date?: string;
+	location?: string;
 };
 
 export type Album = {
 	slug: string;
 	title: string;
 	description: string;
-	date: string;
+	date?: string;
 	location?: string;
 	tags: readonly string[];
 	cover: ShowcaseImage;

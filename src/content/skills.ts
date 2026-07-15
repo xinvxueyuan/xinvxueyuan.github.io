@@ -1,34 +1,36 @@
 import type { Skill } from "../lib/showcase/types";
 
-export const skills: readonly Skill[] = [
+const skillsData = [
 	{
 		id: "typescript",
 		name: "TypeScript",
-		category: "frontend",
-		evidence: ["xinvStar"],
+		group: "frontend",
+		summary: "用于 xinvStar 的类型安全界面开发。",
 	},
 	{
 		id: "nextjs",
 		name: "Next.js",
-		category: "frontend",
-		evidence: ["xinvStar"],
+		group: "frontend",
+		summary: "用于构建和发布 xinvStar。",
 	},
 	{
 		id: "python",
 		name: "Python",
-		category: "backend",
-		evidence: ["Lingchu Bot"],
+		group: "backend",
+		summary: "用于 Lingchu Bot 的服务端能力。",
 	},
 	{
 		id: "nonebot2",
 		name: "NoneBot2",
-		category: "backend",
-		evidence: ["Lingchu Bot"],
+		group: "backend",
+		summary: "Lingchu Bot 的机器人框架。",
 	},
 	{
 		id: "sqlite",
 		name: "SQLite",
-		category: "database",
-		evidence: ["Lingchu Bot"],
+		group: "database",
+		summary: "用于 Lingchu Bot 的本地数据存储。",
 	},
-];
+] as const satisfies readonly Skill[];
+
+export const skills: readonly Skill[] = skillsData;

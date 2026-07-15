@@ -33,17 +33,20 @@ export default function ProjectsPage() {
 			<div>
 				{projects.map((project) => (
 					<article key={project.slug}>
-						{project.image ? (
+						{project.cover ? (
 							<Image
-								alt={project.image.alt}
-								height={project.image.height}
-								src={project.image.src}
-								width={project.image.width}
+								alt={project.cover.alt}
+								height={project.cover.height}
+								src={project.cover.src}
+								width={project.cover.width}
 							/>
 						) : null}
 						<h2>{project.title}</h2>
 						<p>{project.description}</p>
-						<p>状态：{statusLabels[project.status]}</p>
+						<p>
+							状态：{statusLabels[project.status]}
+							{project.featured ? " · 精选项目" : null}
+						</p>
 						<ul aria-label={`${project.title} 技术`}>
 							{project.technologies.map((technology) => (
 								<li key={technology}>{technology}</li>

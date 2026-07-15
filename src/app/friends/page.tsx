@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 import { EmptyState } from "@/components/showcase/empty-state";
 import { ExternalLink } from "@/components/showcase/external-link";
@@ -34,9 +35,17 @@ export default function FriendsPage() {
 					{friends.map((friend) => (
 						<li key={friend.id}>
 							<article>
+								{friend.avatar ? (
+									<Image
+										alt={friend.avatar.alt}
+										height={friend.avatar.height}
+										src={friend.avatar.src}
+										width={friend.avatar.width}
+									/>
+								) : null}
 								<h2>{friend.name}</h2>
 								<p>{friend.description}</p>
-								<ExternalLink link={friend.link} />
+								<ExternalLink link={friend.url} />
 								{friend.tags.length > 0 ? (
 									<p>{friend.tags.join("、")}</p>
 								) : null}

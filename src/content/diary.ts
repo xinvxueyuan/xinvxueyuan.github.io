@@ -1,3 +1,5 @@
 import type { DiaryEntry } from "../lib/showcase/types";
 
-export const diary: readonly DiaryEntry[] = [];
+const diaryData = [] as const satisfies readonly DiaryEntry[];
+
+export const diary: readonly DiaryEntry[] = diaryData;

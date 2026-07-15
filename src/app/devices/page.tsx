@@ -64,12 +64,9 @@ export default function DevicesPage() {
 												<dd>{device.specs}</dd>
 											</div>
 										</dl>
-										{device.links.map((link) => (
-											<ExternalLink
-												key={link.href}
-												link={link}
-											/>
-										))}
+										{device.url ? (
+											<ExternalLink link={device.url} />
+										) : null}
 									</article>
 								</li>
 							))}

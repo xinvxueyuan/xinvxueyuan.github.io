@@ -77,7 +77,7 @@ client enhancement dynamically loads PhotoSwipe on first interaction.
 | `pnpm framework:scan` | PASS — Astro/Svelte/Swup residue absent; no eager PhotoSwipe runtime import outside the isolated lightbox |
 | `pnpm lint` | PASS — zero warnings |
 | `pnpm typecheck` | PASS |
-| `pnpm vitest run --maxWorkers=1` | PASS — 18 files, 125 tests |
+| `pnpm vitest run --maxWorkers=1` | PASS — 18 files, 127 tests |
 | `pnpm build` | PASS — 192/192 static outputs; eight showcase entries and `/albums/acg-example/` emitted |
 | Playwright against a manually started production build | PASS — 36 tests |
 | `git diff --check` | PASS |
@@ -103,3 +103,12 @@ Projects, or Albums-index JavaScript. The album detail also omitted the
 implementation before interaction; its first photo activation fetched the
 deferred PhotoSwipe chunk, opened an accessible dialog, and Escape restored focus.
 The no-JavaScript album test opened the ordinary original-image link successfully.
+Browser stylesheet inspection also found PhotoSwipe CSS only on album detail.
+The Albums index disables Next link prefetch for the detail route so it does not
+fetch the detail-only stylesheet before navigation.
+
+The final content-domain review aligned the implementation with the approved
+field contract, retained `as const satisfies` source checks behind readonly
+consumer views, and added strict ISO calendar/order plus non-empty image-source
+gates. The user-approved AcgExample publication-rights record is retained in
+`docs/migration/media-provenance.md`.

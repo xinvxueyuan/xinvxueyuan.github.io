@@ -1,13 +1,13 @@
 import type { Project } from "../lib/showcase/types";
 
-export const projects: readonly Project[] = [
+const projectsData = [
 	{
 		slug: "xinvstar",
 		title: "xinvStar",
 		description: "个人博客与技术内容站点。",
 		status: "in-progress",
 		technologies: ["Next.js", "TypeScript"],
-		image: {
+		cover: {
 			src: "/assets/projects/xinvstar.webp",
 			alt: "xinvStar 博客项目界面",
 			width: 1920,
@@ -20,6 +20,7 @@ export const projects: readonly Project[] = [
 				href: "https://github.com/xinvxueyuan/xinvxueyuan.github.io",
 			},
 		],
+		featured: true,
 	},
 	{
 		slug: "lingchu-bot",
@@ -33,5 +34,8 @@ export const projects: readonly Project[] = [
 				href: "https://github.com/xinvxueyuan/lingchu-bot",
 			},
 		],
+		featured: true,
 	},
-];
+] as const satisfies readonly Project[];
+
+export const projects: readonly Project[] = projectsData;

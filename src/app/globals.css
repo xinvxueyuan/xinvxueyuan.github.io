@@ -494,7 +494,7 @@ pre[data-code-block].is-collapsed {
   margin-bottom: clamp(2rem, 5vw, 4rem);
 }
 
-.showcase-empty-state {
+.showcase-page .showcase-empty-state {
   max-width: 48rem;
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: 1px solid var(--border);
@@ -502,25 +502,25 @@ pre[data-code-block].is-collapsed {
   background: var(--surface-subtle);
 }
 
-.showcase-empty-state h2,
-[aria-labelledby="about-introduction"] h2,
-[aria-labelledby="showcase-navigation"] h2,
-[aria-labelledby^="skills-"] h2,
-[aria-labelledby^="devices-"] h2 {
+.showcase-page .showcase-empty-state h2,
+.showcase-page [aria-labelledby="about-introduction"] h2,
+.showcase-page [aria-labelledby="showcase-navigation"] h2,
+.showcase-page [aria-labelledby^="skills-"] h2,
+.showcase-page [aria-labelledby^="devices-"] h2 {
   margin-top: 0;
   font-family: var(--font-display);
   line-height: 1.3;
 }
 
-[aria-labelledby="about-introduction"],
-[aria-labelledby="showcase-navigation"] {
+.showcase-page [aria-labelledby="about-introduction"],
+.showcase-page [aria-labelledby="showcase-navigation"] {
   max-width: 70ch;
   margin-top: 2.5rem;
 }
 
-[aria-labelledby="showcase-navigation"] ul,
-[aria-labelledby^="skills-"] ul,
-[aria-labelledby^="devices-"] ul,
+.showcase-page [aria-labelledby="showcase-navigation"] ul,
+.showcase-page [aria-labelledby^="skills-"] ul,
+.showcase-page [aria-labelledby^="devices-"] ul,
 .showcase-page > .section-heading + ul,
 .showcase-page > .section-heading + ol {
   margin: 0;
@@ -528,7 +528,7 @@ pre[data-code-block].is-collapsed {
   list-style: none;
 }
 
-[aria-labelledby="showcase-navigation"] ul {
+.showcase-page [aria-labelledby="showcase-navigation"] ul {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem 1.5rem;
@@ -593,25 +593,25 @@ pre[data-code-block].is-collapsed {
   content: "";
 }
 
-[aria-labelledby^="skills-"],
-[aria-labelledby^="devices-"] {
+.showcase-page [aria-labelledby^="skills-"],
+.showcase-page [aria-labelledby^="devices-"] {
   padding-block: 1.75rem;
   border-bottom: 1px solid var(--border);
 }
 
-[aria-labelledby^="skills-"] ul {
+.showcase-page [aria-labelledby^="skills-"] ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
   gap: 0.75rem 2rem;
 }
 
-[aria-labelledby^="devices-"] ul {
+.showcase-page [aria-labelledby^="devices-"] ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   gap: 1.5rem;
 }
 
-[aria-labelledby^="devices-"] article {
+.showcase-page [aria-labelledby^="devices-"] article {
   height: 100%;
   padding: 1rem;
   border: 1px solid var(--border);
@@ -619,15 +619,15 @@ pre[data-code-block].is-collapsed {
   background: var(--surface);
 }
 
-[aria-labelledby^="devices-"] img {
+.showcase-page [aria-labelledby^="devices-"] img {
   width: 100%;
   aspect-ratio: 1;
   border-radius: var(--radius-sm);
   object-fit: cover;
 }
 
-[aria-labelledby^="devices-"] dl,
-[aria-labelledby^="devices-"] dd {
+.showcase-page [aria-labelledby^="devices-"] dl,
+.showcase-page [aria-labelledby^="devices-"] dd {
   margin-left: 0;
 }
 
@@ -646,20 +646,20 @@ pre[data-code-block].is-collapsed {
   border-radius: var(--radius-md);
 }
 
-[data-album-gallery] {
+.showcase-page [data-album-gallery] {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   gap: 0.75rem;
 }
 
-[data-album-gallery] a {
+.showcase-page [data-album-gallery] a {
   min-width: 0;
   overflow: hidden;
   border-radius: var(--radius-sm);
   background: var(--surface-subtle);
 }
 
-[data-album-gallery] img {
+.showcase-page [data-album-gallery] img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;

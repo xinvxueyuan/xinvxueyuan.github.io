@@ -27,7 +27,10 @@ export default function AlbumsPage() {
 				{albums.map((album) => (
 					<li key={album.slug}>
 						<article>
-							<Link href={`/albums/${album.slug}/`}>
+							<Link
+								href={`/albums/${album.slug}/`}
+								prefetch={false}
+							>
 								<Image
 									alt={album.cover.alt}
 									height={album.cover.height}
