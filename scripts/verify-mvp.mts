@@ -96,15 +96,41 @@ export async function findLegacyFrameworkResidue(
 	return findings.sort();
 }
 
+export async function findEagerDiscoveryImports(root: string): Promise<string[]> {
+	const findings: string[] = [];
+	for (const file of await walk(path.join(root, "src"))) {
+		if (!sourceExtensions.has(path.extname(file))) continue;
+		const relative = path.relative(root, file).split(path.sep).join("/");
+		const contents = await readFile(file, "utf8");
+		if (
+			contents.includes('from "mermaid"') ||
+			contents.includes("from 'mermaid'")
+		)
+			findings.push(`eager Mermaid import: ${relative}`);
+		if (
+			relative !== "src/components/interactive/search.tsx" &&
+			contents.includes("/pagefind/pagefind.js")
+		)
+			findings.push(`eager Pagefind reference: ${relative}`);
+	}
+	return findings.sort();
+}
+
 async function main(): Promise<void> {
-	const findings = await findLegacyFrameworkResidue(process.cwd());
+	const root = process.cwd();
+	const findings = [
+		...(await findLegacyFrameworkResidue(root)),
+		...(await findEagerDiscoveryImports(root)),
+	];
 	if (findings.length > 0) {
 		console.error("Legacy framework residue detected:\n");
 		console.error(findings.map((finding) => `- ${finding}`).join("\n"));
 		process.exitCode = 1;
 		return;
 	}
-	console.log("MVP framework scan passed: no Astro or Svelte runtime residue.");
+	console.log(
+		"MVP framework scan passed: no legacy runtime or eager discovery dependency residue.",
+	);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {

@@ -3,11 +3,55 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { findLegacyFrameworkResidue } from "../../scripts/verify-mvp.mts";
+import {
+	findEagerDiscoveryImports,
+	findLegacyFrameworkResidue,
+} from "../../scripts/verify-mvp.mts";
 
 describe("MVP framework boundary", () => {
+	it("keeps Pages CMS aligned with the canonical post contract", async () => {
+		const configuration = JSON.parse(
+			await readFile(new URL("../../.pages.yml", import.meta.url), "utf8"),
+		) as {
+			content: Array<{
+				fields: Array<{ fields?: Array<{ name: string }>; name: string }>;
+				path: string;
+			}>;
+			media: { input: string; output: string };
+		};
+		const posts = configuration.content.find(
+			(collection) => collection.path === "src/content/posts",
+		);
+
+		expect(configuration.media).toEqual({
+			input: "public/uploads",
+			output: "/uploads/",
+		});
+		expect(posts?.fields.map(({ name }) => name)).toEqual([
+			"title",
+			"description",
+			"published",
+			"updated",
+			"draft",
+			"tags",
+			"category",
+			"cover",
+			"comment",
+			"body",
+		]);
+		expect(
+			posts?.fields.find(({ name }) => name === "cover")?.fields?.map(
+				({ name }) => name,
+			),
+		).toEqual(["src", "alt", "width", "height"]);
+	});
+
 	it("contains no Astro or Svelte runtime residue", async () => {
 		await expect(findLegacyFrameworkResidue(process.cwd())).resolves.toEqual([]);
+	});
+
+	it("keeps Mermaid and Pagefind out of eager source imports", async () => {
+		await expect(findEagerDiscoveryImports(process.cwd())).resolves.toEqual([]);
 	});
 
 	it("detects legacy framework names inside deployment configuration", async () => {
