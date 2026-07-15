@@ -19,7 +19,7 @@ export function PostCard({ post }: { post: Post }) {
 			</h3>
 			{post.description ? <p>{post.description}</p> : null}
 			{post.category || post.tags.length ? (
-				<p>
+				<p className="post-card__taxonomy">
 					{post.category ? (
 						<a
 							href={`/categories/${encodeURIComponent(getTaxonomySlug(post.category))}/`}

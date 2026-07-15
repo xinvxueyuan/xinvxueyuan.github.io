@@ -103,6 +103,17 @@ for (const viewport of [
 			)
 			.toEqual({ client: viewport.width, scroll: viewport.width });
 
+		if (viewport.width === 390) {
+			const taxonomyLinkRights = await page
+				.locator(".post-card__taxonomy a")
+				.evaluateAll((links) =>
+					links.map((link) => link.getBoundingClientRect().right),
+				);
+			expect(
+				taxonomyLinkRights.every((right) => right <= viewport.width),
+			).toBe(true);
+		}
+
 		const toggleBox = await page
 			.getByRole("button", { name: /切换到/ })
 			.boundingBox();

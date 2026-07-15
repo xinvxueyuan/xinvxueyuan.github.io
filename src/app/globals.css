@@ -518,6 +518,18 @@ pre[data-code-block].is-collapsed {
   text-wrap: pretty;
 }
 
+.post-card__taxonomy {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.post-card__taxonomy a {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .page-shell--article {
   width: min(var(--content-width), calc(100% - 2 * var(--page-gutter)));
 }
