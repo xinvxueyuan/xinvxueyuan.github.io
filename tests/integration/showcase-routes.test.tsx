@@ -78,7 +78,7 @@ describe("personal showcase routes", () => {
 			"diary",
 			"albums",
 		]) {
-			expect(html).toContain(`href="/${route}"`);
+			expect(html).toContain(`href="/${route}/"`);
 		}
 	});
 
@@ -89,6 +89,7 @@ describe("personal showcase routes", () => {
 		expect(html).toContain("Lingchu Bot");
 		expect(html).toContain('target="_blank"');
 		expect(html).toContain('rel="noopener noreferrer"');
+		expect(html).toContain('sizes="(max-width: 720px) 100vw, 35vw"');
 	});
 
 	it("uses explicit Chinese empty states for unpublished timeline and friends data", () => {
@@ -109,6 +110,11 @@ describe("personal showcase routes", () => {
 		expect(html).toContain("ZTE U25S");
 		expect(html).not.toContain("OnePlus");
 		expect(images).toHaveLength(2);
+		expect(
+			html.match(
+				/sizes="\(max-width: 720px\) calc\(100vw - 4rem\), \(max-width: 1200px\) 40vw, 22rem"/gu,
+			),
+		).toHaveLength(2);
 		expect(
 			images.every(
 				(image) =>

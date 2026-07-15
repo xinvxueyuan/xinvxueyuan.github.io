@@ -217,6 +217,33 @@ describe("MVP framework boundary", () => {
 		}
 	});
 
+	it("allows PhotoSwipe imports inside the designated album lightbox boundary", async () => {
+		const root = await mkdtemp(
+			path.join(os.tmpdir(), "mvp-framework-scan-"),
+		);
+		try {
+			const boundary = path.join(
+				root,
+				"src",
+				"components",
+				"interactive",
+			);
+			await mkdir(boundary, { recursive: true });
+			await writeFile(
+				path.join(root, "package.json"),
+				JSON.stringify({ dependencies: {} }),
+			);
+			await writeFile(
+				path.join(boundary, "album-lightbox.tsx"),
+				'import PhotoSwipe from "photoswipe";\n',
+			);
+
+			await expect(findEagerDiscoveryImports(root)).resolves.toEqual([]);
+		} finally {
+			await rm(root, { force: true, recursive: true });
+		}
+	});
+
 	it("serializes static generation for low-memory CI runners", async () => {
 		const nextConfig = await readFile("next.config.ts", "utf8");
 

@@ -53,6 +53,7 @@ export default function DevicesPage() {
 										<Image
 											alt={device.image.alt}
 											height={device.image.height}
+											sizes="(max-width: 720px) calc(100vw - 4rem), (max-width: 1200px) 40vw, 22rem"
 											src={device.image.src}
 											width={device.image.width}
 										/>

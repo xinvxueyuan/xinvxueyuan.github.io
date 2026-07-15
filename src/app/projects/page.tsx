@@ -37,6 +37,7 @@ export default function ProjectsPage() {
 							<Image
 								alt={project.cover.alt}
 								height={project.cover.height}
+								sizes="(max-width: 720px) 100vw, 35vw"
 								src={project.cover.src}
 								width={project.cover.width}
 							/>

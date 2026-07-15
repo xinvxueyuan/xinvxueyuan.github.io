@@ -38,7 +38,9 @@ export default function FriendsPage() {
 								{friend.avatar ? (
 									<Image
 										alt={friend.avatar.alt}
+										className="friend-card__avatar"
 										height={friend.avatar.height}
+										sizes="4rem"
 										src={friend.avatar.src}
 										width={friend.avatar.width}
 									/>

@@ -58,6 +58,9 @@ describe("blog routes", () => {
 		}
 		expect(footer).toContain('href="/albums"');
 		expect(footer).toContain('href="/friends"');
+		for (const route of ["timeline", "skills", "devices", "diary"]) {
+			expect(footer).not.toContain(`href="/${route}`);
+		}
 	});
 	it("renders every published post on the home page in date-descending order", async () => {
 		const posts = await getPublishedPosts();

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { ExternalLink } from "@/components/showcase/external-link";
 import { PageIntro } from "@/components/showcase/page-intro";
@@ -45,7 +44,7 @@ export default function AboutPage() {
 				<ul>
 					{showcaseRoutes.map((route) => (
 						<li key={route.href}>
-							<Link href={route.href}>{route.label}</Link>
+							<a href={route.href}>{route.label}</a>
 						</li>
 					))}
 				</ul>

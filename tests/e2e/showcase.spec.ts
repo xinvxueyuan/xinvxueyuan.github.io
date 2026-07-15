@@ -127,6 +127,25 @@ test("showcase styles do not change taxonomy post-card grid placement", async ({
 	}
 });
 
+test("project layout reserves a cover column only when a cover exists", async ({
+	page,
+}) => {
+	await page.goto("/projects/");
+	const xinvStar = page.getByRole("article").filter({ hasText: "xinvStar" });
+	const lingchu = page
+		.getByRole("article")
+		.filter({ hasText: "Lingchu Bot" });
+
+	await expect(xinvStar.locator("img")).toHaveCount(1);
+	await expect(lingchu.locator("img")).toHaveCount(0);
+	expect(
+		await xinvStar.evaluate((element) => getComputedStyle(element).display),
+	).toBe("grid");
+	expect(
+		await lingchu.evaluate((element) => getComputedStyle(element).display),
+	).toBe("block");
+});
+
 test("album remains useful without JavaScript", async ({ browser }) => {
 	const context = await browser.newContext({ javaScriptEnabled: false });
 	const page = await context.newPage();
@@ -215,11 +234,12 @@ test("migrated showcase media is local and returns 200", async ({
 		"/albums/acg-example/",
 	]) {
 		await page.goto(route);
-		for (const source of await page
-			.locator("img")
-			.evaluateAll((images) =>
-				images.map((image) => (image as HTMLImageElement).currentSrc),
-			)) {
+		for (const source of await page.locator("img").evaluateAll((images) =>
+			images.map((image) => {
+				const htmlImage = image as HTMLImageElement;
+				return htmlImage.currentSrc || htmlImage.src;
+			}),
+		)) {
 			expect(new URL(source).origin).toBe("http://127.0.0.1:3100");
 			media.add(source);
 		}

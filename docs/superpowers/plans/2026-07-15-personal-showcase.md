@@ -14,7 +14,7 @@
 - 保持纯 Next.js App Router；禁止 Astro、Svelte、Vue、Swup 和第二套路由框架。
 - 数据必须来自类型安全静态文件；不得新增数据库、运行时 CMS、通用页面构建器或运行时目录扫描。
 - 不发布虚构教育/工作经历、模板技能、框架文档假友链或未确认日记；无真实内容时返回 200 并显示诚实空状态。
-- Diary 不进入博客文章、feed、taxonomy、Pagefind 或 llms。
+- Diary 不进入博客文章、feed、taxonomy、Pagefind 或 LLMs。
 - 所有公开外链必须是 HTTPS，并渲染 `target="_blank" rel="noopener noreferrer"`。
 - 所有图片必须有非空 alt 与正整数 width/height。
 - 主导航只增加“关于”和“项目”；个人展示其余入口由 About 和页脚发现。
@@ -379,4 +379,3 @@ git commit -s -m "chore: verify the personal showcase release"
 5. Require GitHub CI, DCO, CodeRabbit and Vercel Preview green.
 6. Verify Preview About, Projects, empty states, Devices, Albums index/detail, PhotoSwipe, 404, sitemap and 360px layout.
 7. Merge only after Preview is green; verify the same paths on `www.xinvstar.xyz` and retain the previous Ready production deployment as rollback.
-

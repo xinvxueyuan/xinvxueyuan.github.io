@@ -1,7 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it, vi } from "vitest";
-
-vi.mock("photoswipe/style.css", () => ({}));
+import { describe, expect, it } from "vitest";
 
 import AlbumsPage, {
 	metadata as albumsMetadata,
@@ -49,14 +47,12 @@ describe("album routes", () => {
 		expect(html).toContain(`id="album-gallery-${album.slug}"`);
 	});
 
-	it("returns the Next.js not-found sentinel for an unknown album", async () => {
+	it("returns a 404 error for an unknown album", async () => {
 		const params = Promise.resolve({ slug: "missing" });
 
-		await expect(AlbumPage({ params })).rejects.toMatchObject({
-			digest: "NEXT_HTTP_ERROR_FALLBACK;404",
-		});
+		await expect(AlbumPage({ params })).rejects.toThrow(/404/u);
 		await expect(
 			generateMetadata({ params: Promise.resolve({ slug: "missing" }) }),
-		).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
+		).rejects.toThrow(/404/u);
 	});
 });
