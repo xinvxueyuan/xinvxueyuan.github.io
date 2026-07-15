@@ -14,9 +14,9 @@
 - `pnpm framework:scan`
 - `pnpm lint`
 - `pnpm typecheck`
-- `pnpm test -- --maxWorkers=1` — 13 files / 82 tests
+- `pnpm vitest run --maxWorkers=1` — 13 files / 86 tests
 - `pnpm build` — 183 route outputs, including 37 posts and article OG images
-- `PLAYWRIGHT_SKIP_BUILD=1 pnpm test:e2e` — 22 passed
+- `PLAYWRIGHT_SKIP_BUILD=1 pnpm test:e2e` — 26 passed
 - `git diff --check`
 
 ## Deployment and rollback
