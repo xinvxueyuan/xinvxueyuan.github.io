@@ -26,7 +26,8 @@ type PostPageProps = {
 	params: Promise<{ slug: string }>;
 };
 
-function decodeSlug(slug: string): string | undefined {
+export function decodeSlug(slug: string): string | undefined {
+	if (!/%[\da-f]{2}/iu.test(slug)) return slug;
 	try {
 		return decodeURIComponent(slug);
 	} catch {
@@ -111,7 +112,11 @@ export default async function PostPage({ params }: PostPageProps) {
 							words={reading.words}
 						/>
 					</header>
-					<Markdown hasMermaid={hasMermaid} html={html} />
+					<Markdown
+						key={post.slug}
+						hasMermaid={hasMermaid}
+						html={html}
+					/>
 					<footer className="article-footer">
 						<p>除特别说明外，本文采用 CC BY-NC-SA 4.0 许可。</p>
 						<ShareActions

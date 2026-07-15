@@ -15,7 +15,7 @@ export function getTaxonomySlug(name: string): string {
 }
 
 function taxonomyKey(name: string): string {
-	return name.trim().toLocaleLowerCase();
+	return name.trim().toLowerCase();
 }
 
 function stableSlugSuffix(value: string): string {
@@ -44,7 +44,7 @@ function collectTerms(values: string[][]): TaxonomyTerm[] {
 		const seen = new Set<string>();
 		for (const rawLabel of labels) {
 			const name = rawLabel.trim();
-			const key = name.toLocaleLowerCase();
+			const key = name.toLowerCase();
 			if (!name || seen.has(key)) continue;
 			seen.add(key);
 			const current = terms.get(key);

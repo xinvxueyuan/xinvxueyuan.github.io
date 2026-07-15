@@ -123,7 +123,7 @@ async function main(): Promise<void> {
 		...(await findEagerDiscoveryImports(root)),
 	];
 	if (findings.length > 0) {
-		console.error("Legacy framework residue detected:\n");
+		console.error("MVP framework boundary violations detected:\n");
 		console.error(findings.map((finding) => `- ${finding}`).join("\n"));
 		process.exitCode = 1;
 		return;

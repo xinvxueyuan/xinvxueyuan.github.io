@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import type { PostSummary } from "../../src/lib/content/posts";
 import {
@@ -85,5 +85,25 @@ describe("content taxonomy", () => {
 		expect(getTaxonomyTermSlug("Node.js", first.tags)).not.toBe(
 			getTaxonomyTermSlug("Node-js", first.tags),
 		);
+	});
+
+	it("normalizes taxonomy keys without consulting the host locale", () => {
+		const localeLowerCase = vi
+			.spyOn(String.prototype, "toLocaleLowerCase")
+			.mockImplementation(() => {
+				throw new Error("host locale must not affect taxonomy keys");
+			});
+
+		try {
+			expect(
+				getTaxonomy([
+					summary("one", "2026-07-02T00:00:00.000Z", {
+						tags: ["I", "i"],
+					}),
+				]).tags,
+			).toEqual([{ count: 1, name: "I", slug: "i" }]);
+		} finally {
+			localeLowerCase.mockRestore();
+		}
 	});
 });

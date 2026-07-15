@@ -164,6 +164,33 @@ describe("MVP post API", () => {
 		});
 	});
 
+	it("reserves unsuffixed public slugs before drafts so draft changes cannot move public URLs", async () => {
+		const withDraft = await createFixture({
+			"Hello!.md": postSource("Draft collision", "2026-01-03", {
+				draft: true,
+			}),
+			"hello.md": postSource("Published", "2026-01-02"),
+		});
+		const publishedOnly = await createFixture({
+			"hello.md": postSource("Published", "2026-01-02"),
+		});
+
+		expect((await getAllPosts({ directory: withDraft }))[0].slug).toBe(
+			"hello",
+		);
+		expect(
+			(await getAllPosts({ directory: publishedOnly }))[0].slug,
+		).toBe("hello");
+		expect(
+			(await getAllPosts({ directory: withDraft, includeDrafts: true })).map(
+				(post) => [post.title, post.slug],
+			),
+		).toEqual([
+			["Draft collision", "hello-1"],
+			["Published", "hello"],
+		]);
+	});
+
 	it("keeps fallback slugs unique when filenames contain only punctuation", async () => {
 		const directory = await createFixture({
 			"!!!.md": postSource("First", "2026-01-01"),
@@ -226,6 +253,47 @@ describe("MVP post API", () => {
 		await expect(
 			getAllPosts({ directory, includeDrafts: true }),
 		).rejects.toThrow(/partial-cover\.md[\s\S]*cover/iu);
+	});
+
+	it("trims required frontmatter strings before validating and returning them", async () => {
+		const directory = await createFixture({
+			"trimmed.md": postSource("  Trimmed title  ", "2026-01-02", {
+				extra: "category: '  Engineering  '\ncover:\n  src: '  /cover.webp  '\n  alt: '  Cover text  '\n  width: 1200\n  height: 630\n",
+			}),
+		});
+
+		const [post] = await getAllPosts({ directory, includeDrafts: true });
+
+		expect(post.title).toBe("Trimmed title");
+		expect(post.category).toBe("Engineering");
+		expect(post.cover).toMatchObject({
+			alt: "Cover text",
+			src: "/cover.webp",
+		});
+	});
+
+	it.each([
+		["title", "title: '   '\npublished: 2026-01-02"],
+		[
+			"category",
+			"title: Valid\npublished: 2026-01-02\ncategory: '   '",
+		],
+		[
+			"cover alt",
+			"title: Valid\npublished: 2026-01-02\ncover:\n  src: /cover.webp\n  alt: '   '\n  width: 1200\n  height: 630",
+		],
+		[
+			"cover src",
+			"title: Valid\npublished: 2026-01-02\ncover:\n  src: '   '\n  alt: Cover\n  width: 1200\n  height: 630",
+		],
+	])("rejects whitespace-only %s after trimming", async (_label, fields) => {
+		const directory = await createFixture({
+			"whitespace.md": `---\n${fields}\n---\n\nBody\n`,
+		});
+
+		await expect(
+			getAllPosts({ directory, includeDrafts: true }),
+		).rejects.toThrow(/whitespace\.md/u);
 	});
 
 	it("accepts exact unquoted and quoted calendar dates", async () => {

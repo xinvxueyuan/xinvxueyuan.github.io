@@ -3,26 +3,16 @@ import { notFound } from "next/navigation";
 
 import { PostCard } from "@/components/post-card";
 import { getPublishedPosts } from "@/lib/content/posts";
+import { findRouteTaxonomyTerm } from "@/lib/content/route-term";
 import { getTaxonomy } from "@/lib/content/taxonomy";
 import { absoluteUrl } from "@/lib/site";
 
 type CategoryRoute = { params: Promise<{ category: string }> };
 
-function decodeTerm(value: string): string | undefined {
-	try {
-		return decodeURIComponent(value);
-	} catch {
-		return undefined;
-	}
-}
-
 async function resolveCategory(value: string) {
 	const posts = await getPublishedPosts();
 	const taxonomy = getTaxonomy(posts);
-	const slug = decodeTerm(value);
-	const term = slug
-		? taxonomy.categories.find((candidate) => candidate.slug === slug)
-		: undefined;
+	const term = findRouteTaxonomyTerm(value, taxonomy.categories);
 	return term ? { posts, taxonomy, term } : undefined;
 }
 

@@ -27,16 +27,20 @@ export const metadata: Metadata = {
 };
 
 const themeScript = `
+let stored = null;
 try {
-  const stored = localStorage.getItem("xinvstar-theme");
-  const theme = stored === "dark" || stored === "light"
-    ? stored
-    : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  document.documentElement.dataset.theme = theme;
-  document.documentElement.style.colorScheme = theme;
-} catch (_) {
-  document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}`;
+  if (typeof localStorage !== "undefined") {
+    stored = localStorage.getItem("xinvstar-theme");
+  }
+} catch (_) {}
+const prefersDark = typeof matchMedia === "function"
+  && matchMedia("(prefers-color-scheme: dark)").matches;
+const theme = stored === "dark" || stored === "light"
+  ? stored
+  : prefersDark ? "dark" : "light";
+document.documentElement.dataset.theme = theme;
+document.documentElement.style.colorScheme = theme;
+`;
 
 export default function RootLayout({
 	children,

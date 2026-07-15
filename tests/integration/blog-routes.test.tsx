@@ -1,12 +1,22 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
-import { GET as getAtom } from "../../src/app/atom.xml/route";
-import { GET as getLlmsFull } from "../../src/app/llms-full.txt/route";
-import { GET as getLlms } from "../../src/app/llms.txt/route";
+import {
+	dynamic as atomDynamic,
+	GET as getAtom,
+} from "../../src/app/atom.xml/route";
+import {
+	dynamic as llmsFullDynamic,
+	GET as getLlmsFull,
+} from "../../src/app/llms-full.txt/route";
+import {
+	dynamic as llmsDynamic,
+	GET as getLlms,
+} from "../../src/app/llms.txt/route";
 import notFoundPage from "../../src/app/not-found";
 import homePage, { metadata as homeMetadata } from "../../src/app/page";
 import postPage, {
+	decodeSlug,
 	generateMetadata,
 	generateStaticParams,
 } from "../../src/app/posts/[slug]/page";
@@ -17,7 +27,10 @@ import {
 	size as ogSize,
 } from "../../src/app/posts/[slug]/opengraph-image";
 import robots from "../../src/app/robots";
-import { GET as getRss } from "../../src/app/rss.xml/route";
+import {
+	dynamic as rssDynamic,
+	GET as getRss,
+} from "../../src/app/rss.xml/route";
 import sitemap from "../../src/app/sitemap";
 import { getTaxonomy } from "../../src/lib/content/taxonomy";
 import { getPublishedPosts } from "../../src/lib/posts";
@@ -65,34 +78,36 @@ describe("blog routes", () => {
 		expect(html).toContain("BlogPosting");
 	});
 
-	it(
-		"serves feed and llms routes with exact media types",
-		async () => {
-			const [rss, atom, llms, llmsFull] = await Promise.all([
-				getRss(),
-				getAtom(),
-				getLlms(),
-				getLlmsFull(),
-			]);
-			expect(rss.headers.get("content-type")).toBe(
-				"application/rss+xml; charset=utf-8",
-			);
-			expect(atom.headers.get("content-type")).toBe(
-				"application/atom+xml; charset=utf-8",
-			);
-			expect(llms.headers.get("content-type")).toBe(
-				"text/plain; charset=utf-8",
-			);
-			expect(llmsFull.headers.get("content-type")).toBe(
-				"text/plain; charset=utf-8",
-			);
-			expect(await rss.text()).toContain("<rss version=\"2.0\"");
-			expect(await atom.text()).toContain(
-				'<feed xmlns="http://www.w3.org/2005/Atom">',
-			);
-		},
-		30_000,
-	);
+	it("serves feed and llms routes with exact media types", async () => {
+		const [rss, atom, llms, llmsFull] = await Promise.all([
+			getRss(),
+			getAtom(),
+			getLlms(),
+			getLlmsFull(),
+		]);
+		expect(rss.headers.get("content-type")).toBe(
+			"application/rss+xml; charset=utf-8",
+		);
+		expect(atom.headers.get("content-type")).toBe(
+			"application/atom+xml; charset=utf-8",
+		);
+		expect(llms.headers.get("content-type")).toBe(
+			"text/plain; charset=utf-8",
+		);
+		expect(llmsFull.headers.get("content-type")).toBe(
+			"text/plain; charset=utf-8",
+		);
+		expect(await rss.text()).toContain('<rss version="2.0"');
+		expect(await atom.text()).toContain(
+			'<feed xmlns="http://www.w3.org/2005/Atom">',
+		);
+	}, 30_000);
+
+	it("forces deterministic discovery documents to be statically generated", () => {
+		expect([rssDynamic, atomDynamic, llmsDynamic, llmsFullDynamic]).toEqual(
+			["force-static", "force-static", "force-static", "force-static"],
+		);
+	});
 
 	it("statically generates article Open Graph images for published posts", async () => {
 		const posts = await getPublishedPosts();
@@ -121,21 +136,25 @@ describe("blog routes", () => {
 		).rejects.toThrow(/404|NEXT_HTTP_ERROR_FALLBACK/u);
 	});
 
-	it(
-		"renders exactly one level-one heading for every published article",
-		async () => {
-			for (const post of await getPublishedPosts()) {
-				const html = renderToStaticMarkup(
-					await postPage({ params: Promise.resolve({ slug: post.slug }) }),
-				);
-				expect(
-					html.match(/<h1(?:\s|>)/gu),
-					post.sourcePath,
-				).toHaveLength(1);
-			}
-		},
-		30_000,
-	);
+	it("decodes encoded slugs once while preserving already-decoded percent signs", () => {
+		expect(decodeSlug("hello%20world")).toBe("hello world");
+		expect(decodeSlug("100%-complete")).toBe("100%-complete");
+		expect(decodeSlug("already%2520encoded")).toBe("already%20encoded");
+		expect(decodeSlug("%E0%A4%A")).toBeUndefined();
+	});
+
+	it("renders exactly one level-one heading for every published article", async () => {
+		for (const post of await getPublishedPosts()) {
+			const html = renderToStaticMarkup(
+				await postPage({
+					params: Promise.resolve({ slug: post.slug }),
+				}),
+			);
+			expect(html.match(/<h1(?:\s|>)/gu), post.sourcePath).toHaveLength(
+				1,
+			);
+		}
+	}, 30_000);
 
 	it("publishes root canonical metadata, robots and all post sitemap entries", async () => {
 		const posts = await getPublishedPosts();
@@ -157,7 +176,9 @@ describe("blog routes", () => {
 			absoluteUrl("/archive/"),
 			absoluteUrl("/search/"),
 			...taxonomy.categories.map((category) =>
-				absoluteUrl(`/categories/${encodeURIComponent(category.slug)}/`),
+				absoluteUrl(
+					`/categories/${encodeURIComponent(category.slug)}/`,
+				),
 			),
 			...taxonomy.tags.map((tag) =>
 				absoluteUrl(`/tags/${encodeURIComponent(tag.slug)}/`),

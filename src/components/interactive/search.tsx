@@ -14,20 +14,36 @@ type SearchResult = { excerpt: string; title: string; url: string };
 
 const pagefindUrl = "/pagefind/pagefind.js";
 
+export function createRetryableLoader<T>(importer: () => Promise<T>) {
+	let resolved: T | undefined;
+	let loading: Promise<T> | undefined;
+	return async () => {
+		if (resolved) return resolved;
+		loading ??= importer();
+		try {
+			resolved = await loading;
+			return resolved;
+		} catch (error) {
+			loading = undefined;
+			throw error;
+		}
+	};
+}
+
 export function Search() {
-	const pagefind = useRef<Pagefind | null>(null);
-	const loading = useRef<Promise<Pagefind> | null>(null);
+	const loader = useRef(
+		createRetryableLoader(() =>
+			import(/* webpackIgnore: true */ pagefindUrl).then(
+				(module) => module as unknown as Pagefind,
+			),
+		),
+	);
 	const request = useRef(0);
 	const [results, setResults] = useState<SearchResult[]>([]);
 	const [status, setStatus] = useState("输入关键词开始搜索");
 
 	const loadPagefind = useCallback(async () => {
-		if (pagefind.current) return pagefind.current;
-		loading.current ??= import(/* webpackIgnore: true */ pagefindUrl).then(
-			(module) => module as unknown as Pagefind,
-		);
-		pagefind.current = await loading.current;
-		return pagefind.current;
+		return loader.current();
 	}, []);
 
 	const search = useCallback(
@@ -54,7 +70,11 @@ export function Search() {
 						url: entry.url,
 					})),
 				);
-				setStatus(entries.length ? `找到 ${entries.length} 篇文章` : "没有找到相关文章");
+				setStatus(
+					entries.length
+						? `找到 ${entries.length} 篇文章`
+						: "没有找到相关文章",
+				);
 			} catch {
 				if (currentRequest !== request.current) return;
 				setResults([]);

@@ -11,32 +11,80 @@ import {
 describe("MVP framework boundary", () => {
 	it("keeps Pages CMS aligned with the canonical post contract", async () => {
 		const configuration = JSON.parse(
-			await readFile(new URL("../../.pages.yml", import.meta.url), "utf8"),
+			await readFile(
+				new URL("../../.pages.yml", import.meta.url),
+				"utf8",
+			),
 		);
 
 		expect(configuration).toEqual({
 			content: [
 				{
 					fields: [
-						{ label: "标题", name: "title", required: true, type: "string" },
+						{
+							label: "标题",
+							name: "title",
+							required: true,
+							type: "string",
+						},
 						{ label: "摘要", name: "description", type: "text" },
-						{ label: "发布日期", name: "published", required: true, type: "date" },
+						{
+							label: "发布日期",
+							name: "published",
+							required: true,
+							type: "date",
+						},
 						{ label: "更新日期", name: "updated", type: "date" },
-						{ default: true, label: "草稿", name: "draft", type: "boolean" },
-						{ label: "标签", list: true, name: "tags", type: "string" },
+						{
+							default: true,
+							label: "草稿",
+							name: "draft",
+							type: "boolean",
+						},
+						{
+							label: "标签",
+							list: true,
+							name: "tags",
+							type: "string",
+						},
 						{ label: "分类", name: "category", type: "string" },
 						{
 							fields: [
-								{ label: "图片", name: "src", required: true, type: "image" },
-								{ label: "替代文本", name: "alt", required: true, type: "string" },
-								{ label: "宽度", name: "width", required: true, type: "number" },
-								{ label: "高度", name: "height", required: true, type: "number" },
+								{
+									label: "图片",
+									name: "src",
+									required: true,
+									type: "image",
+								},
+								{
+									label: "替代文本",
+									name: "alt",
+									required: true,
+									type: "string",
+								},
+								{
+									label: "宽度",
+									name: "width",
+									required: true,
+									type: "number",
+								},
+								{
+									label: "高度",
+									name: "height",
+									required: true,
+									type: "number",
+								},
 							],
 							label: "封面",
 							name: "cover",
 							type: "object",
 						},
-						{ default: true, label: "开放评论", name: "comment", type: "boolean" },
+						{
+							default: true,
+							label: "开放评论",
+							name: "comment",
+							type: "boolean",
+						},
 						{ label: "正文", name: "body", type: "rich-text" },
 					],
 					filename: "{year}-{month}-{day}-{primary}.md",
@@ -44,7 +92,9 @@ describe("MVP framework boundary", () => {
 					name: "posts",
 					path: "src/content/posts",
 					type: "collection",
-					view: { fields: ["title", "published", "category", "draft"] },
+					view: {
+						fields: ["title", "published", "category", "draft"],
+					},
 				},
 			],
 			media: { input: "public/uploads", output: "/uploads/" },
@@ -52,15 +102,26 @@ describe("MVP framework boundary", () => {
 	});
 
 	it("contains no Astro or Svelte runtime residue", async () => {
-		await expect(findLegacyFrameworkResidue(process.cwd())).resolves.toEqual([]);
+		await expect(
+			findLegacyFrameworkResidue(process.cwd()),
+		).resolves.toEqual([]);
 	});
 
 	it("keeps Mermaid and Pagefind out of eager source imports", async () => {
-		await expect(findEagerDiscoveryImports(process.cwd())).resolves.toEqual([]);
+		await expect(findEagerDiscoveryImports(process.cwd())).resolves.toEqual(
+			[],
+		);
+	});
+
+	it("reports a boundary violation message that also describes eager imports", async () => {
+		const script = await readFile("scripts/verify-mvp.mts", "utf8");
+		expect(script).toContain("MVP framework boundary violations detected");
 	});
 
 	it("detects legacy framework names inside deployment configuration", async () => {
-		const root = await mkdtemp(path.join(os.tmpdir(), "mvp-framework-scan-"));
+		const root = await mkdtemp(
+			path.join(os.tmpdir(), "mvp-framework-scan-"),
+		);
 		try {
 			await mkdir(path.join(root, "src"));
 			await writeFile(
@@ -81,7 +142,9 @@ describe("MVP framework boundary", () => {
 	});
 
 	it("detects legacy framework plugins in root dotfiles", async () => {
-		const root = await mkdtemp(path.join(os.tmpdir(), "mvp-framework-scan-"));
+		const root = await mkdtemp(
+			path.join(os.tmpdir(), "mvp-framework-scan-"),
+		);
 		try {
 			await mkdir(path.join(root, "src"));
 			await writeFile(
@@ -107,5 +170,19 @@ describe("MVP framework boundary", () => {
 		expect(nextConfig).toContain("cpus: 1");
 		expect(nextConfig).toContain("staticGenerationMaxConcurrency: 1");
 		expect(nextConfig).toContain("staticGenerationMinPagesPerWorker: 40");
+	});
+
+	it("keeps hydration and accessibility fallbacks defensive", async () => {
+		const [layout, styles, postPage] = await Promise.all([
+			readFile("src/app/layout.tsx", "utf8"),
+			readFile("src/app/globals.css", "utf8"),
+			readFile("src/app/posts/[slug]/page.tsx", "utf8"),
+		]);
+
+		expect(layout).toContain('typeof matchMedia === "function"');
+		expect(layout).toContain('typeof localStorage !== "undefined"');
+		expect(styles).toContain("clip-path: inset(50%)");
+		expect(styles).not.toMatch(/\n\s*clip:\s*rect/u);
+		expect(postPage).toMatch(/<Markdown\s+key=\{post\.slug\}/u);
 	});
 });

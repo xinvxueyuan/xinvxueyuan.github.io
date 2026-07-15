@@ -21,6 +21,7 @@ import {
 	getTaxonomy,
 	getTaxonomyTermSlug,
 } from "../../src/lib/content/taxonomy";
+import { findRouteTaxonomyTerm } from "../../src/lib/content/route-term";
 import { absoluteUrl } from "../../src/lib/site";
 
 describe("discovery routes", () => {
@@ -99,6 +100,20 @@ describe("discovery routes", () => {
 		expect(html).toContain(
 			`/tags/${encodeURIComponent(getTaxonomyTermSlug(post!.tags[0], taxonomy.tags))}/`,
 		);
+	});
+
+	it("accepts decoded and encoded taxonomy params without rejecting a literal percent slug", () => {
+		const terms = [
+			{ count: 1, name: "工程", slug: "工程" },
+			{ count: 1, name: "Percent", slug: "%" },
+		];
+
+		expect(findRouteTaxonomyTerm("工程", terms)?.name).toBe("工程");
+		expect(findRouteTaxonomyTerm("%E5%B7%A5%E7%A8%8B", terms)?.name).toBe(
+			"工程",
+		);
+		expect(findRouteTaxonomyTerm("%", terms)?.name).toBe("Percent");
+		expect(findRouteTaxonomyTerm("%E0%A4%A", terms)).toBeUndefined();
 	});
 
 	it("links colliding category and tag labels to their distinct route slugs", async () => {

@@ -77,21 +77,23 @@ const dateStringSchema = z
 		return date;
 	});
 
+const requiredTrimmedStringSchema = z.string().trim().min(1);
+
 const coverSchema = z.object({
-	alt: z.string().min(1),
+	alt: requiredTrimmedStringSchema,
 	height: z.number().int().positive(),
-	src: z.string().min(1),
+	src: requiredTrimmedStringSchema,
 	width: z.number().int().positive(),
 });
 
 const frontmatterSchema = z.object({
-	category: z.string().min(1).optional(),
+	category: requiredTrimmedStringSchema.optional(),
 	comment: z.boolean().optional().default(true),
 	cover: coverSchema.optional(),
 	description: z.string().optional(),
 	draft: z.boolean().optional().default(false),
 	tags: z.array(z.string()).optional().default([]),
-	title: z.string().min(1),
+	title: requiredTrimmedStringSchema,
 });
 
 function parseDateFromRawFrontmatter(
@@ -197,22 +199,26 @@ export async function getAllPosts(
 			}
 		}),
 	);
-	const posts = parsedPosts.map(
-		({ body, data, published, sourcePath, updated }): Post => ({
-			body,
-			category: data.category,
-			comment: data.comment,
-			cover: data.cover,
-			description: data.description,
-			draft: data.draft,
-			published: published as Date,
-			slug: uniqueSlugFor(sourcePath, slugger),
-			sourcePath,
-			tags: data.tags,
-			title: data.title,
-			updated,
-		}),
-	);
+	const posts = parsedPosts
+		.toSorted(
+			(left, right) => Number(left.data.draft) - Number(right.data.draft),
+		)
+		.map(
+			({ body, data, published, sourcePath, updated }): Post => ({
+				body,
+				category: data.category,
+				comment: data.comment,
+				cover: data.cover,
+				description: data.description,
+				draft: data.draft,
+				published: published as Date,
+				slug: uniqueSlugFor(sourcePath, slugger),
+				sourcePath,
+				tags: data.tags,
+				title: data.title,
+				updated,
+			}),
+		);
 
 	return posts
 		.filter((post) => options.includeDrafts || !post.draft)

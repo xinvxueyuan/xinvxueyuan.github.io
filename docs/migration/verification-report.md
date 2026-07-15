@@ -45,7 +45,7 @@ secret value.
 | `pnpm framework:scan` | PASS |
 | `pnpm lint` | PASS |
 | `pnpm typecheck` | PASS |
-| `pnpm vitest run --maxWorkers=1` | PASS — 13 files, 86 tests |
+| `pnpm vitest run --maxWorkers=1` | PASS — 14 files, 100 tests |
 | `pnpm build` | PASS — 183/183 outputs; 37 post and OG paths; archive, search, taxonomy, feed and llms routes |
 | `PLAYWRIGHT_SKIP_BUILD=1 pnpm test:e2e` | PASS — 26 tests |
 | `git diff --check` | PASS |

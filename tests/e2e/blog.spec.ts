@@ -203,11 +203,12 @@ test("Mermaid enhancement preserves readable source when rendering cannot run", 
 	await page.route("**/*mermaid*", (route) => route.abort());
 	await page.goto("/posts/markdown-mermaid/");
 	const source = page.locator("pre[data-mermaid-source]").first();
-	await expect(source).toBeAttached();
+	await expect(source).toBeVisible();
+	await expect(source).toContainText("graph TD");
 	const diagramOrSource = page.locator(
 		".mermaid-diagram, pre[data-mermaid-source]:not([hidden])",
 	);
-	await expect(diagramOrSource.first()).toBeAttached();
+	await expect(diagramOrSource.first()).toBeVisible();
 });
 
 test("Mermaid redraws when the site theme changes", async ({ page }) => {
@@ -238,14 +239,13 @@ test("long code collapse controls expose stable accessible state", async ({
 	await expect(stableCollapse).toHaveAttribute("aria-expanded", "true");
 });
 
-test("video article exposes safe provider links without iframes", async ({ page }) => {
+test("video article exposes safe provider links without iframes", async ({
+	page,
+}) => {
 	await page.goto("/posts/video/");
 	await expect(
 		page.getByRole("link", { name: /在 youtube 观看视频/iu }),
-	).toHaveAttribute(
-		"href",
-		"https://www.youtube.com/watch?v=5gIf0_xpFPI",
-	);
+	).toHaveAttribute("href", "https://www.youtube.com/watch?v=5gIf0_xpFPI");
 	await expect(
 		page.getByRole("link", { name: /在 bilibili 观看视频/iu }),
 	).toHaveAttribute("href", "https://www.bilibili.com/video/BV1fK4y1s7Qf");
