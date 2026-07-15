@@ -71,6 +71,8 @@ export type DiaryEntry = {
 	id: string;
 	content: string;
 	publishedAt: string;
+	mood?: string;
+	location?: string;
 	images: readonly ShowcaseImage[];
 	tags: readonly string[];
 };

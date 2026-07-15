@@ -5,7 +5,10 @@ import aboutPage, { metadata as aboutMetadata } from "../../src/app/about/page";
 import devicesPage, {
 	metadata as devicesMetadata,
 } from "../../src/app/devices/page";
-import diaryPage, { metadata as diaryMetadata } from "../../src/app/diary/page";
+import diaryPage, {
+	DiaryEntries,
+	metadata as diaryMetadata,
+} from "../../src/app/diary/page";
 import friendsPage, {
 	metadata as friendsMetadata,
 } from "../../src/app/friends/page";
@@ -18,6 +21,7 @@ import skillsPage, {
 import timelinePage, {
 	metadata as timelineMetadata,
 } from "../../src/app/timeline/page";
+import type { DiaryEntry } from "../../src/lib/showcase/types";
 import { absoluteUrl } from "../../src/lib/site";
 
 function countHeadings(html: string, level: number): number {
@@ -110,5 +114,47 @@ describe("personal showcase routes", () => {
 		expect(diaryMetadata.alternates?.canonical).toBe(
 			absoluteUrl("/diary/"),
 		);
+	});
+
+	it("renders complete non-empty Diary entries in source order", () => {
+		const entries = [
+			{
+				id: "first-entry",
+				content: "第一条公开日记。",
+				publishedAt: "2026-07-14",
+				mood: "平静",
+				location: "书桌前",
+				tags: ["夜航", "记录"],
+				images: [
+					{
+						src: "/images/diary/first.webp",
+						alt: "书桌上的夜灯",
+						width: 1200,
+						height: 800,
+					},
+				],
+			},
+			{
+				id: "second-entry",
+				content: "第二条公开日记。",
+				publishedAt: "2026-07-15",
+				tags: [],
+				images: [],
+			},
+		] satisfies readonly DiaryEntry[];
+		const html = renderToStaticMarkup(<DiaryEntries entries={entries} />);
+
+		expect(html.indexOf("第一条公开日记")).toBeLessThan(
+			html.indexOf("第二条公开日记"),
+		);
+		expect(html).toContain('<time dateTime="2026-07-14">');
+		expect(html).toContain("<dt>心情</dt><dd>平静</dd>");
+		expect(html).toContain("<dt>地点</dt><dd>书桌前</dd>");
+		expect(html).toContain(
+			'<ul aria-label="标签"><li>夜航</li><li>记录</li></ul>',
+		);
+		expect(html).toContain('alt="书桌上的夜灯"');
+		expect(html).toContain('width="1200"');
+		expect(html).toContain('height="800"');
 	});
 });
