@@ -26,19 +26,36 @@ function cdata(value: string): string {
 	return `<![CDATA[${value.replaceAll("]]>", "]]]]><![CDATA[>")}]]>`;
 }
 
+function stripFeedEnhancementAttributes(html: string): string {
+	return html
+		.replace(/\sdata-[\w-]+=(?:"[^"]*"|'[^']*')/gu, "")
+		.replace(/\stabindex=(?:"[^"]*"|'[^']*')/gu, "");
+}
+
 async function renderedItems(posts: Post[]) {
 	return Promise.all(
 		publishedInDateOrder(posts).map(async (post) => ({
-			html: (await renderMarkdown(post.body)).html,
+			html: stripFeedEnhancementAttributes(
+				(await renderMarkdown(post.body)).html,
+			),
 			post,
 			url: absoluteUrl(`/posts/${post.slug}/`),
 		})),
 	);
 }
 
+function mostRecentItemDate(
+	items: Awaited<ReturnType<typeof renderedItems>>,
+): Date | undefined {
+	return items.reduce<Date | undefined>((latest, { post }) => {
+		const candidate = post.updated ?? post.published;
+		return !latest || candidate > latest ? candidate : latest;
+	}, undefined);
+}
+
 export async function serializeRss(posts: Post[]): Promise<string> {
 	const items = await renderedItems(posts);
-	const lastBuildDate = items[0]?.post.published.toUTCString();
+	const lastBuildDate = mostRecentItemDate(items)?.toUTCString();
 	const itemXml = items
 		.map(
 			({ html, post, url }) => `    <item>
@@ -66,10 +83,7 @@ export async function serializeRss(posts: Post[]): Promise<string> {
 
 export async function serializeAtom(posts: Post[]): Promise<string> {
 	const items = await renderedItems(posts);
-	const updated =
-		items[0]?.post.updated?.toISOString() ??
-		items[0]?.post.published.toISOString() ??
-		new Date(0).toISOString();
+	const updated = (mostRecentItemDate(items) ?? new Date(0)).toISOString();
 	const entryXml = items
 		.map(
 			({ html, post, url }) => `  <entry>
