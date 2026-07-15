@@ -14,6 +14,18 @@ type LoadedPhotoSwipe = {
 	PhotoSwipe: typeof PhotoSwipe;
 };
 
+type AlbumAnchor = {
+	href: string;
+	click: () => void;
+	focus: () => void;
+};
+
+type AlbumLightboxControllerOptions = {
+	gallery: HTMLElement;
+	load?: () => Promise<LoadedPhotoSwipe>;
+	navigate: (href: string) => void;
+};
+
 const defaultImporters: PhotoSwipeImporters = {
 	lightbox: () => import("photoswipe/lightbox"),
 	photoswipe: () => import("photoswipe"),
@@ -46,6 +58,53 @@ export function loadPhotoSwipe(
 	return loading;
 }
 
+export function createAlbumLightboxController({
+	gallery,
+	load = loadPhotoSwipe,
+	navigate,
+}: AlbumLightboxControllerOptions) {
+	let disposed = false;
+	let initializing: Promise<void> | undefined;
+	let lightbox: PhotoSwipeLightbox | undefined;
+
+	const open = (anchor: AlbumAnchor): Promise<void> => {
+		if (disposed || lightbox) return Promise.resolve();
+		if (initializing) return initializing;
+
+		anchor.focus();
+		initializing = load()
+			.then(({ Lightbox, PhotoSwipe }) => {
+				if (disposed) return;
+
+				lightbox = new Lightbox({
+					children: "a",
+					gallery,
+					pswpModule: () => Promise.resolve(PhotoSwipe),
+				});
+				lightbox.init();
+				anchor.click();
+			})
+			.catch(() => {
+				if (!disposed) navigate(anchor.href);
+			})
+			.finally(() => {
+				initializing = undefined;
+			});
+
+		return initializing;
+	};
+
+	return {
+		destroy() {
+			disposed = true;
+			lightbox?.destroy();
+			lightbox = undefined;
+		},
+		isInitialized: () => lightbox !== undefined,
+		open,
+	};
+}
+
 const isQualifyingClick = (event: MouseEvent): boolean =>
 	event.button === 0 &&
 	!event.altKey &&
@@ -59,11 +118,13 @@ export function AlbumLightbox({ galleryId }: { galleryId: string }) {
 		const gallery = document.getElementById(galleryId);
 		if (!gallery) return;
 
-		let disposed = false;
-		let lightbox: PhotoSwipeLightbox | undefined;
+		const controller = createAlbumLightboxController({
+			gallery,
+			navigate: (href) => window.location.assign(href),
+		});
 
-		const handleClick = async (event: MouseEvent) => {
-			if (lightbox || !isQualifyingClick(event)) return;
+		const handleClick = (event: MouseEvent) => {
+			if (controller.isInitialized() || !isQualifyingClick(event)) return;
 
 			const target = event.target;
 			const anchor =
@@ -73,29 +134,13 @@ export function AlbumLightbox({ galleryId }: { galleryId: string }) {
 			if (!anchor || !gallery.contains(anchor)) return;
 
 			event.preventDefault();
-			anchor.focus();
-
-			try {
-				const { Lightbox, PhotoSwipe } = await loadPhotoSwipe();
-				if (disposed) return;
-
-				lightbox = new Lightbox({
-					children: "a",
-					gallery,
-					pswpModule: () => Promise.resolve(PhotoSwipe),
-				});
-				lightbox.init();
-				anchor.click();
-			} catch {
-				window.location.assign(anchor.href);
-			}
+			void controller.open(anchor);
 		};
 
 		gallery.addEventListener("click", handleClick);
 		return () => {
-			disposed = true;
 			gallery.removeEventListener("click", handleClick);
-			lightbox?.destroy();
+			controller.destroy();
 		};
 	}, [galleryId]);
 

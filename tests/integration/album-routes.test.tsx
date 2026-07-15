@@ -47,4 +47,15 @@ describe("album routes", () => {
 		expect(html).toContain('href="/images/albums/');
 		expect(html).toContain(`id="album-gallery-${album.slug}"`);
 	});
+
+	it("returns the Next.js not-found sentinel for an unknown album", async () => {
+		const params = Promise.resolve({ slug: "missing" });
+
+		await expect(AlbumPage({ params })).rejects.toMatchObject({
+			digest: "NEXT_HTTP_ERROR_FALLBACK;404",
+		});
+		await expect(
+			generateMetadata({ params: Promise.resolve({ slug: "missing" }) }),
+		).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
+	});
 });
