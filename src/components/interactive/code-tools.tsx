@@ -6,11 +6,12 @@ export function CodeTools({ rootId }: { rootId: string }) {
 	useEffect(() => {
 		const root = document.getElementById(rootId);
 		if (!root) return;
-		for (const block of root.querySelectorAll<HTMLElement>(
-			"pre[data-code-block]",
-		)) {
+		for (const [index, block] of [
+			...root.querySelectorAll<HTMLElement>("pre[data-code-block]"),
+		].entries()) {
 			if (block.dataset.toolsReady) continue;
 			block.dataset.toolsReady = "true";
+			block.id ||= `${rootId}-code-${index + 1}`;
 			const tools = document.createElement("div");
 			tools.className = "code-tools";
 			const copy = document.createElement("button");
@@ -22,6 +23,8 @@ export function CodeTools({ rootId }: { rootId: string }) {
 				const collapse = document.createElement("button");
 				collapse.type = "button";
 				collapse.dataset.codeAction = "collapse";
+				collapse.setAttribute("aria-controls", block.id);
+				collapse.setAttribute("aria-expanded", "true");
 				collapse.textContent = "折叠";
 				tools.append(collapse);
 			}
@@ -37,7 +40,9 @@ export function CodeTools({ rootId }: { rootId: string }) {
 			if (!block?.matches("pre[data-code-block]")) return;
 			if (button.dataset.codeAction === "collapse") {
 				block.classList.toggle("is-collapsed");
-				button.textContent = block.classList.contains("is-collapsed")
+				const isCollapsed = block.classList.contains("is-collapsed");
+				button.setAttribute("aria-expanded", String(!isCollapsed));
+				button.textContent = isCollapsed
 					? "展开"
 					: "折叠";
 				return;

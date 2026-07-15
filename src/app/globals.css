@@ -212,6 +212,17 @@ pre[data-code-block].is-collapsed {
   overflow-x: auto;
 }
 
+.article-cover {
+  margin: 1.5rem 0 0;
+}
+
+.article-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
 .article-footer,
 .comments,
 .article-recommendations {

@@ -17,7 +17,10 @@ import tagPage, {
 } from "../../src/app/tags/[tag]/page";
 import { PostCard } from "../../src/components/post-card";
 import { getPublishedPosts } from "../../src/lib/content/posts";
-import { getTaxonomy, getTaxonomySlug } from "../../src/lib/content/taxonomy";
+import {
+	getTaxonomy,
+	getTaxonomyTermSlug,
+} from "../../src/lib/content/taxonomy";
 import { absoluteUrl } from "../../src/lib/site";
 
 describe("discovery routes", () => {
@@ -45,6 +48,14 @@ describe("discovery routes", () => {
 		expect(await generateCategoryStaticParams()).toEqual(
 			taxonomy.categories.map((term) => ({ category: term.slug })),
 		);
+		const tagParams = await generateTagStaticParams();
+		const categoryParams = await generateCategoryStaticParams();
+		expect(new Set(tagParams.map(({ tag }) => tag)).size).toBe(
+			tagParams.length,
+		);
+		expect(
+			new Set(categoryParams.map(({ category }) => category)).size,
+		).toBe(categoryParams.length);
 
 		const tagRoute = {
 			params: Promise.resolve({ tag: encodeURIComponent(tag.slug) }),
@@ -77,14 +88,53 @@ describe("discovery routes", () => {
 			(candidate) => candidate.category && candidate.tags.length > 0,
 		);
 		expect(post).toBeDefined();
-		const html = renderToStaticMarkup(<PostCard post={post!} />);
+		const taxonomy = getTaxonomy(await getPublishedPosts());
+		const html = renderToStaticMarkup(
+			<PostCard post={post!} taxonomy={taxonomy} />,
+		);
 
 		expect(html).toContain(
-			`/categories/${encodeURIComponent(getTaxonomySlug(post!.category!))}/`,
+			`/categories/${encodeURIComponent(getTaxonomyTermSlug(post!.category!, taxonomy.categories))}/`,
 		);
 		expect(html).toContain(
-			`/tags/${encodeURIComponent(getTaxonomySlug(post!.tags[0]))}/`,
+			`/tags/${encodeURIComponent(getTaxonomyTermSlug(post!.tags[0], taxonomy.tags))}/`,
 		);
+	});
+
+	it("links colliding category and tag labels to their distinct route slugs", async () => {
+		const [source, fallback] = await getPublishedPosts();
+		const dotted = {
+			...source,
+			category: "API.Design",
+			slug: "dotted",
+			tags: ["Node.js"],
+		};
+		const dashed = {
+			...(fallback ?? source),
+			category: "API-Design",
+			slug: "dashed",
+			tags: ["Node-js"],
+		};
+		const taxonomy = getTaxonomy([dotted, dashed]);
+		const dottedHtml = renderToStaticMarkup(
+			<PostCard post={dotted} taxonomy={taxonomy} />,
+		);
+		const dashedHtml = renderToStaticMarkup(
+			<PostCard post={dashed} taxonomy={taxonomy} />,
+		);
+
+		for (const [post, html] of [
+			[dotted, dottedHtml],
+			[dashed, dashedHtml],
+		] as const) {
+			expect(html).toContain(
+				`/categories/${encodeURIComponent(getTaxonomyTermSlug(post.category, taxonomy.categories))}/`,
+			);
+			expect(html).toContain(
+				`/tags/${encodeURIComponent(getTaxonomyTermSlug(post.tags[0], taxonomy.tags))}/`,
+			);
+		}
+		expect(dottedHtml).not.toBe(dashedHtml);
 	});
 
 	it("renders an accessible search page with canonical metadata", () => {

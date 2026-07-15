@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { PostCard } from "@/components/post-card";
+import { getTaxonomy } from "@/lib/content/taxonomy";
 import { getPublishedPosts } from "@/lib/posts";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 
 export default async function Home() {
 	const posts = await getPublishedPosts();
+	const taxonomy = getTaxonomy(posts);
 
 	return (
 		<main className="page-shell" id="main-content" tabIndex={-1}>
@@ -46,7 +48,11 @@ export default async function Home() {
 				</div>
 				<div className="post-list">
 					{posts.map((post) => (
-						<PostCard key={post.slug} post={post} />
+						<PostCard
+							key={post.slug}
+							post={post}
+							taxonomy={taxonomy}
+						/>
 					))}
 				</div>
 			</section>

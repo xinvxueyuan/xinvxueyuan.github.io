@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { PostCard } from "@/components/post-card";
 import { getPublishedPosts } from "@/lib/content/posts";
+import { getTaxonomy } from "@/lib/content/taxonomy";
 import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 
 export default async function ArchivePage() {
 	const posts = await getPublishedPosts();
+	const taxonomy = getTaxonomy(posts);
 	const years = Map.groupBy(posts, (post) => post.published.getUTCFullYear());
 
 	return (
@@ -25,7 +27,11 @@ export default async function ArchivePage() {
 					<h2 id={`year-${year}`}>{year}</h2>
 					<div className="post-list">
 						{yearPosts.map((post) => (
-							<PostCard key={post.slug} post={post} />
+							<PostCard
+								key={post.slug}
+								post={post}
+								taxonomy={taxonomy}
+							/>
 						))}
 					</div>
 				</section>

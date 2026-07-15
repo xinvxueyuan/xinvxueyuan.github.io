@@ -29,6 +29,9 @@ importers:
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
+      katex:
+        specifier: 0.16.47
+        version: 0.16.47
       mermaid:
         specifier: 11.16.0
         version: 11.16.0

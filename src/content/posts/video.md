@@ -7,7 +7,7 @@ category: Examples
 draft: false
 ---
 
-只需从youtube或其他平台复制嵌入代码，并将其粘贴到markdown文件中即可。
+复制 YouTube 或 Bilibili 视频 ID，并使用允许的视频指令即可：
 
 ```yaml
 ---
@@ -16,12 +16,12 @@ published: 2023-10-19
 // ...
 ---
 
-<iframe width="100%" height="468" src="https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+::video{provider="youtube" id="5gIf0_xpFPI"}
 ```
 ## YouTube
 
-<iframe width="100%" height="468" src="https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+::video{provider="youtube" id="5gIf0_xpFPI"}
 
 ## Bilibili
 
-<iframe width="100%" height="468" src="//player.bilibili.com/player.html?bvid=BV1fK4y1s7Qf&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" &autoplay=0> </iframe>
+::video{provider="bilibili" id="BV1fK4y1s7Qf"}

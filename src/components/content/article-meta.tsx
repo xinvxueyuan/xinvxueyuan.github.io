@@ -1,9 +1,12 @@
+import { getTaxonomyTermSlug, type Taxonomy } from "@/lib/content/taxonomy";
+
 type ArticleMetaProps = {
 	category?: string;
 	characters: number;
 	minutes: number;
 	published: Date;
 	tags: string[];
+	taxonomy: Taxonomy;
 	updated?: Date;
 	words: number;
 };
@@ -36,14 +39,14 @@ export function ArticleMeta(props: ArticleMetaProps) {
 			</span>
 			{props.category ? (
 				<a
-					href={`/categories/${encodeURIComponent(getTaxonomySlug(props.category))}/`}
+					href={`/categories/${encodeURIComponent(getTaxonomyTermSlug(props.category, props.taxonomy.categories))}/`}
 				>
 					{props.category}
 				</a>
 			) : null}
 			{props.tags.map((tag) => (
 				<a
-					href={`/tags/${encodeURIComponent(getTaxonomySlug(tag))}/`}
+					href={`/tags/${encodeURIComponent(getTaxonomyTermSlug(tag, props.taxonomy.tags))}/`}
 					key={tag}
 				>
 					#{tag}
@@ -52,4 +55,3 @@ export function ArticleMeta(props: ArticleMetaProps) {
 		</div>
 	);
 }
-import { getTaxonomySlug } from "@/lib/content/taxonomy";

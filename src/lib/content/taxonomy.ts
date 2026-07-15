@@ -14,6 +14,30 @@ export function getTaxonomySlug(name: string): string {
 	return githubSlug(name.trim().replaceAll(".", " ")) || name.trim();
 }
 
+function taxonomyKey(name: string): string {
+	return name.trim().toLocaleLowerCase();
+}
+
+function stableSlugSuffix(value: string): string {
+	let hash = 0x811c9dc5;
+	for (const character of value) {
+		hash ^= character.codePointAt(0) ?? 0;
+		hash = Math.imul(hash, 0x01000193);
+	}
+	return (hash >>> 0).toString(36);
+}
+
+export function getTaxonomyTermSlug(
+	name: string,
+	terms: readonly TaxonomyTerm[],
+): string {
+	const key = taxonomyKey(name);
+	return (
+		terms.find((term) => taxonomyKey(term.name) === key)?.slug ??
+		getTaxonomySlug(name)
+	);
+}
+
 function collectTerms(values: string[][]): TaxonomyTerm[] {
 	const terms = new Map<string, { count: number; name: string }>();
 	for (const labels of values) {
@@ -29,11 +53,42 @@ function collectTerms(values: string[][]): TaxonomyTerm[] {
 		}
 	}
 
-	return [...terms.values()]
+	const collected = [...terms.values()];
+	const slugGroups = new Map<string, typeof collected>();
+	for (const { name } of collected) {
+		const slug = getTaxonomySlug(name);
+		const group = slugGroups.get(slug) ?? [];
+		group.push(terms.get(taxonomyKey(name))!);
+		slugGroups.set(slug, group);
+	}
+	const assigned = new Map<string, string>();
+	const used = new Set(
+		[...slugGroups]
+			.filter(([, group]) => group.length === 1)
+			.map(([slug]) => slug),
+	);
+	for (const [baseSlug, group] of slugGroups) {
+		if (group.length === 1) {
+			assigned.set(taxonomyKey(group[0].name), baseSlug);
+			continue;
+		}
+		for (const term of group.toSorted((left, right) =>
+			taxonomyKey(left.name).localeCompare(taxonomyKey(right.name)),
+		)) {
+			const stem = `${baseSlug}-${stableSlugSuffix(taxonomyKey(term.name))}`;
+			let slug = stem;
+			let disambiguator = 2;
+			while (used.has(slug)) slug = `${stem}-${disambiguator++}`;
+			used.add(slug);
+			assigned.set(taxonomyKey(term.name), slug);
+		}
+	}
+
+	return collected
 		.map(({ count, name }) => ({
 			count,
 			name,
-			slug: getTaxonomySlug(name),
+			slug: assigned.get(taxonomyKey(name))!,
 		}))
 		.sort(
 			(left, right) =>

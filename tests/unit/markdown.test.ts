@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { getPost } from "../../src/lib/content/posts";
 import { renderMarkdown } from "../../src/lib/markdown";
 
 describe("renderMarkdown", () => {
@@ -199,6 +200,17 @@ describe("renderMarkdown", () => {
 		expect(html).not.toContain("onclick");
 		expect(html.match(/class="video-embed"/gu)).toHaveLength(2);
 		expect(html.match(/class="github-card"/gu)).toHaveLength(1);
+	});
+
+	it("renders the published video article as safe YouTube and Bilibili links", async () => {
+		const post = await getPost("video");
+		expect(post).toBeDefined();
+
+		const { html } = await renderMarkdown(post?.body ?? "");
+
+		expect(html).toContain("https://www.youtube.com/watch?v=5gIf0_xpFPI");
+		expect(html).toContain("https://www.bilibili.com/video/BV1fK4y1s7Qf");
+		expect(html).not.toContain("<iframe");
 	});
 
 	it("fails open for malformed math and preserves code metadata", async () => {

@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

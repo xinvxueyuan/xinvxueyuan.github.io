@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { ArticleCover } from "@/components/content/article-cover";
 import { ArticleMeta } from "@/components/content/article-meta";
 import { ArticleRecommendations } from "@/components/content/article-recommendations";
 import { ArticleToc } from "@/components/content/article-toc";
@@ -13,6 +14,7 @@ import {
 	getRelatedPosts,
 } from "@/lib/content/recommendations";
 import { getReadingStats } from "@/lib/content/reading";
+import { getTaxonomy } from "@/lib/content/taxonomy";
 import {
 	createBlogPosting,
 	serializeStructuredData,
@@ -72,6 +74,7 @@ export default async function PostPage({ params }: PostPageProps) {
 	const { hasMermaid, headings, html } = await renderMarkdown(post.body);
 	const structuredData = serializeStructuredData(createBlogPosting(post));
 	const publishedPosts = await getPublishedPosts();
+	const taxonomy = getTaxonomy(publishedPosts);
 	const adjacent = getAdjacentPosts(publishedPosts, post.slug);
 	const related = getRelatedPosts(publishedPosts, post.slug);
 	const reading = getReadingStats(post.body);
@@ -96,12 +99,14 @@ export default async function PostPage({ params }: PostPageProps) {
 					<header className="post-page__header">
 						<h1>{post.title}</h1>
 						{post.description ? <p>{post.description}</p> : null}
+						<ArticleCover cover={post.cover} />
 						<ArticleMeta
 							category={post.category}
 							characters={reading.characters}
 							minutes={reading.minutes}
 							published={post.published}
 							tags={post.tags}
+							taxonomy={taxonomy}
 							updated={post.updated}
 							words={reading.words}
 						/>

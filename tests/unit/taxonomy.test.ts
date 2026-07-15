@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import type { PostSummary } from "../../src/lib/content/posts";
-import { getTaxonomy } from "../../src/lib/content/taxonomy";
+import {
+	getTaxonomy,
+	getTaxonomyTermSlug,
+} from "../../src/lib/content/taxonomy";
 
 function summary(
 	slug: string,
@@ -50,5 +53,37 @@ describe("content taxonomy", () => {
 			{ count: 1, year: 2026 },
 			{ count: 1, year: 2025 },
 		]);
+	});
+
+	it("assigns stable unique slugs when distinct labels collide after slugification", () => {
+		const first = getTaxonomy([
+			summary("dots", "2026-07-02T00:00:00.000Z", {
+				category: "API.Design",
+				tags: ["Node.js"],
+			}),
+			summary("dashes", "2026-07-01T00:00:00.000Z", {
+				category: "API-Design",
+				tags: ["Node-js"],
+			}),
+		]);
+		const reversed = getTaxonomy([
+			summary("dashes", "2026-07-01T00:00:00.000Z", {
+				category: "API-Design",
+				tags: ["Node-js"],
+			}),
+			summary("dots", "2026-07-02T00:00:00.000Z", {
+				category: "API.Design",
+				tags: ["Node.js"],
+			}),
+		]);
+
+		expect(new Set(first.tags.map((term) => term.slug)).size).toBe(2);
+		expect(new Set(first.categories.map((term) => term.slug)).size).toBe(2);
+		expect(first.tags.map(({ name, slug }) => ({ name, slug }))).toEqual(
+			reversed.tags.map(({ name, slug }) => ({ name, slug })),
+		);
+		expect(getTaxonomyTermSlug("Node.js", first.tags)).not.toBe(
+			getTaxonomyTermSlug("Node-js", first.tags),
+		);
 	});
 });

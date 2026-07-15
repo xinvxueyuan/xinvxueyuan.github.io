@@ -18,13 +18,12 @@ function decodeTerm(value: string): string | undefined {
 
 async function resolveCategory(value: string) {
 	const posts = await getPublishedPosts();
+	const taxonomy = getTaxonomy(posts);
 	const slug = decodeTerm(value);
 	const term = slug
-		? getTaxonomy(posts).categories.find(
-				(candidate) => candidate.slug === slug,
-			)
+		? taxonomy.categories.find((candidate) => candidate.slug === slug)
 		: undefined;
-	return term ? { posts, term } : undefined;
+	return term ? { posts, taxonomy, term } : undefined;
 }
 
 export async function generateStaticParams() {
@@ -67,7 +66,11 @@ export default async function CategoryPage({ params }: CategoryRoute) {
 			</header>
 			<div className="post-list">
 				{posts.map((post) => (
-					<PostCard key={post.slug} post={post} />
+					<PostCard
+						key={post.slug}
+						post={post}
+						taxonomy={resolved.taxonomy}
+					/>
 				))}
 			</div>
 		</main>

@@ -2,10 +2,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import { ArticleMeta } from "@/components/content/article-meta";
+import { ArticleCover } from "@/components/content/article-cover";
 import { ArticleRecommendations } from "@/components/content/article-recommendations";
 import { ArticleToc } from "@/components/content/article-toc";
 import { Comments } from "@/components/interactive/comments";
 import { ShareActions } from "@/components/interactive/share-actions";
+import { getTaxonomy } from "@/lib/content/taxonomy";
 
 const summary = (slug: string, title: string) => ({
 	category: "工程",
@@ -19,6 +21,23 @@ const summary = (slug: string, title: string) => ({
 });
 
 describe("article reading furniture", () => {
+	it("renders only complete structured article covers", () => {
+		const cover = {
+			alt: "Night sky",
+			height: 630,
+			src: "/cover.webp",
+			width: 1200,
+		};
+		const html = renderToStaticMarkup(<ArticleCover cover={cover} />);
+		const empty = renderToStaticMarkup(<ArticleCover />);
+
+		expect(html).toContain('src="/cover.webp"');
+		expect(html).toContain('alt="Night sky"');
+		expect(html).toContain('width="1200"');
+		expect(html).toContain('height="630"');
+		expect(empty).toBe("");
+	});
+
 	it("renders a semantic no-JS table of contents", () => {
 		const html = renderToStaticMarkup(
 			<ArticleToc
@@ -36,6 +55,13 @@ describe("article reading furniture", () => {
 	});
 
 	it("renders dates, taxonomy and reading statistics as ordinary links/text", () => {
+		const taxonomy = getTaxonomy([
+			{
+				...summary("article", "Article"),
+				category: "Frontend",
+				tags: ["Next.js", "工程"],
+			},
+		]);
 		const html = renderToStaticMarkup(
 			<ArticleMeta
 				category="Frontend"
@@ -43,6 +69,7 @@ describe("article reading furniture", () => {
 				minutes={5}
 				published={new Date("2026-07-14T00:00:00.000Z")}
 				tags={["Next.js", "工程"]}
+				taxonomy={taxonomy}
 				updated={new Date("2026-07-15T00:00:00.000Z")}
 				words={12}
 			/>,
