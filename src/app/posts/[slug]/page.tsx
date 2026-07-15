@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { ArticleMeta } from "@/components/content/article-meta";
+import { ArticleRecommendations } from "@/components/content/article-recommendations";
+import { ArticleToc } from "@/components/content/article-toc";
+import { Comments } from "@/components/interactive/comments";
+import { ShareActions } from "@/components/interactive/share-actions";
 import { Markdown } from "@/components/markdown";
 import { getPost, getPublishedPosts } from "@/lib/content/posts";
+import {
+	getAdjacentPosts,
+	getRelatedPosts,
+} from "@/lib/content/recommendations";
+import { getReadingStats } from "@/lib/content/reading";
 import {
 	createBlogPosting,
 	serializeStructuredData,
@@ -13,11 +23,6 @@ import { absoluteUrl, siteConfig } from "@/lib/site";
 type PostPageProps = {
 	params: Promise<{ slug: string }>;
 };
-
-const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
-	dateStyle: "long",
-	timeZone: "UTC",
-});
 
 function decodeSlug(slug: string): string | undefined {
 	try {
@@ -66,6 +71,11 @@ export default async function PostPage({ params }: PostPageProps) {
 
 	const { hasMermaid, headings, html } = await renderMarkdown(post.body);
 	const structuredData = serializeStructuredData(createBlogPosting(post));
+	const publishedPosts = await getPublishedPosts();
+	const adjacent = getAdjacentPosts(publishedPosts, post.slug);
+	const related = getRelatedPosts(publishedPosts, post.slug);
+	const reading = getReadingStats(post.body);
+	const canonicalUrl = absoluteUrl(`/posts/${post.slug}/`);
 
 	return (
 		<main
@@ -77,22 +87,46 @@ export default async function PostPage({ params }: PostPageProps) {
 				dangerouslySetInnerHTML={{ __html: structuredData }}
 				type="application/ld+json"
 			/>
-			<article
-				className="post-page"
-				data-has-mermaid={hasMermaid || undefined}
-				data-headings={JSON.stringify(headings)}
-			>
-				<header className="post-page__header">
-					<p className="post-page__date">
-						<time dateTime={post.published.toISOString()}>
-							{dateFormatter.format(post.published)}
-						</time>
-					</p>
-					<h1>{post.title}</h1>
-					{post.description ? <p>{post.description}</p> : null}
-				</header>
-				<Markdown html={html} />
-			</article>
+			<div className="article-layout">
+				<article
+					className="post-page"
+					data-has-mermaid={hasMermaid || undefined}
+					data-headings={JSON.stringify(headings)}
+				>
+					<header className="post-page__header">
+						<h1>{post.title}</h1>
+						{post.description ? <p>{post.description}</p> : null}
+						<ArticleMeta
+							category={post.category}
+							characters={reading.characters}
+							minutes={reading.minutes}
+							published={post.published}
+							tags={post.tags}
+							updated={post.updated}
+							words={reading.words}
+						/>
+					</header>
+					<Markdown hasMermaid={hasMermaid} html={html} />
+					<footer className="article-footer">
+						<p>除特别说明外，本文采用 CC BY-NC-SA 4.0 许可。</p>
+						<ShareActions
+							canonicalUrl={canonicalUrl}
+							title={post.title}
+						/>
+						<ArticleRecommendations
+							adjacent={adjacent}
+							related={related}
+						/>
+						<Comments
+							enabled={post.comment}
+							pathname={`/posts/${post.slug}/`}
+						/>
+					</footer>
+				</article>
+				<aside className="article-layout__aside">
+					<ArticleToc headings={headings} />
+				</aside>
+			</div>
 		</main>
 	);
 }

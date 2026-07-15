@@ -137,6 +137,50 @@ test("an article preserves a focused reading measure", async ({ page }) => {
 	expect(articleMeasure).toBeLessThanOrEqual(75);
 });
 
+for (const viewport of [
+	{ height: 844, width: 390 },
+	{ height: 1024, width: 768 },
+	{ height: 900, width: 1440 },
+]) {
+	test(`article reading tools fit at ${viewport.width}px`, async ({
+		page,
+	}) => {
+		await page.setViewportSize(viewport);
+		await page.goto("/posts/markdown-tutorial/", {
+			waitUntil: "domcontentloaded",
+		});
+		await expect(
+			page.getByRole("navigation", { name: "文章目录" }),
+		).toBeVisible();
+		await expect(
+			page.getByRole("button", { name: "分享文章" }),
+		).toBeVisible();
+		await expect(
+			page.getByRole("button", { name: "复制" }).first(),
+		).toBeVisible();
+		await expect(page.locator(".comments iframe")).toHaveCount(0);
+		await expect
+			.poll(() =>
+				page.evaluate(() => document.documentElement.scrollWidth),
+			)
+			.toBe(viewport.width);
+		await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+	});
+}
+
+test("Mermaid enhancement preserves readable source when rendering cannot run", async ({
+	page,
+}) => {
+	await page.route("**/*mermaid*", (route) => route.abort());
+	await page.goto("/posts/markdown-mermaid/");
+	const source = page.locator("pre[data-mermaid-source]").first();
+	await expect(source).toBeAttached();
+	const diagramOrSource = page.locator(
+		".mermaid-diagram, pre[data-mermaid-source]:not([hidden])",
+	);
+	await expect(diagramOrSource.first()).toBeAttached();
+});
+
 test("unknown posts return a true 404 with a recovery path", async ({
 	page,
 }) => {
