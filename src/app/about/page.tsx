@@ -24,8 +24,15 @@ const showcaseRoutes = [
 
 export default function AboutPage() {
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
-			<PageIntro description={profile.headline} title={`关于 ${profile.name}`} />
+		<main
+			className="page-shell showcase-page showcase-page--about"
+			id="main-content"
+			tabIndex={-1}
+		>
+			<PageIntro
+				description={profile.headline}
+				title={`关于 ${profile.name}`}
+			/>
 			<section aria-labelledby="about-introduction">
 				<h2 id="about-introduction">在这里写些什么</h2>
 				<p>{profile.introduction}</p>

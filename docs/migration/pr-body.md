@@ -19,7 +19,7 @@
 - `pnpm typecheck`
 - `pnpm vitest run --maxWorkers=1` — 18 files / 125 tests
 - `pnpm build` — 192/192 static outputs, including eight showcase entries and one album detail
-- Playwright against the manually started production build — 35 passed
+- Playwright against the manually started production build — 36 passed, including real Tab order and taxonomy post-card isolation
 - `git diff --check`
 
 ## Deployment and rollback

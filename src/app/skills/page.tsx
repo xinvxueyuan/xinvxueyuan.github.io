@@ -23,7 +23,11 @@ const skillGroups: readonly {
 
 export default function SkillsPage() {
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--skills"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<PageIntro
 				description="不标注虚构的熟练度，只列出能够由公开项目佐证的技术。"
 				title="技能"
@@ -35,7 +39,10 @@ export default function SkillsPage() {
 				if (items.length === 0) return null;
 
 				return (
-					<section aria-labelledby={`skills-${group.category}`} key={group.category}>
+					<section
+						aria-labelledby={`skills-${group.category}`}
+						key={group.category}
+					>
 						<h2 id={`skills-${group.category}`}>{group.label}</h2>
 						<ul>
 							{items.map((skill) => (

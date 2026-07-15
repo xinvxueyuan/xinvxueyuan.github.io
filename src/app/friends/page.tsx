@@ -14,7 +14,11 @@ export const metadata: Metadata = {
 
 export default function FriendsPage() {
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--friends"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<PageIntro
 				description="这里仅收录经过确认的个人站点，不用框架文档或模板链接填充。"
 				title="友链"

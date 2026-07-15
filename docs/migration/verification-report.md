@@ -79,7 +79,7 @@ client enhancement dynamically loads PhotoSwipe on first interaction.
 | `pnpm typecheck` | PASS |
 | `pnpm vitest run --maxWorkers=1` | PASS — 18 files, 125 tests |
 | `pnpm build` | PASS — 192/192 static outputs; eight showcase entries and `/albums/acg-example/` emitted |
-| Playwright against a manually started production build | PASS — 35 tests |
+| Playwright against a manually started production build | PASS — 36 tests |
 | `git diff --check` | PASS |
 
 The WSL Playwright `webServer` empty-port probe is unreliable in this workspace,
@@ -90,10 +90,13 @@ deleted after the run and is not part of the release diff.
 
 Browser evidence covers all eight entry pages at 360, 768, and 1440 pixels with
 exactly one H1 and no horizontal overflow. Axe found zero serious or critical
-violations on representative text, image, and empty-state pages. Keyboard checks
-found About and Projects in the header and all seven sibling paths from About.
-Every discovered showcase image and album original returned HTTP 200, and every
-rendered image used the local production origin.
+violations on representative text, image, and empty-state pages. Real Tab-key
+traversal followed document order from the skip link through the header to About
+and Projects, then traversed About through the theme control and GitHub link to
+all seven sibling paths. A computed-style regression confirmed category and tag
+post-card dates retain automatic first-column placement outside the showcase
+boundary. Every discovered showcase image and album original returned HTTP 200,
+and every rendered image used the local production origin.
 
 Resource inspection found no PhotoSwipe implementation in homepage, About,
 Projects, or Albums-index JavaScript. The album detail also omitted the

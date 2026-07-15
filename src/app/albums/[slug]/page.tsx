@@ -39,7 +39,11 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
 	const galleryId = `album-gallery-${album.slug}`;
 
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--album"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<header className="section-heading">
 				<Link href="/albums/">返回相册</Link>
 				<h1>{album.title}</h1>

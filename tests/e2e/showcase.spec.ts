@@ -58,14 +58,31 @@ test("keyboard navigation discovers the approved showcase paths", async ({
 	page,
 }) => {
 	await page.goto("/");
+	const tabTo = async (locator: ReturnType<typeof page.getByRole>) => {
+		await page.keyboard.press("Tab");
+		await expect(locator).toBeFocused();
+	};
 	const header = page.getByRole("navigation", { name: "主导航" });
-	for (const name of ["关于", "项目"]) {
-		const link = header.getByRole("link", { name });
-		await link.focus();
-		await expect(link).toBeFocused();
-	}
-
-	await header.getByRole("link", { name: "关于" }).click();
+	await tabTo(page.getByRole("link", { name: "跳到主要内容" }));
+	await tabTo(header.getByRole("link", { name: "xinvStar" }));
+	await tabTo(header.getByRole("link", { name: "归档" }));
+	await tabTo(header.getByRole("link", { name: "搜索" }));
+	const aboutLink = header.getByRole("link", { name: "关于" });
+	await tabTo(aboutLink);
+	await tabTo(header.getByRole("link", { name: "项目" }));
+	await page.keyboard.press("Shift+Tab");
+	await expect(aboutLink).toBeFocused();
+	await page.keyboard.press("Enter");
+	await expect(page).toHaveURL(/\/about\/$/u);
+	await page.reload();
+	await tabTo(page.getByRole("link", { name: "跳到主要内容" }));
+	await tabTo(header.getByRole("link", { name: "xinvStar" }));
+	await tabTo(header.getByRole("link", { name: "归档" }));
+	await tabTo(header.getByRole("link", { name: "搜索" }));
+	await tabTo(header.getByRole("link", { name: "关于" }));
+	await tabTo(header.getByRole("link", { name: "项目" }));
+	await tabTo(page.getByRole("button", { name: /切换/u }));
+	await tabTo(page.getByRole("link", { name: "GitHub" }));
 	const showcaseNavigation = page.getByRole("navigation", {
 		name: "继续认识我",
 	});
@@ -79,8 +96,34 @@ test("keyboard navigation discovers the approved showcase paths", async ({
 		"相册",
 	]) {
 		const link = showcaseNavigation.getByRole("link", { name });
-		await link.focus();
-		await expect(link).toBeFocused();
+		await tabTo(link);
+	}
+});
+
+test("showcase styles do not change taxonomy post-card grid placement", async ({
+	page,
+}) => {
+	for (const route of ["/categories/frontend/", "/tags/css/"]) {
+		await page.goto(route);
+		const card = page.locator("[data-post-card]").first();
+		await expect(card).toBeVisible();
+		const placement = await card.evaluate((element) => {
+			const date = element.querySelector(".post-card__date");
+			if (!date) return null;
+			const cardStyle = getComputedStyle(element);
+			const dateStyle = getComputedStyle(date);
+			return {
+				cardDisplay: cardStyle.display,
+				dateColumnStart: dateStyle.gridColumnStart,
+				dateRowStart: dateStyle.gridRowStart,
+			};
+		});
+
+		expect(placement).toEqual({
+			cardDisplay: "grid",
+			dateColumnStart: "auto",
+			dateRowStart: "1",
+		});
 	}
 });
 

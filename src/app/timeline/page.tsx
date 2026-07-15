@@ -16,7 +16,11 @@ export default function TimelinePage() {
 	const entries = timeline.toReversed();
 
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--timeline"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<PageIntro
 				description="这里只记录有可靠公开依据的项目、学习与工作节点。"
 				title="时间线"
@@ -33,8 +37,12 @@ export default function TimelinePage() {
 							<article>
 								<h2>{entry.title}</h2>
 								<p>
-									<time dateTime={entry.startDate}>{entry.startDate}</time>
-									{entry.endDate ? ` — ${entry.endDate}` : null}
+									<time dateTime={entry.startDate}>
+										{entry.startDate}
+									</time>
+									{entry.endDate
+										? ` — ${entry.endDate}`
+										: null}
 								</p>
 								<p>{entry.description}</p>
 								{entry.links.map((link) => (

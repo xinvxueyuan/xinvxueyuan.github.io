@@ -21,7 +21,11 @@ const statusLabels: Record<ProjectStatus, string> = {
 
 export default function ProjectsPage() {
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--projects"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<PageIntro
 				description="这些项目连接着技术写作、开源协作与日常实践。"
 				title="项目"

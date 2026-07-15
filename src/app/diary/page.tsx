@@ -68,7 +68,11 @@ export function DiaryEntries({ entries }: { entries: readonly DiaryEntry[] }) {
 
 export default function DiaryPage() {
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--diary"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<PageIntro
 				description="这里独立保存选择公开的生活片段，不与技术文章混用内容模型。"
 				title="日记"

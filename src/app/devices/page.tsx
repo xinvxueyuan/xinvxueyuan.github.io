@@ -25,7 +25,11 @@ const deviceGroups: readonly {
 
 export default function DevicesPage() {
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--devices"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<PageIntro
 				description="按真实用途记录正在使用的设备，不用品牌标签代替使用场景。"
 				title="设备"

@@ -14,7 +14,11 @@ export const metadata: Metadata = {
 
 export default function AlbumsPage() {
 	return (
-		<main className="page-shell" id="main-content" tabIndex={-1}>
+		<main
+			className="page-shell showcase-page showcase-page--albums"
+			id="main-content"
+			tabIndex={-1}
+		>
 			<PageIntro
 				description="每个相册都使用明确的图片清单，不依赖运行时目录扫描。"
 				title="相册"
