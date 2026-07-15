@@ -7,6 +7,7 @@
 		"pnpm": ">=10.0.0"
 	},
 	"scripts": {
+		"prebuild": "node scripts/build-search-index.mts",
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
