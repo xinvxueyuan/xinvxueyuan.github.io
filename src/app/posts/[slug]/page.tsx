@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { Markdown } from "@/components/markdown";
-import { getPost, getPublishedPosts } from "@/lib/posts";
+import { getPost, getPublishedPosts } from "@/lib/content/posts";
 import { renderMarkdown } from "@/lib/markdown";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
@@ -38,8 +38,8 @@ export async function generateMetadata({
 
 	const url = absoluteUrl(`/posts/${post.slug}/`);
 	const description = post.description ?? siteConfig.description;
-	const image = post.image
-		? absoluteUrl(post.image)
+	const image = post.cover
+		? absoluteUrl(post.cover.src)
 		: absoluteUrl(siteConfig.defaultOgImage);
 
 	return {
@@ -64,7 +64,7 @@ export default async function PostPage({ params }: PostPageProps) {
 	const post = await getPost(decodedSlug);
 	if (!post) notFound();
 
-	const html = await renderMarkdown(post.body);
+	const { hasMermaid, headings, html } = await renderMarkdown(post.body);
 
 	return (
 		<main
@@ -72,7 +72,11 @@ export default async function PostPage({ params }: PostPageProps) {
 			id="main-content"
 			tabIndex={-1}
 		>
-			<article className="post-page">
+			<article
+				className="post-page"
+				data-has-mermaid={hasMermaid || undefined}
+				data-headings={JSON.stringify(headings)}
+			>
 				<header className="post-page__header">
 					<p className="post-page__date">
 						<time dateTime={post.published.toISOString()}>

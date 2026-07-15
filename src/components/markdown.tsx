@@ -6,8 +6,8 @@ export function Markdown({ html }: MarkdownProps) {
 	return (
 		<div
 			className="post-content"
-			// `html` is produced by our server-only Unified pipeline. Raw source HTML
-			// is disabled there, so article authors cannot inject executable markup.
+			// `html` is produced by the project-owned server-only Unified pipeline.
+			// Raw source HTML and unapproved directives are disabled there.
 			dangerouslySetInnerHTML={{ __html: html }}
 		/>
 	);

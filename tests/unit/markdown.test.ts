@@ -1,10 +1,13 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+
 import { describe, expect, it } from "vitest";
 
 import { renderMarkdown } from "../../src/lib/markdown";
 
 describe("renderMarkdown", () => {
 	it("renders GFM, links and stable heading ids", async () => {
-		const html = await renderMarkdown(`# Hello, world!
+		const { html } = await renderMarkdown(`# Hello, world!
 
 [Next.js](https://nextjs.org)
 
@@ -21,7 +24,7 @@ describe("renderMarkdown", () => {
 	});
 
 	it("reserves level-one headings for the article page title", async () => {
-		const html = await renderMarkdown("# Body title\n\n## Section");
+		const { html } = await renderMarkdown("# Body title\n\n## Section");
 
 		expect(html).toContain('<h2 id="body-title">Body title</h2>');
 		expect(html).toContain('<h2 id="section">Section</h2>');
@@ -29,7 +32,7 @@ describe("renderMarkdown", () => {
 	});
 
 	it("highlights known fenced languages on the server", async () => {
-		const html = await renderMarkdown(
+		const { html } = await renderMarkdown(
 			"```ts\nconst answer: number = 42\n```",
 		);
 
@@ -39,7 +42,7 @@ describe("renderMarkdown", () => {
 	});
 
 	it("keeps unknown fenced languages readable", async () => {
-		const html = await renderMarkdown(
+		const { html } = await renderMarkdown(
 			"```not-a-real-language\nlaunch --target stars\n```",
 		);
 
@@ -49,7 +52,7 @@ describe("renderMarkdown", () => {
 	});
 
 	it("does not emit embedded raw HTML", async () => {
-		const html = await renderMarkdown(
+		const { html } = await renderMarkdown(
 			'<script>alert("owned")</script>\n\nStill safe.\n\n<img src=x onerror=alert(1)>',
 		);
 
@@ -60,7 +63,7 @@ describe("renderMarkdown", () => {
 	});
 
 	it("removes dangerous link URL protocols before HTML reaches React", async () => {
-		const html = await renderMarkdown(`
+		const { html } = await renderMarkdown(`
 [javascript](javascript:alert)
 [mixed case](JaVaScRiPt:alert)
 [entity colon](javascript&#x3A;alert)
@@ -85,7 +88,7 @@ describe("renderMarkdown", () => {
 	});
 
 	it("removes dangerous image URL protocols", async () => {
-		const html = await renderMarkdown(`
+		const { html } = await renderMarkdown(`
 ![javascript](javascript:alert)
 ![mixed case](JaVaScRiPt:alert)
 ![entity colon](javascript&#x3A;alert)
@@ -110,7 +113,7 @@ describe("renderMarkdown", () => {
 	});
 
 	it("preserves the explicit link and image URL allowlists", async () => {
-		const html = await renderMarkdown(`
+		const { html } = await renderMarkdown(`
 [root](/posts/hello)
 [relative](../hello)
 [fragment](#hello)
@@ -144,5 +147,81 @@ describe("renderMarkdown", () => {
 		]) {
 			expect(html).toContain(`src="${url}"`);
 		}
+	});
+
+	it("renders the allowlisted extended Markdown contract", async () => {
+		const fixture = await readFile(
+			path.join(process.cwd(), "tests/fixtures/markdown/extended.md"),
+			"utf8",
+		);
+		const result = await renderMarkdown(fixture);
+
+		expect(result.headings).toEqual([
+			{ depth: 2, id: "section", text: "Section" },
+		]);
+		expect(result.html).toContain('class="katex"');
+		expect(result.html).toContain('data-mermaid-source="');
+		expect(result.html).toContain('class="admonition admonition--tip"');
+		expect(result.html).toContain('class="video-embed"');
+		expect(result.html).toContain('class="github-card"');
+		expect(result.html).toContain("data-code-block");
+		expect(result.html).not.toContain("<iframe");
+		expect(result.html).not.toContain("<script");
+		expect(result.hasMermaid).toBe(true);
+	});
+
+	it.each(["note", "tip", "important", "warning", "caution"])(
+		"supports the %s admonition",
+		async (kind) => {
+			const { html } = await renderMarkdown(
+				`:::${kind}[Safe title]\nBody\n:::`,
+			);
+			expect(html).toContain(`admonition admonition--${kind}`);
+			expect(html).toContain("Safe title");
+		},
+	);
+
+	it("accepts only safe video IDs and GitHub repository names", async () => {
+		const { html } = await renderMarkdown(`
+::video{provider="youtube" id="5gIf0_xpFPI"}
+::video{provider="bilibili" id="BV1fK4y1s7Qf"}
+::video{provider="youtube" id="bad/id" onclick="alert(1)"}
+::video{provider="bilibili" id="bad?autoplay=1"}
+::github{repo="owner/repo"}
+::github{repo="owner/repo/extra" onclick="alert(1)"}
+`);
+
+		expect(html).toContain("https://www.youtube.com/watch?v=5gIf0_xpFPI");
+		expect(html).toContain("https://www.bilibili.com/video/BV1fK4y1s7Qf");
+		expect(html).toContain("https://github.com/owner/repo");
+		expect(html).not.toContain("bad/id");
+		expect(html).not.toContain("autoplay");
+		expect(html).not.toContain("onclick");
+		expect(html.match(/class="video-embed"/gu)).toHaveLength(2);
+		expect(html.match(/class="github-card"/gu)).toHaveLength(1);
+	});
+
+	it("fails open for malformed math and preserves code metadata", async () => {
+		const { html } = await renderMarkdown(
+			"Broken $\\notacommand{$ math.\n\n```ts title=example.ts\nconst ok = true\n```",
+		);
+		expect(html).toContain("Broken");
+		expect(html).toContain("data-code-block");
+		expect(html).toContain("data-code-language=\"ts\"");
+		expect(html).toContain("data-code-title=\"example.ts\"");
+		expect(html).not.toContain("<script");
+	});
+
+	it("drops dangerous and unknown directive attributes", async () => {
+		const { html } = await renderMarkdown(`
+:::tip[Safe]{onclick="alert(1)" style="background:url(javascript:alert)"}
+Body
+:::
+::unknown{href="javascript:alert(1)" onclick="alert(1)"}
+`);
+		expect(html).toContain("admonition--tip");
+		expect(html).not.toContain("onclick");
+		expect(html).not.toContain("javascript:");
+		expect(html).not.toContain("style=");
 	});
 });
