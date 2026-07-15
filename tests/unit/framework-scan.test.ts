@@ -141,6 +141,31 @@ describe("MVP framework boundary", () => {
 		}
 	});
 
+	it("detects Astro and Svelte source files in an isolated fixture", async () => {
+		const root = await mkdtemp(
+			path.join(os.tmpdir(), "mvp-framework-scan-"),
+		);
+		try {
+			await mkdir(path.join(root, "src"));
+			await writeFile(
+				path.join(root, "package.json"),
+				JSON.stringify({ dependencies: {} }),
+			);
+			await writeFile(path.join(root, "src", "legacy.astro"), "<main />");
+			await writeFile(
+				path.join(root, "src", "legacy.svelte"),
+				"<main />",
+			);
+
+			await expect(findLegacyFrameworkResidue(root)).resolves.toEqual([
+				"source file: src/legacy.astro",
+				"source file: src/legacy.svelte",
+			]);
+		} finally {
+			await rm(root, { force: true, recursive: true });
+		}
+	});
+
 	it("detects legacy framework plugins in root dotfiles", async () => {
 		const root = await mkdtemp(
 			path.join(os.tmpdir(), "mvp-framework-scan-"),
@@ -159,6 +184,61 @@ describe("MVP framework boundary", () => {
 			await expect(findLegacyFrameworkResidue(root)).resolves.toContain(
 				"config reference: .prettierrc",
 			);
+		} finally {
+			await rm(root, { force: true, recursive: true });
+		}
+	});
+
+	it("detects Swup runtime imports and eager PhotoSwipe imports outside the lightbox boundary", async () => {
+		const root = await mkdtemp(
+			path.join(os.tmpdir(), "mvp-framework-scan-"),
+		);
+		try {
+			await mkdir(path.join(root, "src", "components"), {
+				recursive: true,
+			});
+			await writeFile(
+				path.join(root, "package.json"),
+				JSON.stringify({ dependencies: {} }),
+			);
+			await writeFile(
+				path.join(root, "src", "components", "legacy.ts"),
+				'import "swup";\nimport PhotoSwipe from "photoswipe";\n',
+			);
+
+			await expect(findLegacyFrameworkResidue(root)).resolves.toContain(
+				"source reference: src/components/legacy.ts",
+			);
+			await expect(findEagerDiscoveryImports(root)).resolves.toContain(
+				"eager PhotoSwipe import: src/components/legacy.ts",
+			);
+		} finally {
+			await rm(root, { force: true, recursive: true });
+		}
+	});
+
+	it("allows PhotoSwipe imports inside the designated album lightbox boundary", async () => {
+		const root = await mkdtemp(
+			path.join(os.tmpdir(), "mvp-framework-scan-"),
+		);
+		try {
+			const boundary = path.join(
+				root,
+				"src",
+				"components",
+				"interactive",
+			);
+			await mkdir(boundary, { recursive: true });
+			await writeFile(
+				path.join(root, "package.json"),
+				JSON.stringify({ dependencies: {} }),
+			);
+			await writeFile(
+				path.join(boundary, "album-lightbox.tsx"),
+				'import PhotoSwipe from "photoswipe";\n',
+			);
+
+			await expect(findEagerDiscoveryImports(root)).resolves.toEqual([]);
 		} finally {
 			await rm(root, { force: true, recursive: true });
 		}

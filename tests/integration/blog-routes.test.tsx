@@ -32,11 +32,36 @@ import {
 	GET as getRss,
 } from "../../src/app/rss.xml/route";
 import sitemap from "../../src/app/sitemap";
+import { SiteFooter } from "../../src/components/site-footer";
+import { SiteHeader } from "../../src/components/site-header";
+import { albums } from "../../src/lib/showcase/content";
 import { getTaxonomy } from "../../src/lib/content/taxonomy";
 import { getPublishedPosts } from "../../src/lib/posts";
 import { absoluteUrl, siteConfig } from "../../src/lib/site";
 
 describe("blog routes", () => {
+	it("exposes only the approved showcase links in the shared navigation", () => {
+		const header = renderToStaticMarkup(<SiteHeader />);
+		const footer = renderToStaticMarkup(<SiteFooter />);
+
+		expect(header).toContain('href="/about"');
+		expect(header).toContain('href="/projects"');
+		for (const route of [
+			"timeline",
+			"skills",
+			"friends",
+			"devices",
+			"diary",
+			"albums",
+		]) {
+			expect(header).not.toContain(`href="/${route}`);
+		}
+		expect(footer).toContain('href="/albums"');
+		expect(footer).toContain('href="/friends"');
+		for (const route of ["timeline", "skills", "devices", "diary"]) {
+			expect(footer).not.toContain(`href="/${route}`);
+		}
+	});
 	it("renders every published post on the home page in date-descending order", async () => {
 		const posts = await getPublishedPosts();
 		const html = renderToStaticMarkup(await homePage());
@@ -175,6 +200,17 @@ describe("blog routes", () => {
 			siteConfig.url,
 			absoluteUrl("/archive/"),
 			absoluteUrl("/search/"),
+			...[
+				"about",
+				"projects",
+				"timeline",
+				"skills",
+				"friends",
+				"devices",
+				"diary",
+				"albums",
+			].map((route) => absoluteUrl(`/${route}/`)),
+			...albums.map((album) => absoluteUrl(`/albums/${album.slug}/`)),
 			...taxonomy.categories.map((category) =>
 				absoluteUrl(
 					`/categories/${encodeURIComponent(category.slug)}/`,
@@ -185,6 +221,9 @@ describe("blog routes", () => {
 			),
 			...posts.map((post) => absoluteUrl(`/posts/${post.slug}/`)),
 		]);
+		expect(new Set(sitemapEntries.map((entry) => entry.url)).size).toBe(
+			sitemapEntries.length,
+		);
 		expect(sitemapEntries.map((entry) => entry.url).join("\n")).not.toMatch(
 			/(?:rss|atom|llms)/u,
 		);

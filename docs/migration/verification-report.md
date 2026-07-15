@@ -62,3 +62,53 @@ GitHub CI, DCO, Vercel Preview, and production smoke evidence are intentionally
 not claimed here: those gates require a pushed branch and public deployment.
 The prior Ready Vercel deployment remains the rollback target until those remote
 checks and the production path matrix are green.
+
+## Batch B personal showcase evidence
+
+Batch B adds eight static personal showcase entries plus one public album detail:
+About, Projects, Timeline, Skills, Friends, Devices, Diary, and Albums. Content
+comes from typed local manifests; empty Timeline, Friends, and Diary pages remain
+honest usable pages. The album is an ordinary image-link gallery before its only
+client enhancement dynamically loads PhotoSwipe on first interaction.
+
+| Gate | Result |
+| --- | --- |
+| `pnpm install --frozen-lockfile` | PASS — lockfile unchanged |
+| `pnpm framework:scan` | PASS — Astro/Svelte/Swup residue absent; no eager PhotoSwipe runtime import outside the isolated lightbox |
+| `pnpm lint` | PASS — zero warnings |
+| `pnpm typecheck` | PASS |
+| `pnpm vitest run --maxWorkers=1` | PASS — 18 files, 127 tests |
+| `pnpm build` | PASS — 192/192 static outputs; eight showcase entries and `/albums/acg-example/` emitted |
+| Playwright against a manually started production build | PASS — 36 tests |
+| `git diff --check` | PASS |
+
+The WSL Playwright `webServer` empty-port probe is unreliable in this workspace,
+so browser verification used the allowed equivalent: start the already-built
+application on `127.0.0.1:3100`, then run the unchanged E2E directory through a
+temporary ignored configuration with no `webServer`. The temporary file was
+deleted after the run and is not part of the release diff.
+
+Browser evidence covers all eight entry pages at 360, 768, and 1440 pixels with
+exactly one H1 and no horizontal overflow. Axe found zero serious or critical
+violations on representative text, image, and empty-state pages. Real Tab-key
+traversal followed document order from the skip link through the header to About
+and Projects, then traversed About through the theme control and GitHub link to
+all seven sibling paths. A computed-style regression confirmed category and tag
+post-card dates retain automatic first-column placement outside the showcase
+boundary. Every discovered showcase image and album original returned HTTP 200,
+and every rendered image used the local production origin.
+
+Resource inspection found no PhotoSwipe implementation in homepage, About,
+Projects, or Albums-index JavaScript. The album detail also omitted the
+implementation before interaction; its first photo activation fetched the
+deferred PhotoSwipe chunk, opened an accessible dialog, and Escape restored focus.
+The no-JavaScript album test opened the ordinary original-image link successfully.
+Browser stylesheet inspection also found PhotoSwipe CSS only on album detail.
+The Albums index disables Next link prefetch for the detail route so it does not
+fetch the detail-only stylesheet before navigation.
+
+The final content-domain review aligned the implementation with the approved
+field contract, retained `as const satisfies` source checks behind readonly
+consumer views, and added strict ISO calendar/order plus non-empty image-source
+gates. The user-approved AcgExample publication-rights record is retained in
+`docs/migration/media-provenance.md`.

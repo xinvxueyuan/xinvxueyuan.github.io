@@ -3,6 +3,9 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 const forbiddenFramework = /(?:astro|svelte)/iu;
+const forbiddenSwupImport = /(?:from\s+|import\s*(?:\(\s*)?)["'][^"']*swup/iu;
+const eagerPhotoSwipeImport =
+	/^\s*import\s+(?!type\b)(?:(?:[^"']+?\s+from\s+)?["'])photoswipe(?:\/lightbox)?["']/mu;
 const sourceExtensions = new Set([
 	".astro",
 	".js",
@@ -31,7 +34,9 @@ const rootConfigurationFiles = [
 ];
 
 async function walk(directory: string): Promise<string[]> {
-	const entries = await readdir(directory, { withFileTypes: true }).catch(() => []);
+	const entries = await readdir(directory, { withFileTypes: true }).catch(
+		() => [],
+	);
 	const files: string[] = [];
 	for (const entry of entries) {
 		const target = path.join(directory, entry.name);
@@ -56,14 +61,19 @@ export async function findLegacyFrameworkResidue(
 	}
 
 	for (const file of await walk(path.join(root, "src"))) {
-		if (file.includes(`${path.sep}content${path.sep}posts${path.sep}`)) continue;
+		if (file.includes(`${path.sep}content${path.sep}posts${path.sep}`))
+			continue;
 		const relative = path.relative(root, file).split(path.sep).join("/");
 		if (forbiddenFramework.test(path.basename(file))) {
 			findings.push(`source file: ${relative}`);
 			continue;
 		}
 		if (!sourceExtensions.has(path.extname(file))) continue;
-		if (forbiddenFramework.test(await readFile(file, "utf8"))) {
+		const contents = await readFile(file, "utf8");
+		if (
+			forbiddenFramework.test(contents) ||
+			forbiddenSwupImport.test(contents)
+		) {
 			findings.push(`source reference: ${relative}`);
 		}
 	}
@@ -96,7 +106,9 @@ export async function findLegacyFrameworkResidue(
 	return findings.sort();
 }
 
-export async function findEagerDiscoveryImports(root: string): Promise<string[]> {
+export async function findEagerDiscoveryImports(
+	root: string,
+): Promise<string[]> {
 	const findings: string[] = [];
 	for (const file of await walk(path.join(root, "src"))) {
 		if (!sourceExtensions.has(path.extname(file))) continue;
@@ -112,6 +124,11 @@ export async function findEagerDiscoveryImports(root: string): Promise<string[]>
 			contents.includes("/pagefind/pagefind.js")
 		)
 			findings.push(`eager Pagefind reference: ${relative}`);
+		if (
+			relative !== "src/components/interactive/album-lightbox.tsx" &&
+			eagerPhotoSwipeImport.test(contents)
+		)
+			findings.push(`eager PhotoSwipe import: ${relative}`);
 	}
 	return findings.sort();
 }

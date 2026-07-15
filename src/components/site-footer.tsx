@@ -12,6 +12,10 @@ export function SiteFooter() {
 					<span aria-hidden="true"> · </span>
 					<Link href="/atom.xml">Atom</Link>
 					<span aria-hidden="true"> · </span>
+					<Link href="/albums/">相册</Link>
+					<span aria-hidden="true"> · </span>
+					<Link href="/friends/">友链</Link>
+					<span aria-hidden="true"> · </span>
 					<span>{new Date().getUTCFullYear()}</span>
 				</p>
 			</div>
