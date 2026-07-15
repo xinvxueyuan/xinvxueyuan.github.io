@@ -12,38 +12,43 @@ describe("MVP framework boundary", () => {
 	it("keeps Pages CMS aligned with the canonical post contract", async () => {
 		const configuration = JSON.parse(
 			await readFile(new URL("../../.pages.yml", import.meta.url), "utf8"),
-		) as {
-			content: Array<{
-				fields: Array<{ fields?: Array<{ name: string }>; name: string }>;
-				path: string;
-			}>;
-			media: { input: string; output: string };
-		};
-		const posts = configuration.content.find(
-			(collection) => collection.path === "src/content/posts",
 		);
 
-		expect(configuration.media).toEqual({
-			input: "public/uploads",
-			output: "/uploads/",
+		expect(configuration).toEqual({
+			content: [
+				{
+					fields: [
+						{ label: "标题", name: "title", required: true, type: "string" },
+						{ label: "摘要", name: "description", type: "text" },
+						{ label: "发布日期", name: "published", required: true, type: "date" },
+						{ label: "更新日期", name: "updated", type: "date" },
+						{ default: true, label: "草稿", name: "draft", type: "boolean" },
+						{ label: "标签", list: true, name: "tags", type: "string" },
+						{ label: "分类", name: "category", type: "string" },
+						{
+							fields: [
+								{ label: "图片", name: "src", required: true, type: "image" },
+								{ label: "替代文本", name: "alt", required: true, type: "string" },
+								{ label: "宽度", name: "width", required: true, type: "number" },
+								{ label: "高度", name: "height", required: true, type: "number" },
+							],
+							label: "封面",
+							name: "cover",
+							type: "object",
+						},
+						{ default: true, label: "开放评论", name: "comment", type: "boolean" },
+						{ label: "正文", name: "body", type: "rich-text" },
+					],
+					filename: "{year}-{month}-{day}-{primary}.md",
+					label: "文章",
+					name: "posts",
+					path: "src/content/posts",
+					type: "collection",
+					view: { fields: ["title", "published", "category", "draft"] },
+				},
+			],
+			media: { input: "public/uploads", output: "/uploads/" },
 		});
-		expect(posts?.fields.map(({ name }) => name)).toEqual([
-			"title",
-			"description",
-			"published",
-			"updated",
-			"draft",
-			"tags",
-			"category",
-			"cover",
-			"comment",
-			"body",
-		]);
-		expect(
-			posts?.fields.find(({ name }) => name === "cover")?.fields?.map(
-				({ name }) => name,
-			),
-		).toEqual(["src", "alt", "width", "height"]);
 	});
 
 	it("contains no Astro or Svelte runtime residue", async () => {

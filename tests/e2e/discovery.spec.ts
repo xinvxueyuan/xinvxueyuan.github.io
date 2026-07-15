@@ -50,7 +50,7 @@ test("article TOC, code copy, share fallback and disabled comments remain usable
 	await expect(page.getByRole("button", { name: "已复制" }).first()).toBeVisible();
 	await page.getByRole("button", { name: "分享文章" }).click();
 	await expect(page.getByText("链接已复制")).toBeVisible();
-	await expect(page.getByLabel("评论")).toContainText(/本文未开放评论|评论尚未配置/);
+	await expect(page.getByLabel("评论")).toHaveText("本文未开放评论。");
 });
 
 test("discovery pages have no serious accessibility issues", async ({ page }) => {

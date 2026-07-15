@@ -82,7 +82,7 @@ test("dark theme also switches highlighted code colors", async ({ page }) => {
 });
 
 for (const viewport of [
-	{ height: 844, label: "mobile", width: 390 },
+	{ height: 800, label: "mobile", width: 360 },
 	{ height: 1024, label: "tablet", width: 768 },
 	{ height: 900, label: "desktop", width: 1440 },
 ]) {
@@ -103,7 +103,7 @@ for (const viewport of [
 			)
 			.toEqual({ client: viewport.width, scroll: viewport.width });
 
-		if (viewport.width === 390) {
+		if (viewport.width === 360) {
 			const taxonomyLinkRights = await page
 				.locator(".post-card__taxonomy a")
 				.evaluateAll((links) =>
@@ -149,7 +149,7 @@ test("an article preserves a focused reading measure", async ({ page }) => {
 });
 
 for (const viewport of [
-	{ height: 844, width: 390 },
+	{ height: 800, width: 360 },
 	{ height: 1024, width: 768 },
 	{ height: 900, width: 1440 },
 ]) {

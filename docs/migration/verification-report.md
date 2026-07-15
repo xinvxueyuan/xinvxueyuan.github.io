@@ -55,7 +55,7 @@ Browser request inspection found no Pagefind or Mermaid request on the homepage,
 and no Mermaid request on an ordinary article. The Mermaid fixture preserves
 readable source and enhances it after hydration. Search loads Pagefind only from
 its isolated interaction. Axe reported zero serious/critical violations on
-home, article, archive, and search. The final browser run also passed the 390px
+home, article, archive, and search. The final browser run also passed the 360px
 home and article overflow checks.
 
 GitHub CI, DCO, Vercel Preview, and production smoke evidence are intentionally
