@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 
 import { Markdown } from "@/components/markdown";
 import { getPost, getPublishedPosts } from "@/lib/content/posts";
+import {
+	createBlogPosting,
+	serializeStructuredData,
+} from "@/lib/content/structured-data";
 import { renderMarkdown } from "@/lib/markdown";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
@@ -38,16 +42,12 @@ export async function generateMetadata({
 
 	const url = absoluteUrl(`/posts/${post.slug}/`);
 	const description = post.description ?? siteConfig.description;
-	const image = post.cover
-		? absoluteUrl(post.cover.src)
-		: absoluteUrl(siteConfig.defaultOgImage);
 
 	return {
 		alternates: { canonical: url },
 		description,
 		openGraph: {
 			description,
-			images: [image],
 			publishedTime: post.published.toISOString(),
 			title: post.title,
 			type: "article",
@@ -65,6 +65,7 @@ export default async function PostPage({ params }: PostPageProps) {
 	if (!post) notFound();
 
 	const { hasMermaid, headings, html } = await renderMarkdown(post.body);
+	const structuredData = serializeStructuredData(createBlogPosting(post));
 
 	return (
 		<main
@@ -72,6 +73,10 @@ export default async function PostPage({ params }: PostPageProps) {
 			id="main-content"
 			tabIndex={-1}
 		>
+			<script
+				dangerouslySetInnerHTML={{ __html: structuredData }}
+				type="application/ld+json"
+			/>
 			<article
 				className="post-page"
 				data-has-mermaid={hasMermaid || undefined}
