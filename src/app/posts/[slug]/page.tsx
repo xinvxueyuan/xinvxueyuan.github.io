@@ -1,8 +1,24 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { ArticleCover } from "@/components/content/article-cover";
+import { ArticleMeta } from "@/components/content/article-meta";
+import { ArticleRecommendations } from "@/components/content/article-recommendations";
+import { ArticleToc } from "@/components/content/article-toc";
+import { Comments } from "@/components/interactive/comments";
+import { ShareActions } from "@/components/interactive/share-actions";
 import { Markdown } from "@/components/markdown";
-import { getPost, getPublishedPosts } from "@/lib/posts";
+import { getPost, getPublishedPosts } from "@/lib/content/posts";
+import {
+	getAdjacentPosts,
+	getRelatedPosts,
+} from "@/lib/content/recommendations";
+import { getReadingStats } from "@/lib/content/reading";
+import { getTaxonomy } from "@/lib/content/taxonomy";
+import {
+	createBlogPosting,
+	serializeStructuredData,
+} from "@/lib/content/structured-data";
 import { renderMarkdown } from "@/lib/markdown";
 import { absoluteUrl, siteConfig } from "@/lib/site";
 
@@ -10,12 +26,8 @@ type PostPageProps = {
 	params: Promise<{ slug: string }>;
 };
 
-const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
-	dateStyle: "long",
-	timeZone: "UTC",
-});
-
-function decodeSlug(slug: string): string | undefined {
+export function decodeSlug(slug: string): string | undefined {
+	if (!/%[\da-f]{2}/iu.test(slug)) return slug;
 	try {
 		return decodeURIComponent(slug);
 	} catch {
@@ -38,16 +50,12 @@ export async function generateMetadata({
 
 	const url = absoluteUrl(`/posts/${post.slug}/`);
 	const description = post.description ?? siteConfig.description;
-	const image = post.image
-		? absoluteUrl(post.image)
-		: absoluteUrl(siteConfig.defaultOgImage);
 
 	return {
 		alternates: { canonical: url },
 		description,
 		openGraph: {
 			description,
-			images: [image],
 			publishedTime: post.published.toISOString(),
 			title: post.title,
 			type: "article",
@@ -64,7 +72,14 @@ export default async function PostPage({ params }: PostPageProps) {
 	const post = await getPost(decodedSlug);
 	if (!post) notFound();
 
-	const html = await renderMarkdown(post.body);
+	const { hasMermaid, headings, html } = await renderMarkdown(post.body);
+	const structuredData = serializeStructuredData(createBlogPosting(post));
+	const publishedPosts = await getPublishedPosts();
+	const taxonomy = getTaxonomy(publishedPosts);
+	const adjacent = getAdjacentPosts(publishedPosts, post.slug);
+	const related = getRelatedPosts(publishedPosts, post.slug);
+	const reading = getReadingStats(post.body);
+	const canonicalUrl = absoluteUrl(`/posts/${post.slug}/`);
 
 	return (
 		<main
@@ -72,18 +87,56 @@ export default async function PostPage({ params }: PostPageProps) {
 			id="main-content"
 			tabIndex={-1}
 		>
-			<article className="post-page">
-				<header className="post-page__header">
-					<p className="post-page__date">
-						<time dateTime={post.published.toISOString()}>
-							{dateFormatter.format(post.published)}
-						</time>
-					</p>
-					<h1>{post.title}</h1>
-					{post.description ? <p>{post.description}</p> : null}
-				</header>
-				<Markdown html={html} />
-			</article>
+			<script
+				dangerouslySetInnerHTML={{ __html: structuredData }}
+				type="application/ld+json"
+			/>
+			<div className="article-layout">
+				<article
+					className="post-page"
+					data-has-mermaid={hasMermaid || undefined}
+					data-headings={JSON.stringify(headings)}
+				>
+					<header className="post-page__header">
+						<h1>{post.title}</h1>
+						{post.description ? <p>{post.description}</p> : null}
+						<ArticleCover cover={post.cover} />
+						<ArticleMeta
+							category={post.category}
+							characters={reading.characters}
+							minutes={reading.minutes}
+							published={post.published}
+							tags={post.tags}
+							taxonomy={taxonomy}
+							updated={post.updated}
+							words={reading.words}
+						/>
+					</header>
+					<Markdown
+						key={post.slug}
+						hasMermaid={hasMermaid}
+						html={html}
+					/>
+					<footer className="article-footer">
+						<p>除特别说明外，本文采用 CC BY-NC-SA 4.0 许可。</p>
+						<ShareActions
+							canonicalUrl={canonicalUrl}
+							title={post.title}
+						/>
+						<ArticleRecommendations
+							adjacent={adjacent}
+							related={related}
+						/>
+						<Comments
+							enabled={post.comment}
+							pathname={`/posts/${post.slug}/`}
+						/>
+					</footer>
+				</article>
+				<aside className="article-layout__aside">
+					<ArticleToc headings={headings} />
+				</aside>
+			</div>
 		</main>
 	);
 }

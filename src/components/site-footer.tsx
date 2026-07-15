@@ -8,6 +8,10 @@ export function SiteFooter() {
 				<p>
 					<Link href="/">xinvStar</Link>
 					<span aria-hidden="true"> · </span>
+					<Link href="/rss.xml">RSS</Link>
+					<span aria-hidden="true"> · </span>
+					<Link href="/atom.xml">Atom</Link>
+					<span aria-hidden="true"> · </span>
 					<span>{new Date().getUTCFullYear()}</span>
 				</p>
 			</div>

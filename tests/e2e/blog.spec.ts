@@ -81,8 +81,26 @@ test("dark theme also switches highlighted code colors", async ({ page }) => {
 	expect(colors.actual).not.toBe("rgb(255, 255, 255)");
 });
 
+test("article math styles are available at the global layout boundary", async ({
+	page,
+}) => {
+	await page.goto("/posts/markdown-tutorial/");
+	const hasKatexStyles = await page.evaluate(() =>
+		[...document.styleSheets].some((sheet) => {
+			try {
+				return [...sheet.cssRules].some((rule) =>
+					rule.cssText.includes(".katex"),
+				);
+			} catch {
+				return false;
+			}
+		}),
+	);
+	expect(hasKatexStyles).toBe(true);
+});
+
 for (const viewport of [
-	{ height: 844, label: "mobile", width: 390 },
+	{ height: 800, label: "mobile", width: 360 },
 	{ height: 1024, label: "tablet", width: 768 },
 	{ height: 900, label: "desktop", width: 1440 },
 ]) {
@@ -102,6 +120,17 @@ for (const viewport of [
 				})),
 			)
 			.toEqual({ client: viewport.width, scroll: viewport.width });
+
+		if (viewport.width === 360) {
+			const taxonomyLinkRights = await page
+				.locator(".post-card__taxonomy a")
+				.evaluateAll((links) =>
+					links.map((link) => link.getBoundingClientRect().right),
+				);
+			expect(
+				taxonomyLinkRights.every((right) => right <= viewport.width),
+			).toBe(true);
+		}
 
 		const toggleBox = await page
 			.getByRole("button", { name: /切换到/ })
@@ -135,6 +164,92 @@ test("an article preserves a focused reading measure", async ({ page }) => {
 		});
 	expect(articleMeasure).toBeGreaterThanOrEqual(65);
 	expect(articleMeasure).toBeLessThanOrEqual(75);
+});
+
+for (const viewport of [
+	{ height: 800, width: 360 },
+	{ height: 1024, width: 768 },
+	{ height: 900, width: 1440 },
+]) {
+	test(`article reading tools fit at ${viewport.width}px`, async ({
+		page,
+	}) => {
+		await page.setViewportSize(viewport);
+		await page.goto("/posts/markdown-tutorial/", {
+			waitUntil: "domcontentloaded",
+		});
+		await expect(
+			page.getByRole("navigation", { name: "文章目录" }),
+		).toBeVisible();
+		await expect(
+			page.getByRole("button", { name: "分享文章" }),
+		).toBeVisible();
+		await expect(
+			page.getByRole("button", { name: "复制" }).first(),
+		).toBeVisible();
+		await expect(page.locator(".comments iframe")).toHaveCount(0);
+		await expect
+			.poll(() =>
+				page.evaluate(() => document.documentElement.scrollWidth),
+			)
+			.toBe(viewport.width);
+		await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+	});
+}
+
+test("Mermaid enhancement preserves readable source when rendering cannot run", async ({
+	page,
+}) => {
+	await page.route("**/*mermaid*", (route) => route.abort());
+	await page.goto("/posts/markdown-mermaid/");
+	const source = page.locator("pre[data-mermaid-source]").first();
+	await expect(source).toBeVisible();
+	await expect(source).toContainText("graph TD");
+	const diagramOrSource = page.locator(
+		".mermaid-diagram, pre[data-mermaid-source]:not([hidden])",
+	);
+	await expect(diagramOrSource.first()).toBeVisible();
+});
+
+test("Mermaid redraws when the site theme changes", async ({ page }) => {
+	await page.goto("/posts/markdown-mermaid/");
+	const diagram = page.locator(".mermaid-diagram").first();
+	await expect(diagram).toHaveAttribute("data-mermaid-theme", "default");
+	await page.getByRole("button", { name: "切换到深色主题" }).click();
+	await expect(diagram).toHaveAttribute("data-mermaid-theme", "dark");
+});
+
+test("long code collapse controls expose stable accessible state", async ({
+	page,
+}) => {
+	await page.goto("/posts/markdown-tutorial/");
+	const collapse = page.getByRole("button", { name: "折叠" }).first();
+	await expect(collapse).toHaveAttribute("aria-expanded", "true");
+	const blockId = await collapse.getAttribute("aria-controls");
+	expect(blockId).toMatch(/^article-content-code-/u);
+	const block = page.locator(`#${blockId}`);
+	const stableCollapse = page.locator(
+		`button[data-code-action="collapse"][aria-controls="${blockId}"]`,
+	);
+	await expect(block).toBeVisible();
+	await collapse.click();
+	await expect(stableCollapse).toHaveAttribute("aria-expanded", "false");
+	await expect(block).toHaveClass(/is-collapsed/u);
+	await stableCollapse.click();
+	await expect(stableCollapse).toHaveAttribute("aria-expanded", "true");
+});
+
+test("video article exposes safe provider links without iframes", async ({
+	page,
+}) => {
+	await page.goto("/posts/video/");
+	await expect(
+		page.getByRole("link", { name: /在 youtube 观看视频/iu }),
+	).toHaveAttribute("href", "https://www.youtube.com/watch?v=5gIf0_xpFPI");
+	await expect(
+		page.getByRole("link", { name: /在 bilibili 观看视频/iu }),
+	).toHaveAttribute("href", "https://www.bilibili.com/video/BV1fK4y1s7Qf");
+	await expect(page.locator("main#main-content iframe")).toHaveCount(0);
 });
 
 test("unknown posts return a true 404 with a recovery path", async ({

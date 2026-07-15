@@ -40,10 +40,10 @@ afterEach(async () => {
 });
 
 describe("MVP post API", () => {
-	it("recursively loads Markdown into only the MVP post fields", async () => {
+	it("recursively loads Markdown into the discovery post model", async () => {
 		const directory = await createFixture({
 			"notes/Hello World.md": postSource("Hello", "2026-01-02", {
-				extra: "description: A short note\nimage: /cover.webp\ntags:\n  - Next.js\ncategory: legacy\npinned: true\n",
+				extra: "description: A short note\nupdated: 2026-07-14\nimage: /legacy.webp\ntags:\n  - Next.js\n  - React\ncategory: 工程\ncomment: true\ncover:\n  src: /cover.webp\n  alt: Night sky\n  width: 1200\n  height: 630\npinned: true\n",
 			}),
 			"ignored.txt": "not a post",
 		});
@@ -52,15 +52,53 @@ describe("MVP post API", () => {
 
 		expect(post).toEqual({
 			body: "\nBody for Hello.\n",
+			category: "工程",
+			comment: true,
+			cover: {
+				alt: "Night sky",
+				height: 630,
+				src: "/cover.webp",
+				width: 1200,
+			},
 			description: "A short note",
 			draft: false,
-			image: "/cover.webp",
 			published: new Date("2026-01-02T00:00:00.000Z"),
 			slug: "notes-hello-world",
 			sourcePath: "notes/Hello World.md",
-			tags: ["Next.js"],
+			tags: ["Next.js", "React"],
 			title: "Hello",
+			updated: new Date("2026-07-14T00:00:00.000Z"),
 		});
+	});
+
+	it("defaults comments on while ignoring legacy frontmatter keys", async () => {
+		const directory = await createFixture({
+			"legacy.md": postSource("Legacy", "2026-01-02", {
+				extra: "image: /legacy.webp\npinned: true\npassword: secret\n",
+			}),
+		});
+
+		const [post] = await getAllPosts({ directory, includeDrafts: true });
+
+		expect(post.comment).toBe(true);
+		expect(post).not.toHaveProperty("image");
+		expect(post).not.toHaveProperty("pinned");
+		expect(post).not.toHaveProperty("password");
+	});
+
+	it("keeps the temporary legacy module type-compatible without restoring image parsing", async () => {
+		const directory = await createFixture({
+			"legacy.md": postSource("Legacy", "2026-01-02", {
+				extra: "image: /legacy.webp\n",
+			}),
+		});
+		const [post] = await getAllPosts({ directory, includeDrafts: true });
+		const readLegacyImage = (
+			legacyPost: Awaited<ReturnType<typeof getAllPosts>>[number],
+		) => legacyPost.image;
+
+		expect(readLegacyImage(post)).toBeUndefined();
+		expect(post).not.toHaveProperty("image");
 	});
 
 	it("filters drafts by default and includes them only when requested", async () => {
@@ -126,6 +164,33 @@ describe("MVP post API", () => {
 		});
 	});
 
+	it("reserves unsuffixed public slugs before drafts so draft changes cannot move public URLs", async () => {
+		const withDraft = await createFixture({
+			"Hello!.md": postSource("Draft collision", "2026-01-03", {
+				draft: true,
+			}),
+			"hello.md": postSource("Published", "2026-01-02"),
+		});
+		const publishedOnly = await createFixture({
+			"hello.md": postSource("Published", "2026-01-02"),
+		});
+
+		expect((await getAllPosts({ directory: withDraft }))[0].slug).toBe(
+			"hello",
+		);
+		expect(
+			(await getAllPosts({ directory: publishedOnly }))[0].slug,
+		).toBe("hello");
+		expect(
+			(await getAllPosts({ directory: withDraft, includeDrafts: true })).map(
+				(post) => [post.title, post.slug],
+			),
+		).toEqual([
+			["Draft collision", "hello-1"],
+			["Published", "hello"],
+		]);
+	});
+
 	it("keeps fallback slugs unique when filenames contain only punctuation", async () => {
 		const directory = await createFixture({
 			"!!!.md": postSource("First", "2026-01-01"),
@@ -157,6 +222,78 @@ describe("MVP post API", () => {
 		await expect(
 			getAllPosts({ directory, includeDrafts: true }),
 		).rejects.toThrow(new RegExp(`${sourcePath}[\\s\\S]*published`, "u"));
+	});
+
+	it.each(["2026-02-31", "2026-01-02T03:04:05Z", '" 2026-01-02 "'])(
+		"rejects non-calendar updated value %s with source diagnostics",
+		async (updated) => {
+			const directory = await createFixture({
+				"invalid-updated.md": postSource(
+					"Invalid updated",
+					"2026-01-02",
+					{
+						extra: `updated: ${updated}\n`,
+					},
+				),
+			});
+
+			await expect(
+				getAllPosts({ directory, includeDrafts: true }),
+			).rejects.toThrow(/invalid-updated\.md[\s\S]*updated/iu);
+		},
+	);
+
+	it("rejects partial structured covers with source diagnostics", async () => {
+		const directory = await createFixture({
+			"partial-cover.md": postSource("Partial cover", "2026-01-02", {
+				extra: "cover:\n  src: /cover.webp\n  alt: Missing dimensions\n",
+			}),
+		});
+
+		await expect(
+			getAllPosts({ directory, includeDrafts: true }),
+		).rejects.toThrow(/partial-cover\.md[\s\S]*cover/iu);
+	});
+
+	it("trims required frontmatter strings before validating and returning them", async () => {
+		const directory = await createFixture({
+			"trimmed.md": postSource("  Trimmed title  ", "2026-01-02", {
+				extra: "category: '  Engineering  '\ncover:\n  src: '  /cover.webp  '\n  alt: '  Cover text  '\n  width: 1200\n  height: 630\n",
+			}),
+		});
+
+		const [post] = await getAllPosts({ directory, includeDrafts: true });
+
+		expect(post.title).toBe("Trimmed title");
+		expect(post.category).toBe("Engineering");
+		expect(post.cover).toMatchObject({
+			alt: "Cover text",
+			src: "/cover.webp",
+		});
+	});
+
+	it.each([
+		["title", "title: '   '\npublished: 2026-01-02"],
+		[
+			"category",
+			"title: Valid\npublished: 2026-01-02\ncategory: '   '",
+		],
+		[
+			"cover alt",
+			"title: Valid\npublished: 2026-01-02\ncover:\n  src: /cover.webp\n  alt: '   '\n  width: 1200\n  height: 630",
+		],
+		[
+			"cover src",
+			"title: Valid\npublished: 2026-01-02\ncover:\n  src: '   '\n  alt: Cover\n  width: 1200\n  height: 630",
+		],
+	])("rejects whitespace-only %s after trimming", async (_label, fields) => {
+		const directory = await createFixture({
+			"whitespace.md": `---\n${fields}\n---\n\nBody\n`,
+		});
+
+		await expect(
+			getAllPosts({ directory, includeDrafts: true }),
+		).rejects.toThrow(/whitespace\.md/u);
 	});
 
 	it("accepts exact unquoted and quoted calendar dates", async () => {

@@ -1,3 +1,4 @@
+import { getTaxonomyTermSlug, type Taxonomy } from "@/lib/content/taxonomy";
 import type { Post } from "@/lib/posts";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
@@ -5,7 +6,13 @@ const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
 	timeZone: "UTC",
 });
 
-export function PostCard({ post }: { post: Post }) {
+export function PostCard({
+	post,
+	taxonomy,
+}: {
+	post: Post;
+	taxonomy: Taxonomy;
+}) {
 	return (
 		<article className="post-card" data-post-card>
 			<p className="post-card__date">
@@ -17,6 +24,25 @@ export function PostCard({ post }: { post: Post }) {
 				<a href={`/posts/${post.slug}/`}>{post.title}</a>
 			</h3>
 			{post.description ? <p>{post.description}</p> : null}
+			{post.category || post.tags.length ? (
+				<p className="post-card__taxonomy">
+					{post.category ? (
+						<a
+							href={`/categories/${encodeURIComponent(getTaxonomyTermSlug(post.category, taxonomy.categories))}/`}
+						>
+							{post.category}
+						</a>
+					) : null}
+					{post.tags.map((tag) => (
+						<a
+							href={`/tags/${encodeURIComponent(getTaxonomyTermSlug(tag, taxonomy.tags))}/`}
+							key={tag}
+						>
+							#{tag}
+						</a>
+					))}
+				</p>
+			) : null}
 		</article>
 	);
 }

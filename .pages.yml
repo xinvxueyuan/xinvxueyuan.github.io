@@ -1,0 +1,37 @@
+{
+  "media": { "input": "public/uploads", "output": "/uploads/" },
+  "content": [
+    {
+      "name": "posts",
+      "label": "文章",
+      "type": "collection",
+      "path": "src/content/posts",
+      "filename": "{year}-{month}-{day}-{primary}.md",
+      "view": {
+        "fields": ["title", "published", "category", "draft"]
+      },
+      "fields": [
+        { "name": "title", "label": "标题", "type": "string", "required": true },
+        { "name": "description", "label": "摘要", "type": "text" },
+        { "name": "published", "label": "发布日期", "type": "date", "required": true },
+        { "name": "updated", "label": "更新日期", "type": "date" },
+        { "name": "draft", "label": "草稿", "type": "boolean", "default": true },
+        { "name": "tags", "label": "标签", "type": "string", "list": true },
+        { "name": "category", "label": "分类", "type": "string" },
+        {
+          "name": "cover",
+          "label": "封面",
+          "type": "object",
+          "fields": [
+            { "name": "src", "label": "图片", "type": "image", "required": true },
+            { "name": "alt", "label": "替代文本", "type": "string", "required": true },
+            { "name": "width", "label": "宽度", "type": "number", "required": true },
+            { "name": "height", "label": "高度", "type": "number", "required": true }
+          ]
+        },
+        { "name": "comment", "label": "开放评论", "type": "boolean", "default": true },
+        { "name": "body", "label": "正文", "type": "rich-text" }
+      ]
+    }
+  ]
+}
