@@ -38,11 +38,11 @@ describe("article reading furniture", () => {
 	it("renders dates, taxonomy and reading statistics as ordinary links/text", () => {
 		const html = renderToStaticMarkup(
 			<ArticleMeta
-				category="工程"
+				category="Frontend"
 				characters={1234}
 				minutes={5}
 				published={new Date("2026-07-14T00:00:00.000Z")}
-				tags={["Next.js", "React"]}
+				tags={["Next.js", "工程"]}
 				updated={new Date("2026-07-15T00:00:00.000Z")}
 				words={12}
 			/>,
@@ -52,8 +52,9 @@ describe("article reading furniture", () => {
 		expect(html).toContain("更新于");
 		expect(html).toContain("约 5 分钟");
 		expect(html).toContain("1234 字符 · 12 单词");
-		expect(html).toContain('href="/categories/%E5%B7%A5%E7%A8%8B/"');
-		expect(html).toContain('href="/tags/Next.js/"');
+		expect(html).toContain('href="/categories/frontend/"');
+		expect(html).toContain('href="/tags/next-js/"');
+		expect(html).toContain('href="/tags/%E5%B7%A5%E7%A8%8B/"');
 	});
 
 	it("keeps related and adjacent navigation readable without JavaScript", () => {

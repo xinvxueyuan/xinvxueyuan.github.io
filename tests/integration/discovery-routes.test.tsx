@@ -1,20 +1,23 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { slug as githubSlug } from "github-slugger";
 import { describe, expect, it } from "vitest";
 
-import archivePage, { metadata as archiveMetadata } from "../../src/app/archive/page";
+import archivePage, {
+	metadata as archiveMetadata,
+} from "../../src/app/archive/page";
 import categoryPage, {
 	generateMetadata as generateCategoryMetadata,
 	generateStaticParams as generateCategoryStaticParams,
 } from "../../src/app/categories/[category]/page";
-import searchPage, { metadata as searchMetadata } from "../../src/app/search/page";
+import searchPage, {
+	metadata as searchMetadata,
+} from "../../src/app/search/page";
 import tagPage, {
 	generateMetadata as generateTagMetadata,
 	generateStaticParams as generateTagStaticParams,
 } from "../../src/app/tags/[tag]/page";
 import { PostCard } from "../../src/components/post-card";
 import { getPublishedPosts } from "../../src/lib/content/posts";
-import { getTaxonomy } from "../../src/lib/content/taxonomy";
+import { getTaxonomy, getTaxonomySlug } from "../../src/lib/content/taxonomy";
 import { absoluteUrl } from "../../src/lib/site";
 
 describe("discovery routes", () => {
@@ -25,7 +28,9 @@ describe("discovery routes", () => {
 
 		expect(positions.every((position) => position >= 0)).toBe(true);
 		expect(positions).toEqual([...positions].sort((a, b) => a - b));
-		expect(archiveMetadata.alternates?.canonical).toBe(absoluteUrl("/archive/"));
+		expect(archiveMetadata.alternates?.canonical).toBe(
+			absoluteUrl("/archive/"),
+		);
 	});
 
 	it("generates published taxonomy params and decodes route terms", async () => {
@@ -41,19 +46,28 @@ describe("discovery routes", () => {
 			taxonomy.categories.map((term) => ({ category: term.slug })),
 		);
 
-		const tagRoute = { params: Promise.resolve({ tag: encodeURIComponent(tag.slug) }) };
+		const tagRoute = {
+			params: Promise.resolve({ tag: encodeURIComponent(tag.slug) }),
+		};
 		const categoryRoute = {
-			params: Promise.resolve({ category: encodeURIComponent(category.slug) }),
+			params: Promise.resolve({
+				category: encodeURIComponent(category.slug),
+			}),
 		};
 		const tagHtml = renderToStaticMarkup(await tagPage(tagRoute));
-		const categoryHtml = renderToStaticMarkup(await categoryPage(categoryRoute));
+		const categoryHtml = renderToStaticMarkup(
+			await categoryPage(categoryRoute),
+		);
 
 		expect(tagHtml).toContain(tag.name);
 		expect(categoryHtml).toContain(category.name);
-		expect((await generateTagMetadata(tagRoute)).alternates?.canonical).toBe(
-			absoluteUrl(`/tags/${encodeURIComponent(tag.slug)}/`),
-		);
-		expect((await generateCategoryMetadata(categoryRoute)).alternates?.canonical).toBe(
+		expect(
+			(await generateTagMetadata(tagRoute)).alternates?.canonical,
+		).toBe(absoluteUrl(`/tags/${encodeURIComponent(tag.slug)}/`));
+		expect(
+			(await generateCategoryMetadata(categoryRoute)).alternates
+				?.canonical,
+		).toBe(
 			absoluteUrl(`/categories/${encodeURIComponent(category.slug)}/`),
 		);
 	});
@@ -66,10 +80,10 @@ describe("discovery routes", () => {
 		const html = renderToStaticMarkup(<PostCard post={post!} />);
 
 		expect(html).toContain(
-			`/categories/${encodeURIComponent(githubSlug(post!.category!) || post!.category!)}/`,
+			`/categories/${encodeURIComponent(getTaxonomySlug(post!.category!))}/`,
 		);
 		expect(html).toContain(
-			`/tags/${encodeURIComponent(githubSlug(post!.tags[0]) || post!.tags[0])}/`,
+			`/tags/${encodeURIComponent(getTaxonomySlug(post!.tags[0]))}/`,
 		);
 	});
 
@@ -78,6 +92,8 @@ describe("discovery routes", () => {
 
 		expect(html).toContain('type="search"');
 		expect(html).toContain('aria-live="polite"');
-		expect(searchMetadata.alternates?.canonical).toBe(absoluteUrl("/search/"));
+		expect(searchMetadata.alternates?.canonical).toBe(
+			absoluteUrl("/search/"),
+		);
 	});
 });

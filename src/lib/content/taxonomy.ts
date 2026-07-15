@@ -10,6 +10,10 @@ export type Taxonomy = {
 	years: TaxonomyYear[];
 };
 
+export function getTaxonomySlug(name: string): string {
+	return githubSlug(name.trim().replaceAll(".", " ")) || name.trim();
+}
+
 function collectTerms(values: string[][]): TaxonomyTerm[] {
 	const terms = new Map<string, { count: number; name: string }>();
 	for (const labels of values) {
@@ -29,7 +33,7 @@ function collectTerms(values: string[][]): TaxonomyTerm[] {
 		.map(({ count, name }) => ({
 			count,
 			name,
-			slug: githubSlug(name) || name,
+			slug: getTaxonomySlug(name),
 		}))
 		.sort(
 			(left, right) =>

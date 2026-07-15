@@ -1,5 +1,4 @@
-import { slug as githubSlug } from "github-slugger";
-
+import { getTaxonomySlug } from "@/lib/content/taxonomy";
 import type { Post } from "@/lib/posts";
 
 const dateFormatter = new Intl.DateTimeFormat("zh-CN", {
@@ -23,14 +22,14 @@ export function PostCard({ post }: { post: Post }) {
 				<p>
 					{post.category ? (
 						<a
-							href={`/categories/${encodeURIComponent(githubSlug(post.category) || post.category)}/`}
+							href={`/categories/${encodeURIComponent(getTaxonomySlug(post.category))}/`}
 						>
 							{post.category}
 						</a>
 					) : null}
 					{post.tags.map((tag) => (
 						<a
-							href={`/tags/${encodeURIComponent(githubSlug(tag) || tag)}/`}
+							href={`/tags/${encodeURIComponent(getTaxonomySlug(tag))}/`}
 							key={tag}
 						>
 							#{tag}

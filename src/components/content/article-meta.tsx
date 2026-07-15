@@ -35,15 +35,21 @@ export function ArticleMeta(props: ArticleMetaProps) {
 				{props.characters} 字符 · {props.words} 单词
 			</span>
 			{props.category ? (
-				<a href={`/categories/${encodeURIComponent(props.category)}/`}>
+				<a
+					href={`/categories/${encodeURIComponent(getTaxonomySlug(props.category))}/`}
+				>
 					{props.category}
 				</a>
 			) : null}
 			{props.tags.map((tag) => (
-				<a href={`/tags/${encodeURIComponent(tag)}/`} key={tag}>
+				<a
+					href={`/tags/${encodeURIComponent(getTaxonomySlug(tag))}/`}
+					key={tag}
+				>
 					#{tag}
 				</a>
 			))}
 		</div>
 	);
 }
+import { getTaxonomySlug } from "@/lib/content/taxonomy";

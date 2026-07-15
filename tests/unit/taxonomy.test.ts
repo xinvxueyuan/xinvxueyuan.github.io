@@ -40,7 +40,7 @@ describe("content taxonomy", () => {
 
 		expect(taxonomy.tags).toEqual([
 			{ count: 2, name: "React", slug: "react" },
-			{ count: 1, name: "Next.js", slug: "nextjs" },
+			{ count: 1, name: "Next.js", slug: "next-js" },
 			{ count: 1, name: "TypeScript", slug: "typescript" },
 		]);
 		expect(taxonomy.categories).toEqual([
