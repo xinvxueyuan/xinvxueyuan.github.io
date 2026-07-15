@@ -21,6 +21,7 @@ import skillsPage, {
 import timelinePage, {
 	metadata as timelineMetadata,
 } from "../../src/app/timeline/page";
+import { EmptyState } from "../../src/components/showcase/empty-state";
 import type { DiaryEntry } from "../../src/lib/showcase/types";
 import { absoluteUrl } from "../../src/lib/site";
 
@@ -29,6 +30,21 @@ function countHeadings(html: string, level: number): number {
 }
 
 describe("personal showcase routes", () => {
+	it("gives repeated empty states instance-safe accessible names", () => {
+		const html = renderToStaticMarkup(
+			<>
+				<EmptyState description="First" title="First empty state" />
+				<EmptyState description="Second" title="Second empty state" />
+			</>,
+		);
+		const labelledBy = [
+			...html.matchAll(/aria-labelledby="([^"]+)"/gu),
+		].map((match) => match[1]);
+
+		expect(labelledBy).toHaveLength(2);
+		expect(new Set(labelledBy).size).toBe(2);
+		for (const id of labelledBy) expect(html).toContain(`id="${id}"`);
+	});
 	it.each([
 		["about", aboutPage, aboutMetadata],
 		["projects", projectsPage, projectsMetadata],

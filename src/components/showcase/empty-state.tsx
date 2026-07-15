@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useId } from "react";
 
 type EmptyStateProps = {
 	title: string;
@@ -10,9 +11,11 @@ type EmptyStateProps = {
 };
 
 export function EmptyState({ title, description, link }: EmptyStateProps) {
+	const titleId = useId();
+
 	return (
-		<section aria-labelledby="empty-state-title">
-			<h2 id="empty-state-title">{title}</h2>
+		<section aria-labelledby={titleId} className="showcase-empty-state">
+			<h2 id={titleId}>{title}</h2>
 			<p>{description}</p>
 			{link ? <Link href={link.href}>{link.label}</Link> : null}
 		</section>

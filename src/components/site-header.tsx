@@ -12,9 +12,11 @@ export function SiteHeader() {
 					</span>
 					<span>xinvStar</span>
 				</Link>
-				<div>
+				<div className="site-header__links">
 					<Link href="/archive/">归档</Link>
 					<Link href="/search/">搜索</Link>
+					<Link href="/about/">关于</Link>
+					<Link href="/projects/">项目</Link>
 				</div>
 				<ThemeToggle />
 			</nav>
