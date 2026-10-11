@@ -24,6 +24,55 @@ test("search finds a known Chinese phrase", async ({ page }) => {
 	await expect(page.getByRole("link", { name: /Docker 容器化最佳实践/ })).toBeVisible();
 });
 
+test("search filters by title or content and sorts by dates", async ({ page }) => {
+	await page.goto("/search/");
+	const scopeGroup = page.getByRole("group", { name: "相关性" });
+	await expect(
+		scopeGroup.getByRole("checkbox", { name: "全部" }),
+	).toBeChecked();
+
+	const query = page.getByLabel("关键词");
+	const kubernetesArticle = page.getByRole("link", {
+		name: /Kubernetes 入门到实战/,
+	});
+	await query.fill("Kubernetes 入门到实战");
+	await scopeGroup.getByRole("checkbox", { name: "按标题" }).click();
+	await expect(
+		scopeGroup.getByRole("checkbox", { name: "全部" }),
+	).not.toBeChecked();
+	await expect(kubernetesArticle).toBeVisible();
+	await scopeGroup.getByRole("checkbox", { name: "按内容" }).click();
+	await expect(
+		scopeGroup.getByRole("checkbox", { name: "全部" }),
+	).toBeChecked();
+	await expect(kubernetesArticle).toBeVisible();
+	await scopeGroup.getByRole("checkbox", { name: "按内容" }).click();
+	await query.fill("事实标准");
+	await expect(kubernetesArticle).toBeVisible();
+	await scopeGroup.getByRole("checkbox", { name: "全部" }).click();
+
+	await query.fill("实战");
+	const resultLinks = page.locator(
+		'main#main-content section[role="search"] > ul > li > a',
+	);
+	await expect.poll(() => resultLinks.count()).toBeGreaterThan(1);
+	const chooseOption = async (label: string, option: string): Promise<void> => {
+		const select = page.getByRole("combobox", { name: label });
+		await select.click();
+		await page.getByRole("option", { name: option, exact: true }).click();
+	};
+	await chooseOption("按时间", "发布时间");
+	await chooseOption("顺序", "正序（从早到晚）");
+	await expect(resultLinks.first()).toHaveAttribute("href", /2025-09-28-rust-/);
+	await chooseOption("顺序", "倒序（从新到旧）");
+	await expect(resultLinks.first()).toHaveAttribute("href", /2026-07-07/);
+	await chooseOption("按时间", "更新时间");
+	await chooseOption("顺序", "正序（从早到晚）");
+	await expect(resultLinks.first()).toHaveAttribute("href", /2025-09-28-rust-/);
+	await chooseOption("顺序", "倒序（从新到旧）");
+	await expect(resultLinks.first()).toHaveAttribute("href", /2026-07-07/);
+});
+
 for (const endpoint of ["/rss.xml", "/atom.xml", "/llms.txt", "/llms-full.txt"]) {
 	test(`${endpoint} is a readable discovery response`, async ({ request }) => {
 		const response = await request.get(endpoint);

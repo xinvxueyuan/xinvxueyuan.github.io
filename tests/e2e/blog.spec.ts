@@ -146,6 +146,56 @@ for (const viewport of [
 	});
 }
 
+for (const viewport of [
+	{ height: 800, label: "mobile", width: 360 },
+	{ height: 900, label: "desktop", width: 1440 },
+]) {
+	test(`${viewport.label} footer stays pinned without covering article content`, async ({
+		page,
+	}) => {
+		await page.setViewportSize({
+			height: viewport.height,
+			width: viewport.width,
+		});
+		await page.goto("/posts/markdown-tutorial/", {
+			waitUntil: "domcontentloaded",
+		});
+
+		const footer = page.locator("footer.site-footer");
+		const initialFooter = await footer.evaluate((element) => {
+			const rect = element.getBoundingClientRect();
+			return {
+				bottom: window.innerHeight - rect.bottom,
+				position: getComputedStyle(element).position,
+			};
+		});
+		expect(initialFooter.position).toBe("fixed");
+		expect(initialFooter.bottom).toBeCloseTo(0, 0);
+
+		await page.evaluate(() => window.scrollTo(0, 400));
+		await expect
+			.poll(async () => {
+				const rect = await footer.boundingBox();
+				return rect ? page.viewportSize()!.height - rect.y - rect.height : Infinity;
+			})
+			.toBeLessThan(1);
+
+		await page.addStyleTag({
+			content: "html { scroll-behavior: auto !important; }",
+		});
+		await page.evaluate(() =>
+			window.scrollTo(0, document.documentElement.scrollHeight),
+		);
+		const [mainBottom, footerTop] = await Promise.all([
+			page.locator("main#main-content").evaluate((element) =>
+				element.getBoundingClientRect().bottom,
+			),
+			footer.evaluate((element) => element.getBoundingClientRect().top),
+		]);
+		expect(mainBottom).toBeLessThanOrEqual(footerTop + 1);
+	});
+}
+
 test("an article preserves a focused reading measure", async ({ page }) => {
 	await page.goto("/");
 	const firstPost = page.locator("[data-post-card] a").first();

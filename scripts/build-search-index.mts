@@ -14,22 +14,36 @@ async function buildSearchIndex(): Promise<void> {
 
 	const created = await createIndex({ forceLanguage: "zh" });
 	if (created.errors.length || !created.index) {
-		throw new Error(created.errors.join("\n") || "Pagefind did not create an index");
+		throw new Error(
+			created.errors.join("\n") || "Pagefind did not create an index",
+		);
 	}
 
 	for (const record of getSearchRecords(await getPublishedPosts())) {
-		const result = await created.index.addCustomRecord({
-			content: record.content,
-			filters: { tags: record.meta.tags },
-			language: "zh",
-			meta: {
-				category: record.meta.category,
-				tags: record.meta.tags.join(", "),
-				title: record.meta.title,
-			},
-			url: record.url,
-		});
-		if (result.errors.length) throw new Error(result.errors.join("\n"));
+		for (const scope of ["title", "content"] as const) {
+			const result = await created.index.addCustomRecord({
+				content: scope === "title" ? record.title : record.content,
+				filters: {
+					search_scope: [scope],
+					tags: record.meta.tags,
+				},
+				language: "zh",
+				meta: {
+					canonical_url: record.url,
+					category: record.meta.category,
+					published: record.meta.published,
+					tags: record.meta.tags.join(", "),
+					title: record.meta.title,
+					updated: record.meta.updated,
+				},
+				sort: {
+					published: record.meta.published,
+					updated: record.meta.updated,
+				},
+				url: `${record.url}?__search_scope=${scope}`,
+			});
+			if (result.errors.length) throw new Error(result.errors.join("\n"));
+		}
 	}
 
 	const generated = await created.index.getFiles();

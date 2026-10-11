@@ -18,6 +18,7 @@
   --site-content-width: 1120px;
   --site-reading-width: 74ch;
   --site-header-height: 4.25rem;
+  --site-footer-space: 10rem;
   font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -55,6 +56,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
+  padding-bottom: calc(var(--site-footer-space) + env(safe-area-inset-bottom, 0px));
   background: var(--site-bg);
   color: var(--site-text);
   line-height: 1.7;
@@ -320,9 +322,13 @@ img {
 }
 
 .site-footer {
-  margin-top: 5rem;
+  position: fixed;
+  z-index: 90;
+  inset: auto 0 0;
+  margin-top: 0;
   border-top: 1px solid var(--site-line);
   background: var(--site-surface);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .site-footer__inner {
@@ -793,7 +799,7 @@ img {
   margin-top: 0;
 }
 
-.page-shell--search label {
+.page-shell--search > section[role="search"] > label {
   display: block;
   margin-bottom: 0.4rem;
   color: var(--site-muted);
@@ -808,6 +814,23 @@ img {
   border-radius: 0.65rem;
   background: var(--site-bg);
   color: var(--site-text);
+}
+
+.pagefind-search__filters {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.1rem;
+  margin-block: 1rem 1.35rem;
+}
+
+.pagefind-search__scope {
+  flex: 1 1 100%;
+}
+
+.pagefind-search__select {
+  flex: 1 1 12rem;
+  min-width: 0;
 }
 
 .page-shell--search ul {
@@ -1356,6 +1379,10 @@ img {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --site-footer-space: 12.5rem;
+  }
+
   .page-shell,
   .page-shell--article {
     width: min(calc(100% - 1.25rem), var(--site-content-width));

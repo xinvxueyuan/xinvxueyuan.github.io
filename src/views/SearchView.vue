@@ -15,7 +15,7 @@ const initialQuery = computed(() => {
 useHead({
   title: "搜索",
   meta: [
-    { name: "description", content: "搜索 xinvStar 的文章正文、分类与标签。" },
+    { name: "description", content: "搜索 xinvStar 的文章标题、正文、分类与标签。" },
     { name: "robots", content: "noindex,follow" },
   ],
   link: [{ rel: "canonical", href: absoluteUrl("/search/") }],

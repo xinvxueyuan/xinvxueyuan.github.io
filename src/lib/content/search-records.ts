@@ -6,11 +6,14 @@ import type { Post } from "./types";
 
 export type SearchRecord = {
 	url: string;
+	title: string;
 	content: string;
 	meta: {
 		title: string;
 		category: string;
 		tags: string[];
+		published: string;
+		updated: string;
 	};
 };
 
@@ -37,7 +40,10 @@ export function getSearchRecords(posts: readonly Post[]): SearchRecord[] {
 				category: post.category ?? "",
 				tags: post.tags,
 				title: post.title,
+				published: post.published.toISOString(),
+				updated: (post.updated ?? post.published).toISOString(),
 			},
+			title: post.title,
 			url: `/posts/${post.slug}/`,
 		}));
 }
