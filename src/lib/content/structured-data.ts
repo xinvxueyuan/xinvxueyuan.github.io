@@ -1,6 +1,6 @@
-import { absoluteUrl, siteConfig } from "@/lib/site";
+import { absoluteUrl, siteConfig } from "../site";
 
-import type { Post } from "./posts";
+import type { Post } from "./types";
 
 export type BlogPosting = {
 	"@context": "https://schema.org";

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f8fb" />
+    <title>xinvStar · 夜航问讯站</title>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("xinvstar-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const dark = savedTheme === "dark" || (savedTheme !== "light" && prefersDark);
+        document.documentElement.classList.toggle("kun-dark-mode", dark);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="app"><!--ssg-outlet--></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

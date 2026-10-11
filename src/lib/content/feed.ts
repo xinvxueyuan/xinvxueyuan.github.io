@@ -1,7 +1,7 @@
-import { renderMarkdown } from "@/lib/markdown";
-import { absoluteUrl, siteConfig } from "@/lib/site";
+import { renderMarkdown } from "../markdown";
+import { absoluteUrl, siteConfig } from "../site";
 
-import type { Post } from "./posts";
+import type { Post } from "./types";
 
 function publishedInDateOrder(posts: Post[]): Post[] {
 	return posts
@@ -32,11 +32,14 @@ function stripFeedEnhancementAttributes(html: string): string {
 		.replace(/\stabindex=(?:"[^"]*"|'[^']*')/gu, "");
 }
 
-async function renderedItems(posts: Post[]) {
+async function renderedItems(
+	posts: Post[],
+	cachedHtml?: ReadonlyMap<string, string>,
+) {
 	return Promise.all(
 		publishedInDateOrder(posts).map(async (post) => ({
 			html: stripFeedEnhancementAttributes(
-				(await renderMarkdown(post.body)).html,
+				cachedHtml?.get(post.slug) ?? (await renderMarkdown(post.body)).html,
 			),
 			post,
 			url: absoluteUrl(`/posts/${post.slug}/`),
@@ -53,8 +56,11 @@ function mostRecentItemDate(
 	}, undefined);
 }
 
-export async function serializeRss(posts: Post[]): Promise<string> {
-	const items = await renderedItems(posts);
+export async function serializeRss(
+	posts: Post[],
+	cachedHtml?: ReadonlyMap<string, string>,
+): Promise<string> {
+	const items = await renderedItems(posts, cachedHtml);
 	const lastBuildDate = mostRecentItemDate(items)?.toUTCString();
 	const itemXml = items
 		.map(
@@ -81,8 +87,11 @@ export async function serializeRss(posts: Post[]): Promise<string> {
 `;
 }
 
-export async function serializeAtom(posts: Post[]): Promise<string> {
-	const items = await renderedItems(posts);
+export async function serializeAtom(
+	posts: Post[],
+	cachedHtml?: ReadonlyMap<string, string>,
+): Promise<string> {
+	const items = await renderedItems(posts, cachedHtml);
 	const updated = (mostRecentItemDate(items) ?? new Date(0)).toISOString();
 	const entryXml = items
 		.map(

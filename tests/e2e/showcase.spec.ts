@@ -64,7 +64,7 @@ test("keyboard navigation discovers the approved showcase paths", async ({
 	};
 	const header = page.getByRole("navigation", { name: "主导航" });
 	await tabTo(page.getByRole("link", { name: "跳到主要内容" }));
-	await tabTo(header.getByRole("link", { name: "xinvStar" }));
+	await tabTo(page.getByRole("link", { name: "xinvStar 首页" }));
 	await tabTo(header.getByRole("link", { name: "归档" }));
 	await tabTo(header.getByRole("link", { name: "搜索" }));
 	const aboutLink = header.getByRole("link", { name: "关于" });
@@ -76,13 +76,20 @@ test("keyboard navigation discovers the approved showcase paths", async ({
 	await expect(page).toHaveURL(/\/about\/$/u);
 	await page.reload();
 	await tabTo(page.getByRole("link", { name: "跳到主要内容" }));
-	await tabTo(header.getByRole("link", { name: "xinvStar" }));
+	await tabTo(page.getByRole("link", { name: "xinvStar 首页" }));
 	await tabTo(header.getByRole("link", { name: "归档" }));
 	await tabTo(header.getByRole("link", { name: "搜索" }));
 	await tabTo(header.getByRole("link", { name: "关于" }));
 	await tabTo(header.getByRole("link", { name: "项目" }));
+	await tabTo(page.getByRole("searchbox", { name: "搜索文章" }));
+	await tabTo(page.getByRole("button", { name: "提交搜索" }));
 	await tabTo(page.getByRole("button", { name: /切换/u }));
-	await tabTo(page.getByRole("link", { name: "GitHub" }));
+	await tabTo(page.getByRole("banner").getByRole("link", { name: "GitHub" }));
+	await tabTo(
+		page
+			.getByRole("region", { name: "在这里写些什么" })
+			.getByRole("link", { name: "GitHub" }),
+	);
 	const showcaseNavigation = page.getByRole("navigation", {
 		name: "继续认识我",
 	});
@@ -179,7 +186,7 @@ test("album loads PhotoSwipe only on first interaction and restores focus", asyn
 		await getStylesheetResources(page),
 	);
 	expect(detailStyles.some((source) => source.includes(".pswp__"))).toBe(
-		true,
+		false,
 	);
 
 	const firstPhoto = page.locator("[data-album-gallery] a").first();
@@ -187,6 +194,10 @@ test("album loads PhotoSwipe only on first interaction and restores focus", asyn
 	const dialog = page.locator('.pswp[role="dialog"]');
 	await expect(dialog).toBeVisible();
 	await expect(dialog).toBeFocused();
+	await expect.poll(async () => {
+		const styles = await readResources(page, await getStylesheetResources(page));
+		return styles.some((source) => source.includes(".pswp__"));
+	}).toBe(true);
 	const chunksAfterClick = await getJavaScriptChunks(page);
 	const deferredChunks = chunksAfterClick.filter(
 		(url) => !initialChunks.includes(url),
@@ -266,7 +277,7 @@ async function getJavaScriptChunks(page: import("@playwright/test").Page) {
 					.map((entry) => entry.name)
 					.filter(
 						(url) =>
-							url.includes("/_next/static/chunks/") &&
+							url.includes("/assets/") &&
 							/\.js(?:\?|$)/u.test(url),
 					),
 			),

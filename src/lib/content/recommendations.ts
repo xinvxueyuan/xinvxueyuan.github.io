@@ -1,4 +1,4 @@
-import type { PostSummary } from "./posts";
+import type { PostSummary } from "./types";
 
 export type AdjacentPosts = {
 	previous: PostSummary | undefined;
@@ -50,9 +50,8 @@ export function getRelatedPosts(
 	return posts
 		.filter((post) => post.slug !== currentSlug && !post.draft)
 		.map((post) => {
-			const matchingTags = new Set(
-				post.tags.map(normalized),
-			).intersection(currentTags).size;
+				const matchingTags = [...new Set(post.tags.map(normalized))]
+					.filter((tag) => currentTags.has(tag)).length;
 			const categoryMatch =
 				currentCategory !== undefined &&
 				post.category !== undefined &&

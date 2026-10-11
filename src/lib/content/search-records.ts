@@ -2,7 +2,7 @@ import remarkParse from "remark-parse";
 import { unified } from "unified";
 import { visit } from "unist-util-visit";
 
-import type { Post } from "./posts";
+import type { Post } from "./types";
 
 export type SearchRecord = {
 	url: string;

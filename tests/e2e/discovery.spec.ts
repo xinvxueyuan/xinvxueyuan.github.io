@@ -40,7 +40,9 @@ test("article TOC, code copy, share fallback and disabled comments remain usable
 	await page.addInitScript(() => {
 		Object.defineProperty(navigator, "share", { configurable: true, value: undefined });
 	});
-	await page.goto("/posts/markdown-tutorial/");
+	await page.goto("/posts/markdown-tutorial/", {
+		waitUntil: "domcontentloaded",
+	});
 	const tocLink = page.getByRole("navigation", { name: "文章目录" }).getByRole("link").first();
 	const target = await tocLink.getAttribute("href");
 	expect(target).toMatch(/^#/u);

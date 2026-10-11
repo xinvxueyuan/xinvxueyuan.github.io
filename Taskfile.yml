@@ -3,27 +3,27 @@ version: "3"
 silent: false
 
 tasks:
-    default:
-        desc: List blog MVP commands
-        cmds:
-            - task --list
+  default:
+    desc: List blog commands
+    cmds:
+      - task --list
 
-    install:
-        desc: Install the repository-declared pnpm dependencies
-        cmds:
-            - pnpm install --frozen-lockfile
+  install:
+    desc: Install the repository-declared pnpm dependencies
+    cmds:
+      - pnpm install --frozen-lockfile
 
-    dev:
-        desc: Start the Next.js development server
-        cmds:
-            - pnpm dev
+  dev:
+    desc: Generate content and start the Vue 3/Vite development server
+    cmds:
+      - pnpm dev
 
-    verify:
-        desc: Run every local MVP quality gate
-        cmds:
-            - pnpm verify
+  verify:
+    desc: Run framework, lint, type, unit, static-build and browser quality gates
+    cmds:
+      - pnpm verify
 
-    e2e:
-        desc: Run the browser acceptance suite
-        cmds:
-            - pnpm test:e2e
+  e2e:
+    desc: Run the browser acceptance suite against the static Vite preview
+    cmds:
+      - pnpm test:e2e

@@ -1,14 +1,20 @@
-# build output
+# static Vue build output
 dist/
-.next/
+.output/
 public/pagefind/
+public/rss.xml
+public/atom.xml
+public/sitemap.xml
+public/robots.txt
+public/llms.txt
+public/llms-full.txt
+public/posts/*/opengraph-image
+src/generated/
 .worktrees/
 
-# generated types
+# generated types and caches
 *.tsbuildinfo
-next-env.d.ts
-demo
-/plans/
+
 # dependencies
 node_modules/
 
@@ -20,6 +26,7 @@ pnpm-debug.log*
 
 # environment variables
 .env
+.env.*.local
 .env.production
 
 # content repository (independent mode)
@@ -33,12 +40,11 @@ pnpm-debug.log*
 .DS_Store
 
 .vercel
-
 package-lock.json
 bun.lockb
 yarn.lock
 
-# ide
+# IDE
 .idea
 *.iml
 .claude
@@ -46,12 +52,6 @@ yarn.lock
 cache/
 fuwari/
 src/data/myself.ts
-
-# Bangumi generated data
 src/data/bangumi-data.json
-
-# Bilibili generated data
 src/data/bilibili-data.json
-
-# Lighthouse CI
 .lighthouseci/

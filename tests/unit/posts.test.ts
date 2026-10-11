@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 
-import { getAllPosts, getPost, getPublishedPosts } from "../../src/lib/posts";
+import { getAllPosts, getPost, getPublishedPosts } from "../../src/lib/content/posts";
 
 const fixtureDirectories: string[] = [];
 
@@ -84,21 +84,6 @@ describe("MVP post API", () => {
 		expect(post).not.toHaveProperty("image");
 		expect(post).not.toHaveProperty("pinned");
 		expect(post).not.toHaveProperty("password");
-	});
-
-	it("keeps the temporary legacy module type-compatible without restoring image parsing", async () => {
-		const directory = await createFixture({
-			"legacy.md": postSource("Legacy", "2026-01-02", {
-				extra: "image: /legacy.webp\n",
-			}),
-		});
-		const [post] = await getAllPosts({ directory, includeDrafts: true });
-		const readLegacyImage = (
-			legacyPost: Awaited<ReturnType<typeof getAllPosts>>[number],
-		) => legacyPost.image;
-
-		expect(readLegacyImage(post)).toBeUndefined();
-		expect(post).not.toHaveProperty("image");
 	});
 
 	it("filters drafts by default and includes them only when requested", async () => {

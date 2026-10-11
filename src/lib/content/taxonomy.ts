@@ -1,6 +1,6 @@
 import { slug as githubSlug } from "github-slugger";
 
-import type { PostSummary } from "./posts";
+import type { PostSummary } from "./types";
 
 export type TaxonomyTerm = { count: number; name: string; slug: string };
 export type TaxonomyYear = { count: number; year: number };

@@ -1,122 +1,79 @@
-import { describe, expect, it, vi } from "vitest";
+import { flushPromises, mount } from "@vue/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import {
-	createAlbumLightboxController,
-	loadPhotoSwipe,
-} from "../../src/components/interactive/album-lightbox";
+const state = vi.hoisted(() => ({
+  constructed: vi.fn(),
+  destroy: vi.fn(),
+  init: vi.fn(),
+}));
 
-function deferred<T>() {
-	let resolve!: (value: T) => void;
-	let reject!: (reason: unknown) => void;
-	const promise = new Promise<T>((resolvePromise, rejectPromise) => {
-		resolve = resolvePromise;
-		reject = rejectPromise;
-	});
-	return { promise, reject, resolve };
-}
+vi.mock("photoswipe/style.css", () => ({}));
+vi.mock("photoswipe", () => ({ default: class PhotoSwipeMock {} }));
+vi.mock("photoswipe/lightbox", () => ({
+  default: class LightboxMock {
+    private readonly gallery: HTMLElement;
 
-function anchor(href: string) {
-	return {
-		href,
-		click: vi.fn(),
-		focus: vi.fn(),
-	};
-}
+    constructor(options: unknown) {
+      state.constructed(options);
+      this.gallery = (options as { gallery: HTMLElement }).gallery;
+    }
 
-describe("loadPhotoSwipe", () => {
-	it("clears a rejected load, retries, and reuses a successful resolution", async () => {
-		const Lightbox = class {};
-		const PhotoSwipe = class {};
-		const importers = {
-			lightbox: vi
-				.fn()
-				.mockRejectedValueOnce(new Error("offline"))
-				.mockResolvedValue({ default: Lightbox }),
-			photoswipe: vi.fn().mockResolvedValue({ default: PhotoSwipe }),
-		};
+    private readonly handleClick = (event: Event): void => event.preventDefault();
 
-		await expect(loadPhotoSwipe(importers)).rejects.toThrow("offline");
-		const loaded = await loadPhotoSwipe(importers);
-		const reused = await loadPhotoSwipe(importers);
+    init() {
+      state.init();
+      this.gallery.addEventListener("click", this.handleClick);
+    }
 
-		expect(loaded).toBe(reused);
-		expect(loaded).toEqual({ Lightbox, PhotoSwipe });
-		expect(importers.lightbox).toHaveBeenCalledTimes(2);
-		expect(importers.photoswipe).toHaveBeenCalledTimes(2);
-	});
+    destroy() {
+      state.destroy();
+      this.gallery.removeEventListener("click", this.handleClick);
+    }
+  },
+}));
 
-	it("single-flights rapid opens and destroys the sole initialized instance", async () => {
-		const pending = deferred<Awaited<ReturnType<typeof loadPhotoSwipe>>>();
-		const init = vi.fn();
-		const destroy = vi.fn();
-		let constructCount = 0;
-		class Lightbox {
-			constructor() {
-				constructCount += 1;
-			}
-			destroy = destroy;
-			init = init;
-		}
-		const first = anchor("https://www.xinvstar.xyz/images/first.webp");
-		const second = anchor("https://www.xinvstar.xyz/images/second.webp");
-		const controller = createAlbumLightboxController({
-			gallery: {} as HTMLElement,
-			load: () => pending.promise,
-			navigate: vi.fn(),
-		});
+import AlbumLightbox from "../../src/components/interactive/AlbumLightbox.vue";
 
-		const firstOpen = controller.open(first);
-		const secondOpen = controller.open(second);
-		pending.resolve({
-			Lightbox: Lightbox as never,
-			PhotoSwipe: class {} as never,
-		});
-		await Promise.all([firstOpen, secondOpen]);
+describe("AlbumLightbox Vue enhancement", () => {
+  let wrapper: ReturnType<typeof mount> | undefined;
+  let gallery: HTMLElement;
+  let anchor: HTMLAnchorElement;
 
-		expect(constructCount).toBe(1);
-		expect(init).toHaveBeenCalledTimes(1);
-		expect(first.click).toHaveBeenCalledTimes(1);
-		expect(second.click).not.toHaveBeenCalled();
-		controller.destroy();
-		expect(destroy).toHaveBeenCalledTimes(1);
-	});
+  beforeEach(() => {
+    state.constructed.mockClear();
+    state.init.mockClear();
+    state.destroy.mockClear();
+    gallery = document.createElement("div");
+    gallery.dataset.albumGallery = "";
+    anchor = document.createElement("a");
+    anchor.href = "/images/albums/test.webp";
+    anchor.textContent = "open photo";
+    gallery.append(anchor);
+    document.body.append(gallery);
+  });
 
-	it("does not create or navigate when destroyed during a pending load", async () => {
-		const pending = deferred<Awaited<ReturnType<typeof loadPhotoSwipe>>>();
-		const construct = vi.fn(() => ({ destroy: vi.fn(), init: vi.fn() }));
-		const navigate = vi.fn();
-		const clicked = anchor("https://www.xinvstar.xyz/images/pending.webp");
-		const controller = createAlbumLightboxController({
-			gallery: {} as HTMLElement,
-			load: () => pending.promise,
-			navigate,
-		});
+  afterEach(() => {
+    wrapper?.unmount();
+    wrapper = undefined;
+    gallery.remove();
+  });
 
-		const opening = controller.open(clicked);
-		controller.destroy();
-		pending.resolve({
-			Lightbox: construct as never,
-			PhotoSwipe: class {} as never,
-		});
-		await opening;
+  it("waits for the first photo click, initializes once and destroys on unmount", async () => {
+    wrapper = mount(AlbumLightbox, { attachTo: document.body });
+    expect(state.constructed).not.toHaveBeenCalled();
 
-		expect(construct).not.toHaveBeenCalled();
-		expect(clicked.click).not.toHaveBeenCalled();
-		expect(navigate).not.toHaveBeenCalled();
-	});
+    const click = new MouseEvent("click", { bubbles: true, cancelable: true, button: 0 });
+    anchor.dispatchEvent(click);
+    await flushPromises();
 
-	it("navigates to the original image when loading fails", async () => {
-		const navigate = vi.fn();
-		const clicked = anchor("https://www.xinvstar.xyz/images/fallback.webp");
-		const controller = createAlbumLightboxController({
-			gallery: {} as HTMLElement,
-			load: () => Promise.reject(new Error("offline")),
-			navigate,
-		});
+    expect(click.defaultPrevented).toBe(true);
+    expect(state.constructed).toHaveBeenCalledOnce();
+    expect(state.init).toHaveBeenCalledOnce();
+    expect(document.activeElement).toBe(anchor);
 
-		await controller.open(clicked);
+    wrapper.unmount();
+    wrapper = undefined;
+    expect(state.destroy).toHaveBeenCalledOnce();
+  });
 
-		expect(navigate).toHaveBeenCalledOnce();
-		expect(navigate).toHaveBeenCalledWith(clicked.href);
-	});
 });

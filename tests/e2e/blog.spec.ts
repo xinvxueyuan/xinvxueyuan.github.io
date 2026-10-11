@@ -7,7 +7,9 @@ test("home exposes the night-navigation shell and keyboard landmarks", async ({
 	await page.goto("/");
 
 	await expect(page.locator("header.site-header")).toBeVisible();
-	await expect(page.locator("nav")).toHaveAccessibleName("主导航");
+	await expect(
+		page.getByRole("navigation", { name: "主导航" }),
+	).toBeVisible();
 	await expect(page.locator("main#main-content")).toBeVisible();
 	await expect(page.locator("footer.site-footer")).toBeVisible();
 	await expect(
@@ -65,7 +67,9 @@ test("theme stays operable when browser storage is unavailable", async ({
 });
 
 test("dark theme also switches highlighted code colors", async ({ page }) => {
-	await page.goto("/posts/markdown-tutorial/");
+	await page.goto("/posts/markdown-tutorial/", {
+		waitUntil: "domcontentloaded",
+	});
 	const codeBlock = page.locator(".shiki").first();
 	await expect(codeBlock).toBeVisible();
 	await page.getByRole("button", { name: "切换到深色主题" }).click();
@@ -84,7 +88,9 @@ test("dark theme also switches highlighted code colors", async ({ page }) => {
 test("article math styles are available at the global layout boundary", async ({
 	page,
 }) => {
-	await page.goto("/posts/markdown-tutorial/");
+	await page.goto("/posts/markdown-tutorial/", {
+		waitUntil: "domcontentloaded",
+	});
 	const hasKatexStyles = await page.evaluate(() =>
 		[...document.styleSheets].some((sheet) => {
 			try {
@@ -222,13 +228,15 @@ test("Mermaid redraws when the site theme changes", async ({ page }) => {
 test("long code collapse controls expose stable accessible state", async ({
 	page,
 }) => {
-	await page.goto("/posts/markdown-tutorial/");
+	await page.goto("/posts/markdown-tutorial/", {
+		waitUntil: "domcontentloaded",
+	});
 	const collapse = page.getByRole("button", { name: "折叠" }).first();
-	await expect(collapse).toHaveAttribute("aria-expanded", "true");
-	const blockId = await collapse.getAttribute("aria-controls");
-	expect(blockId).toMatch(/^article-content-code-/u);
-	const block = page.locator(`#${blockId}`);
-	const stableCollapse = page.locator(
+		await expect(collapse).toHaveAttribute("aria-expanded", "true");
+		const blockId = await collapse.getAttribute("aria-controls");
+		expect(blockId).toMatch(/^post-content-code-/u);
+		const block = page.locator(`#${blockId}`);
+		const stableCollapse = page.locator(
 		`button[data-code-action="collapse"][aria-controls="${blockId}"]`,
 	);
 	await expect(block).toBeVisible();
@@ -256,12 +264,12 @@ test("unknown posts return a true 404 with a recovery path", async ({
 	page,
 }) => {
 	const response = await page.goto("/posts/this-post-does-not-exist/");
-	expect(response?.status()).toBe(404);
-	await expect(
-		page.getByRole("heading", { level: 1, name: "这里没有这篇文章" }),
-	).toBeVisible();
-	await expect(page.getByRole("link", { name: "返回首页" })).toHaveAttribute(
-		"href",
+		expect(response?.status()).toBe(404);
+		await expect(
+			page.getByRole("heading", { level: 1, name: "页面不存在" }),
+		).toBeVisible();
+		await expect(page.getByRole("link", { name: "回到 xinvStar 首页" })).toHaveAttribute(
+			"href",
 		"/",
 	);
 });
@@ -280,6 +288,10 @@ test("home and article have no serious or critical accessibility violations", as
 	).toEqual([]);
 
 	await page.locator("[data-post-card] a").first().click();
+	await expect(page).toHaveURL(/\/posts\/[^/]+\/$/u);
+	await expect(
+		page.locator("main.page-shell--article article.post-page"),
+	).toBeVisible();
 	const articleResults = await new AxeBuilder({ page })
 		.withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
 		.analyze();
