@@ -127,36 +127,38 @@ function toggleTheme(): void {
         <span class="visually-hidden">{{ menuOpen ? "关闭菜单" : "打开菜单" }}</span>
       </button>
     </div>
-    <nav
-      v-if="menuOpen"
-      id="mobile-nav"
-      class="mobile-nav"
-      aria-label="移动端主导航"
-    >
-      <RouterLink
-        to="/archive/"
-        @click="menuOpen = false"
+    <Transition name="mobile-menu">
+      <nav
+        v-if="menuOpen"
+        id="mobile-nav"
+        class="mobile-nav"
+        aria-label="移动端主导航"
       >
-        归档
-      </RouterLink>
-      <RouterLink
-        to="/search/"
-        @click="menuOpen = false"
-      >
-        搜索
-      </RouterLink>
-      <RouterLink
-        to="/projects/"
-        @click="menuOpen = false"
-      >
-        项目
-      </RouterLink>
-      <RouterLink
-        to="/about/"
-        @click="menuOpen = false"
-      >
-        关于
-      </RouterLink>
-    </nav>
+        <RouterLink
+          to="/archive/"
+          @click="menuOpen = false"
+        >
+          归档
+        </RouterLink>
+        <RouterLink
+          to="/search/"
+          @click="menuOpen = false"
+        >
+          搜索
+        </RouterLink>
+        <RouterLink
+          to="/projects/"
+          @click="menuOpen = false"
+        >
+          项目
+        </RouterLink>
+        <RouterLink
+          to="/about/"
+          @click="menuOpen = false"
+        >
+          关于
+        </RouterLink>
+      </nav>
+    </Transition>
   </header>
 </template>

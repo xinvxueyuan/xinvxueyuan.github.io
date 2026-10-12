@@ -351,3 +351,91 @@ test("home and article have no serious or critical accessibility violations", as
 		),
 	).toEqual([]);
 });
+
+test("page transitions stay brief and honor reduced motion", async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: "no-preference" });
+	await page.goto("/");
+	const main = page.locator("main#main-content");
+	const readPageTransitionDuration = () =>
+		main.evaluate((element) => {
+			element.classList.add("page-enter-active");
+			const durations = getComputedStyle(element).transitionDuration
+				.split(",")
+				.map((duration) => {
+					const value = Number.parseFloat(duration);
+					return duration.trim().endsWith("ms") ? value : value * 1000;
+				});
+			element.classList.remove("page-enter-active");
+			return Math.max(...durations);
+		});
+
+	const normalDuration = await readPageTransitionDuration();
+	expect(normalDuration).toBeGreaterThan(0);
+	expect(normalDuration).toBeLessThanOrEqual(250);
+
+	await page.emulateMedia({ reducedMotion: "reduce" });
+	const reducedDuration = await readPageTransitionDuration();
+	expect(reducedDuration).toBeLessThanOrEqual(0.01);
+	await expect(main).toBeVisible();
+});
+
+test("mobile navigation opens and closes accessibly", async ({ page }) => {
+	await page.setViewportSize({ height: 844, width: 390 });
+	await page.goto("/");
+
+	await page.getByRole("button", { name: "打开菜单" }).click();
+	const mobileNavigation = page.getByRole("navigation", {
+		name: "移动端主导航",
+	});
+	await expect(mobileNavigation).toBeVisible();
+	const menuDuration = await mobileNavigation.evaluate((element) => {
+		element.classList.add("mobile-menu-enter-active");
+		const duration = getComputedStyle(element).transitionDuration.split(",")[0].trim();
+		element.classList.remove("mobile-menu-enter-active");
+		const value = Number.parseFloat(duration);
+		return duration.endsWith("ms") ? value : value * 1000;
+	});
+	expect(menuDuration).toBeGreaterThan(0);
+	expect(menuDuration).toBeLessThanOrEqual(200);
+	await expect(page.getByRole("button", { name: "关闭菜单" })).toHaveAttribute(
+		"aria-expanded",
+		"true",
+	);
+
+	await mobileNavigation.getByRole("link", { name: "关于" }).click();
+	await expect(page).toHaveURL(/\/about\/$/u);
+	await expect(mobileNavigation).toBeHidden();
+	await expect(page.locator("main#main-content")).toBeVisible();
+});
+
+test("route hash scrolling is immediate when reduced motion is requested", async ({
+	page,
+}) => {
+	await page.emulateMedia({ reducedMotion: "reduce" });
+	await page.goto("/posts/markdown-tutorial/", { waitUntil: "domcontentloaded" });
+	const headingId = await page.locator(".article-prose h2").first().getAttribute("id");
+	expect(headingId).toBeTruthy();
+	await page.evaluate(() => {
+		const originalScrollTo = window.scrollTo.bind(window);
+		Object.defineProperty(window, "scrollTo", {
+			configurable: true,
+			value: (options: ScrollToOptions | number, y?: number) => {
+				document.documentElement.dataset.testScrollBehavior =
+					typeof options === "object" ? options.behavior ?? "auto" : "auto";
+				if (typeof options === "number") originalScrollTo(options, y ?? 0);
+				else originalScrollTo(options);
+			},
+		});
+	});
+
+	await page.evaluate((id) => {
+		const destination = `/posts/markdown-tutorial/#${encodeURIComponent(id)}`;
+		window.history.pushState(window.history.state, "", destination);
+		window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
+	}, headingId!);
+	await expect(page).toHaveURL(/\/posts\/markdown-tutorial\/#/u);
+	await expect(page.locator("html")).toHaveAttribute(
+		"data-test-scroll-behavior",
+		"auto",
+	);
+});

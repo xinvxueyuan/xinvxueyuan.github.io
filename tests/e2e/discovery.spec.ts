@@ -26,30 +26,44 @@ test("search finds a known Chinese phrase", async ({ page }) => {
 
 test("search filters by title or content and sorts by dates", async ({ page }) => {
 	await page.goto("/search/");
-	const scopeGroup = page.getByRole("group", { name: "相关性" });
+	const scopeGroup = page.getByRole("group", { name: "搜索范围" });
+	const allScopesButton = scopeGroup.getByRole("button", { name: "全部范围" });
+	const titleCheckbox = scopeGroup.getByRole("checkbox", { name: "按标题" });
+	const contentCheckbox = scopeGroup.getByRole("checkbox", { name: "按内容" });
+	await expect(allScopesButton).toHaveAttribute("aria-pressed", "true");
 	await expect(
 		scopeGroup.getByRole("checkbox", { name: "全部" }),
-	).toBeChecked();
+	).toHaveCount(0);
+	await expect(titleCheckbox).not.toBeChecked();
+	await expect(contentCheckbox).not.toBeChecked();
+	await allScopesButton.click();
+	await expect(allScopesButton).toHaveAttribute("aria-pressed", "true");
 
 	const query = page.getByLabel("关键词");
 	const kubernetesArticle = page.getByRole("link", {
 		name: /Kubernetes 入门到实战/,
 	});
 	await query.fill("Kubernetes 入门到实战");
-	await scopeGroup.getByRole("checkbox", { name: "按标题" }).click();
-	await expect(
-		scopeGroup.getByRole("checkbox", { name: "全部" }),
-	).not.toBeChecked();
+	await titleCheckbox.click();
+	await expect(allScopesButton).toHaveAttribute("aria-pressed", "false");
+	await expect(titleCheckbox).toBeChecked();
+	await expect(contentCheckbox).not.toBeChecked();
 	await expect(kubernetesArticle).toBeVisible();
-	await scopeGroup.getByRole("checkbox", { name: "按内容" }).click();
-	await expect(
-		scopeGroup.getByRole("checkbox", { name: "全部" }),
-	).toBeChecked();
+	await contentCheckbox.click();
+	await expect(titleCheckbox).toBeChecked();
+	await expect(contentCheckbox).toBeChecked();
+	await expect(allScopesButton).toHaveAttribute("aria-pressed", "false");
 	await expect(kubernetesArticle).toBeVisible();
-	await scopeGroup.getByRole("checkbox", { name: "按内容" }).click();
+	await titleCheckbox.click();
+	await expect(titleCheckbox).not.toBeChecked();
+	await expect(contentCheckbox).toBeChecked();
 	await query.fill("事实标准");
 	await expect(kubernetesArticle).toBeVisible();
-	await scopeGroup.getByRole("checkbox", { name: "全部" }).click();
+	await contentCheckbox.click();
+	await expect(allScopesButton).toHaveAttribute("aria-pressed", "true");
+	await expect(titleCheckbox).not.toBeChecked();
+	await expect(contentCheckbox).not.toBeChecked();
+	await expect(kubernetesArticle).toBeVisible();
 
 	await query.fill("实战");
 	const resultLinks = page.locator(

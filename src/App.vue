@@ -9,9 +9,18 @@ import SiteHeader from "@/components/layout/SiteHeader.vue";
     href="#main-content"
   >跳到主要内容</a>
   <SiteHeader />
-  <RouterView v-slot="{ Component }">
+  <RouterView v-slot="{ Component, route }">
     <Suspense>
-      <component :is="Component" />
+      <Transition
+        name="page"
+        mode="out-in"
+        appear
+      >
+        <component
+          :is="Component"
+          :key="route.path"
+        />
+      </Transition>
       <template #fallback>
         <main
           id="main-content"

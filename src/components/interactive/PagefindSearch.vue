@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { KunCheckBoxGroup, KunSelect } from "@kungal/ui-vue";
 
 import { createRetryableLoader } from "@/lib/retryable-loader";
 
 type SearchScope = "title" | "content";
-type SearchScopeSelection = "all" | SearchScope;
 type TimeSort = "relevance" | "published" | "updated";
 type SortDirection = "asc" | "desc";
 type PagefindSearchOptions = {
@@ -37,11 +36,11 @@ const props = defineProps<{ initialQuery?: string }>();
 const query = ref(props.initialQuery ?? "");
 const results = ref<{ excerpt: string; title: string; url: string }[]>([]);
 const status = ref("输入关键词开始搜索");
-const selectedScopes = ref<SearchScopeSelection[]>(["all"]);
+const selectedScopes = ref<SearchScope[]>([]);
+const isAllScopes = computed(() => selectedScopes.value.length === 0);
 const timeSort = ref<TimeSort>("relevance");
 const sortDirection = ref<SortDirection>("desc");
-const scopeOptions: { value: SearchScopeSelection; label: string }[] = [
-	{ value: "all", label: "全部" },
+const scopeOptions: { value: SearchScope; label: string }[] = [
 	{ value: "title", label: "按标题" },
 	{ value: "content", label: "按内容" },
 ];
@@ -71,11 +70,9 @@ const search = async (value: string): Promise<void> => {
 		return;
 	}
 
-	const scopes: SearchScope[] = selectedScopes.value.includes("all")
-		? ["title", "content"]
-		: selectedScopes.value.filter(
-				(scope): scope is SearchScope => scope !== "all",
-			);
+		const scopes: SearchScope[] = selectedScopes.value.length
+			? selectedScopes.value
+			: ["title", "content"];
 	const currentSort = timeSort.value;
 	const currentDirection = sortDirection.value;
 	const sort =
@@ -87,7 +84,7 @@ const search = async (value: string): Promise<void> => {
 	try {
 		const pagefind = await loadPagefind();
 		const responses = await Promise.all(
-			(scopes.length ? scopes : ["title", "content"]).map((scope) =>
+				scopes.map((scope) =>
 				pagefind.search(normalized, {
 					filters: { search_scope: [scope] },
 					...(sort ? { sort } : {}),
@@ -138,18 +135,13 @@ const search = async (value: string): Promise<void> => {
 	}
 };
 
-const updateScopes = (scopes: SearchScopeSelection[]): void => {
-	const previouslyAll = selectedScopes.value.includes("all");
-	const scopedOptions = scopes.filter(
-		(scope): scope is SearchScope => scope !== "all",
-	);
-	const allWasSelected = scopes.includes("all");
-	selectedScopes.value =
-		scopes.length === 0 ||
-		(allWasSelected && (!previouslyAll || scopes.length === 1)) ||
-		scopedOptions.length === 2
-			? ["all"]
-			: scopedOptions;
+	const updateScopes = (scopes: SearchScope[]): void => {
+	selectedScopes.value = scopes;
+	void search(query.value);
+};
+
+const resetScopes = (): void => {
+	selectedScopes.value = [];
 	void search(query.value);
 };
 
@@ -192,14 +184,29 @@ onMounted(() => {
     >
 
     <div class="pagefind-search__filters">
-      <KunCheckBoxGroup
-        :model-value="selectedScopes"
-        :options="scopeOptions"
-        label="相关性"
-        orientation="horizontal"
-        class-name="pagefind-search__scope"
-        @change="updateScopes"
-      />
+      <div
+        role="group"
+        aria-label="搜索范围"
+        class="pagefind-search__scope-control"
+      >
+        <button
+          type="button"
+          class="button button--quiet pagefind-search__scope-reset"
+          :aria-pressed="isAllScopes"
+          aria-label="全部范围"
+          @click="resetScopes"
+        >
+          全部
+        </button>
+        <KunCheckBoxGroup
+          :model-value="selectedScopes"
+          :options="scopeOptions"
+          label="搜索字段"
+          orientation="horizontal"
+          class-name="pagefind-search__scope"
+          @change="updateScopes"
+        />
+      </div>
       <KunSelect
         :model-value="timeSort"
         :options="timeSortOptions"

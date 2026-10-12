@@ -13,7 +13,11 @@ export const createApp = ViteSSG(
     routes,
     scrollBehavior(to, _from, savedPosition) {
       if (savedPosition) return savedPosition;
-      if (to.hash) return { el: to.hash, behavior: "smooth" };
+      if (to.hash) {
+        const reduceMotion = typeof window !== "undefined"
+          && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        return { el: to.hash, behavior: reduceMotion ? "auto" : "smooth" };
+      }
       return { top: 0 };
     },
   },
