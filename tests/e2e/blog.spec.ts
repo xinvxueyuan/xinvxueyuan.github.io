@@ -202,7 +202,7 @@ test("an article preserves a focused reading measure", async ({ page }) => {
 	await expect(firstPost).toBeVisible();
 	await firstPost.click();
 
-	await expect(page.locator("main#main-content article")).toBeVisible();
+	await expect(page.locator("main#main-content article.post-page")).toBeVisible();
 	await expect(page.locator(".post-content")).toBeVisible();
 	await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
 	const articleMeasure = await page
