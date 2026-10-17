@@ -147,19 +147,19 @@ const report = {
 console.info(JSON.stringify(report, null, 2));
 
 if (
-  baselineRoutes.routes.length !== 192 ||
-  expectedPublicSet.size !== 190 ||
-  generatedIndex.routePaths.length !== 147 ||
+  baselineRoutes.routes.length !== 199 ||
+  expectedPublicSet.size !== 197 ||
+  generatedIndex.routePaths.length !== 153 ||
   actualHtmlRoutes.size !== generatedIndex.routePaths.length ||
   missingPublicUrls.length ||
   unexpectedPublicUrls.length ||
   missingHtmlRoutes.length ||
   unexpectedHtmlRoutes.length ||
   missingFiles.length ||
-  generatedIndex.sourceFileCount !== 38 ||
-  generatedIndex.publishedCount !== 37 ||
+  generatedIndex.sourceFileCount !== 39 ||
+  generatedIndex.publishedCount !== 38 ||
   generatedIndex.draftCount !== 1 ||
-  markdownFiles.length !== 38 ||
+  markdownFiles.length !== 39 ||
   missingMarkdown.length ||
   changedMarkdown.length ||
   unexpectedMarkdown.length

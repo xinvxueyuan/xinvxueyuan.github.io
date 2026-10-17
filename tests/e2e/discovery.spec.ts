@@ -7,6 +7,7 @@ test("archive leads through taxonomy to a published post", async ({ page }) => {
 	const taxonomy = page.locator('a[href^="/categories/"]').first();
 	await expect(taxonomy).toBeVisible();
 	await taxonomy.click();
+	await expect(page).toHaveURL(/\/categories\/[^/]+\/$/u);
 	await expect(page.locator("[data-post-card]").first()).toBeVisible();
 	await page
 		.locator("[data-post-card]")
@@ -14,7 +15,8 @@ test("archive leads through taxonomy to a published post", async ({ page }) => {
 		.getByRole("heading", { level: 3 })
 		.getByRole("link")
 		.click();
-	await expect(page.locator("main#main-content article")).toBeVisible();
+	await expect(page).toHaveURL(/\/posts\/[^/]+\/$/u);
+	await expect(page.locator("main#main-content article.post-page")).toBeVisible();
 });
 
 test("search finds a known Chinese phrase", async ({ page }) => {
